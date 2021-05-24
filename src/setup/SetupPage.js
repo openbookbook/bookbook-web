@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import BookSuggest from './BookSuggest';
 import './SetupPage.css';
 
 export default class SetupPage extends Component {
@@ -24,7 +25,7 @@ export default class SetupPage extends Component {
             </label>
           </fieldset>
           <fieldset>
-            {/* <BookSuggest/> */}
+            <BookSuggest/>
           </fieldset>
         </form>
         
