@@ -14,7 +14,7 @@ export default class BookSuggest extends Component {
 
     try {
     
-      const query = e.target.value;
+      const query = e.target.value.trim();
 
       let results = this.state.results;
       if (query) results = await searchBooks(query);
