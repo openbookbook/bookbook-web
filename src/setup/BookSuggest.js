@@ -17,6 +17,7 @@ export default class BookSuggest extends Component {
       const query = e.target.value.trim();
 
       let results = this.state.results;
+      //only gets results if something has been searched
       if (query) results = await searchBooks(query);
   
       this.setState({ search: query, results: results });
