@@ -37,7 +37,7 @@ export default class BookSuggest extends Component {
         <ul>
           {this.state.results.map(book => {
             return < li className="search-result" key={book.googleId}>
-              <img src={book.image ? book.image : '/assets/nocover.jpeg'} alt={book.title} />
+              <button>+</button><img src={book.image ? book.image : '/assets/nocover.jpeg'} alt={book.title} />
               <div><p>{book.title}{book.subtitle && <span>: {book.subtitle}</span>}</p>
                 <p className="book-author">{book.authors[0]}</p></div>
             </li>;
