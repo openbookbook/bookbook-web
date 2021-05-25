@@ -1,6 +1,7 @@
 @import url('./common.css');
 
 .App {
+  min-height: 100vh;
   height: 100%;
   background-color: #ea2;
   display: flex !important;
