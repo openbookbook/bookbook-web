@@ -30,7 +30,6 @@ const fakeSuggestions = [
 ];
 
 const fakeVotes = [
-
   {
     username: 'daniella',
     ballotId: 1,
@@ -43,9 +42,7 @@ const fakeVotes = [
     id: 456,
     vote: '1 3 2'
   },
-
 ];
-
 
 export default class BallotPage extends Component {
 
@@ -68,11 +65,17 @@ export default class BallotPage extends Component {
 
   render() {
     return (
-      <div className="BallotPage">
+      <div className="BallotPage page">
+        <h3 className="page-title">ballot: blah blah</h3>
+        <span className="panel-title">1. login</span>
         <LoginPanel onAdminInput={this.onAdminInput} />
+        <span className="panel-title">2. vote</span>
         <VotingPanel />
         {/*only load adminpanel if showadmin is true, showadmin is true on if the code is entered*/}
-        {this.state.showAdmin && <AdminPanel />}
+        {this.state.showAdmin && <>
+          <span className="panel-title">3. admin</span>
+          <AdminPanel />
+        </>}
       </div>
     );
   }
@@ -88,7 +91,7 @@ class LoginPanel extends Component {
   render() {
 
     return (
-      <div className="LoginPanel">
+      <div className="LoginPanel panel">
         <form>
           <input placeholder="name" />
           <input placeholder="password" />
@@ -104,7 +107,7 @@ class VotingPanel extends Component {
 
   render() {
     return (
-      <div className="VotingPanel">
+      <div className="VotingPanel panel">
         <p>This ballot uses ranked choice voting to vote.  Please put the books in the order that you most desire to read them.</p>
 
       </div>
@@ -117,7 +120,7 @@ class AdminPanel extends Component {
 
   render() {
     return (
-      <div className="AdminPanel">
+      <div className="AdminPanel panel">
         hello, admin!
         <button>End vote!</button>
       </div>
