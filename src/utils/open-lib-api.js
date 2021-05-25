@@ -40,11 +40,18 @@ export async function updateBallot(ballot) {
 
 }
 
-// export async function addSuggestion(suggestion) {
-//   const response = await request 
-//     .post('/api/suggestions')
+export async function addSuggestion(suggestion) {
+  const response = await request 
+    .post('/api/suggestions')
+    .send(suggestion);
 
-// }
+  if (response.status === 400) {
+    throw response.body;
+  }
+
+  return response.body;
+
+}
 
 
 
