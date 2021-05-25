@@ -1,0 +1,22 @@
+.search-result img {
+height: 100px;
+margin-right: 1rem;
+}
+
+.search-result p {
+  display: block!important;
+}
+
+.search-result {
+  display: flex;
+  align-items: center;
+  margin: 5px;
+}
+
+.search-result * {
+  text-transform: none;
+}
+
+.book-author {
+  font-weight: 200;
+}
