@@ -60,7 +60,7 @@ export default class BookSuggest extends Component {
           Candidate Books:
           {this.state.added.map(book => {
             return (
-              <li className="search-result" key={book.googleId}>
+              <li className="search-result" key={book.gbooks}>
                 <button value={book.gbooks}>-</button>
                 <img src={book.result.image ? book.result.image : '/assets/nocover.jpeg'} alt={book.result.title}/>
                 <div>
@@ -76,7 +76,7 @@ export default class BookSuggest extends Component {
             );
           })}
         </ul>}
-        <input type="text" onChange={this.handleSearch} />
+        <input type="text" onChange={this.handleSearch} placeholder="search for books"/>
         {/*<button>🔎</button>*/}
         <ul>
           {this.state.results.map(book => {

@@ -63,6 +63,7 @@ export default class SetupPage extends Component {
     e.preventDefault();
 
     const currentBallot = this.state.ballot;
+    console.log(currentBallot);
     if (!e.target.checked) {
       currentBallot.voteCode = null;
       this.setState({ enableVoteCodeInput: false });
@@ -86,14 +87,14 @@ export default class SetupPage extends Component {
             </label>
             <label>
               <span>Admin Code:</span>
-              <input name="adminCode" />
+              <input onChange={this.handleAdminCodeChange} name="adminCode"/>
             </label>
           </fieldset>
 
           <span className="panel-title">2. permissions (optional)</span>
           <fieldset className="panel">
             <label>
-              <span><input type="checkbox" onClick={this.handleVoteCodeCheck}/>Voting Code</span>
+              <span><input type="checkbox" onClick={this.handleVoteCodeCheck}/>Voting Code:</span>
               <input name="voteCode" disabled={this.state.enableVoteCodeInput}/>
             </label>
           </fieldset>
