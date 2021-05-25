@@ -13,13 +13,13 @@ export default class BookSuggest extends Component {
     e.preventDefault();
 
     try {
-    
+
       const query = e.target.value.trim();
 
       let results = this.state.results;
       //only gets results if something has been searched
       if (query) results = await searchBooks(query);
-  
+
       this.setState({ search: query, results: results });
 
     }
@@ -28,14 +28,18 @@ export default class BookSuggest extends Component {
     }
 
   }
-  
+
   render() {
     return (
       <div className="BookSuggest">
-        <input type="text" onChange={this.handleSearch}/>
+        <input type="text" onChange={this.handleSearch} />
         {/*<button>🔎</button>*/}
         <ul>
-          {this.state.results.map(book => <li key={book.googleId}>{book.title}: {book.subtitle} by {book.authors[0]}</li>)}
+          {this.state.results.map(book => {
+            return < li key={book.googleId}>
+              <img src={book.image} alt={book.title} /> {book.title}: {book.subtitle} by {book.authors[0]}
+            </li>;
+          })}
         </ul>
       </div>
     );
