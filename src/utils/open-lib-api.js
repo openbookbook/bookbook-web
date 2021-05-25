@@ -14,6 +14,43 @@ export async function searchBooks(query, printType = 'books') {
   return response.body.items.map(mungeBook);
 };
 
+export async function createBallot(ballot = { adminCode: 'default', name: 'default', voteCode: null }) {
+  const response = await request
+    .post('/api/ballots')
+    .send(ballot);
+
+  if (response.status === 400) {
+    throw response.body;
+  }
+
+  return response.body;
+
+};
+
+export async function updateBallot(ballot) {
+  const response = await request 
+    .put(`/api/ballots/${ballot.id}`)
+    .send(ballot);
+
+  if (response.status === 400) {
+    throw response.body;
+  }
+
+  return response.body;
+
+}
+
+// export async function addSuggestion(suggestion) {
+//   const response = await request 
+//     .post('/api/suggestions')
+
+// }
+
+
+
+
+
+
 function mungeBook(book) {
   return {
     title: book.volumeInfo.title,
@@ -26,3 +63,4 @@ function mungeBook(book) {
     price: (book.saleInfo.retailPrice) ? book.saleInfo.retailPrice.amount : null
   };
 }
+
