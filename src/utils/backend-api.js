@@ -1,8 +1,10 @@
 import request from 'superagent';
 
+const URL = 'https://quiet-reaches-96525.herokuapp.com';
+
 export async function createBallot(ballot = { adminCode: 'default', name: 'default', voteCode: null }) {
   const response = await request
-    .post('/api/ballots')
+    .post(URL + '/api/ballots')
     .send(ballot);
 
   if (response.status === 400) {
@@ -15,7 +17,7 @@ export async function createBallot(ballot = { adminCode: 'default', name: 'defau
 
 export async function updateBallot(ballot) {
   const response = await request 
-    .put(`/api/ballots/${ballot.id}`)
+    .put(URL + `/api/ballots/${ballot.id}`)
     .send(ballot);
 
   if (response.status === 400) {
@@ -28,7 +30,7 @@ export async function updateBallot(ballot) {
 
 export async function addSuggestion(suggestion) {
   const response = await request 
-    .post('/api/suggestions')
+    .post(URL + '/api/suggestions')
     .send(suggestion);
 
   if (response.status === 400) {
