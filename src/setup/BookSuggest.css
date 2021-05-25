@@ -25,3 +25,16 @@ margin-right: 1rem;
   margin-right: 1rem;
   background-color: transparent;
 }
+
+.book-display {
+  border-width: 3px !important;
+}
+
+.book-display span {
+  margin-right: 1rem;
+}
+
+.book-display button {
+  margin-right: 1rem;
+  background-color: transparent;
+}
