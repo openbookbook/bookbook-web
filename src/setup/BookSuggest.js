@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { searchBooks } from '../utils/open-lib-api.js';
+import { searchBooks } from '../utils/gbooks-api.js';
 import './BookSuggest.css';
 
 export default class BookSuggest extends Component {
