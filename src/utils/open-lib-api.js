@@ -53,6 +53,18 @@ export async function addSuggestion(suggestion) {
 
 }
 
+export async function getBallot(ballotid) {
+  const response = await request
+    .get(`/api/ballots/${ballotid}`);
+
+  if (response.status === 400) {
+    throw response.body;
+  }
+
+  return response.body;
+    
+}
+
 
 
 
