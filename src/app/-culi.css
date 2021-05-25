@@ -1,0 +1,115 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
+
+* {
+  text-transform: lowercase;
+  font-family: "Josefin Sans", sans-serif;
+  box-sizing: border-box;
+  font-size: 20px !important;
+}
+
+h1 {
+  font-size: 2rem;
+  font-weight: 900;
+}
+
+h2 {
+  font-size: 1.8rem;
+  font-weight: 800;
+}
+
+h3 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  opacity: 0.9;
+}
+
+h4 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  opacity: 0.9;
+}
+
+h5 {
+  font-size: 1.2rem;
+  font-weight: 500;
+  opacity: 0.8;
+}
+
+h6 {
+  font-size: 1.1rem;
+  font-weight: 500;
+  opacity: 0.8;
+}
+
+/* .App */
+.App {
+  background-color: #ea2;
+  display: flex !important;
+  flex-direction: column;
+  align-items: center;
+}
+
+.App > * {
+  width: 50%;
+}
+
+.App > main {
+  padding: 1rem;
+  padding-bottom: 0;
+  display: flex;
+  flex-direction: column;
+  border: 9px solid;
+}
+
+/* .Header */
+.Header {
+  padding: 0;
+  margin: 0;
+  margin-top: 1rem;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  border: none;
+}
+
+.Header h1 {
+  font-size: 2.5rem !important;
+}
+
+.Header nav * {
+  margin-left: 0.5rem;
+  text-decoration: none;
+  color: black;
+  font-weight: 500;
+}
+
+/* .Footer */
+.Footer {
+  margin: 0;
+  margin-top: 0.25rem;
+  padding: 0;
+  background: none;
+}
+
+/* .SetupPage */
+.SetupPage form {
+  display: flex;
+  flex-direction: column;
+}
+
+.SetupPage fieldset {
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  border: 5px solid;
+  border-radius: 1rem;
+  padding: 1rem;
+}
+
+/* .BallotPage */
+.BallotPage > div {
+  margin-bottom: 1rem;
+  border: 5px solid;
+  border-radius: 1rem;
+  padding: 1rem;
+}
