@@ -32,6 +32,7 @@ export default class BookSuggest extends Component {
   render() {
     return (
       <div className="BookSuggest">
+        <div className="book-display"></div>
         <input type="text" onChange={this.handleSearch} />
         {/*<button>🔎</button>*/}
         <ul>
