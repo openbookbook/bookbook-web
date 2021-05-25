@@ -72,4 +72,32 @@ export async function getVotes(ballotid) {
   }
 
   return response.body;
+
 }
+
+export async function addVote(vote) {
+  const response = await request 
+    .post(`/api/votes`)
+    .send(vote);
+
+  if (response.status === 400) {
+    throw response.body;
+  }
+
+  return response.body;
+
+}
+
+export async function addUser(user) {
+  const response = await request 
+    .post('/api/users')
+    .send(user);
+
+  if (response.status === 400) {
+    throw response.body;
+  }
+
+  return response.body;
+
+}
+
