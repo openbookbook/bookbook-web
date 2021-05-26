@@ -84,15 +84,16 @@ export default class BallotPage extends Component {
     return (
       <div className="BallotPage page">
         <h3 className="page-title">ballot: {this.state.ballot.name}</h3>
-        <span className="panel-title">1. login</span>
+        <span className="panel-title">login</span>
         <LoginPanel currentUser={this.state.currentUser} users={this.state.users} onAdminInput={this.onAdminInput} onSignUp={this.signUp} onSignIn={this.signIn} />
         {this.state.isDataLoaded && <>
-          <span className="panel-title">2. vote</span>
+          <span className="panel-title">vote</span>
           <VotingPanel suggestions={this.state.suggestions} onVote={this.submitVote} currentUser={this.state.currentUser} winners={this.state.winners}/>
         </>}
+        <span className="panel-title">results</span>
         {/*only load adminpanel if showadmin is true, showadmin is true on if the code is entered*/}
         {this.state.showAdmin && <>
-          <span className="panel-title">3. admin</span>
+          <span className="panel-title">admin</span>
           <AdminPanel onEndVote={this.onEndVote} winners={this.state.winners}/>
         </>}
       </div>
@@ -177,7 +178,7 @@ class LoginPanel extends Component {
             ? <input placeholder="admin code" onChange={this.handleAdminInput} />
             : null
           }
-          
+
         </form>
       </div>
     );
