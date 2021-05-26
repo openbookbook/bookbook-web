@@ -40,19 +40,19 @@ export function rankedChoiceVote(candidates, votes) {
   /*
   ==INPUT==
   candidates is an array of suggestion ids like:
-    [id1, id2, id3, id4]
+    ['id1', 'id2', 'id3', 'id4']
 
   votes is an array of arrays. Each inner array represents someone's vote
     [
-      [id3, id4, id2, id1],
-      [id1, id4, id3, id2],
-      [id4, id3, id1, id2],
-      [id4, id3, id2, id1],
-      [id2, id1, id3, id4],
-      [id3, id1, id2, id4],
-      [id1, id2, id4, id3],
-      [id3, id2, id1, id4]
-    ]
+      ['id3', 'id4', 'id2', 'id1'],
+      ['id1', 'id4', 'id3', 'id2'],
+      ['id4', 'id3', 'id1', 'id2'],
+      ['id4', 'id3', 'id2', 'id1'],
+      ['id2', 'id1', 'id3', 'id4'],
+      ['id3', 'id1', 'id2', 'id4'],
+      ['id1', 'id2', 'id4', 'id3'],
+      ['id3', 'id2', 'id1', 'id4']
+    ];
   
   ==OUTPUT==
   an array of objects. each object represents a round of voting
