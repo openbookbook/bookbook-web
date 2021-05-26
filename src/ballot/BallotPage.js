@@ -55,20 +55,27 @@ export default class BallotPage extends Component {
     await addVote(vote);
     console.log(vote);
   };
+  
+  signIn = user => {
+    
+    this.setState({ currentUser: user });
+    console.log(user);
+  }
 
   signUp = async user => {
     user.ballotId = this.state.ballot.id;
     const response = await addUser(user);
     console.log(response);
     this.setState({ currentUser: response });
-  } 
+  }
+  
 
   render() {
     return (
       <div className="BallotPage page">
         <h3 className="page-title">ballot: {this.state.ballot.name}</h3>
         <span className="panel-title">1. login</span>
-        <LoginPanel currentUser={this.state.currentUser} users={this.state.users} onAdminInput={this.onAdminInput} onSignUp={this.signUp} />
+        <LoginPanel currentUser={this.state.currentUser} users={this.state.users} onAdminInput={this.onAdminInput} onSignUp={this.signUp} onSignIn={this.signIn} />
         {this.state.isDataLoaded && <>
           <span className="panel-title">2. vote</span>
           <VotingPanel suggestions={this.state.suggestions} onVote={this.submitVote} currentUser={this.state.currentUser}/>
@@ -81,7 +88,6 @@ export default class BallotPage extends Component {
       </div>
     );
   }
-
 }
 
 class LoginPanel extends Component {
@@ -126,11 +132,11 @@ class LoginPanel extends Component {
     let match = null;
 
     this.props.users.forEach(user => {
-      if (user.name === this.state.inputtedName) {
+      if (user.username === this.state.inputtedName) {
         match = user;
       };
     });
-
+    console.log(this.props.users);
     if (!match) { 
       const user = {
         username: this.state.inputtedName,
@@ -138,8 +144,14 @@ class LoginPanel extends Component {
       };
 
       this.props.onSignUp(user);
-    };
 
+    } else {
+      if (match.password) {
+        if (match.password === this.state.inputtedPassword) this.props.onSignIn(match);
+      } else {
+        this.props.onSignIn(match); 
+      }
+    }
   }
 
   render() {
