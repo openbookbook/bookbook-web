@@ -4,6 +4,7 @@ import Footer from './Footer';
 // import Home from '../home/Home';
 import SetupPage from '../setup/SetupPage';
 import BallotPage from '../ballot/BallotPage';
+import AboutPage from '../about/AboutPage';
 import {
   BrowserRouter as Router,
   Route,
@@ -19,14 +20,14 @@ class App extends Component {
     return (
       <div className="App">
         <Router>
-          <Header/>
+          <Header />
           <main>
 
             <Switch>
               <Route path="/" exact={true}
                 render={routerProps => (
                   // <Home {...routerProps}/>
-                  <Redirect to="/setup"/>
+                  <Redirect to="/setup" />
                 )}
               />
 
@@ -38,13 +39,13 @@ class App extends Component {
 
               <Route path="/ballot/:id"
                 render={routerProps => (
-                  <BallotPage {...routerProps}/>
+                  <BallotPage {...routerProps} />
                 )}
               />
 
               <Route path="/about"
                 render={routerProps => (
-                  <div>Implement a page for id {routerProps.match.params.id}</div>
+                  <AboutPage {...routerProps} />
                 )}
               />
 
@@ -52,7 +53,7 @@ class App extends Component {
 
             </Switch>
           </main>
-          <Footer/>
+          <Footer />
         </Router>
       </div>
     );
