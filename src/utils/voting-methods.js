@@ -28,23 +28,23 @@ export function rankedChoiceVote(candidates, votes) {
   
   ==OUTPUT==
   an array of objects. each object represents a round of voting
-  [
-    {
-      id1: 2,
-      id2: 1,
-      id3: 3,
-      id4: 2
-    },
-    {
-      id1: 3,
-      id3: 3,
-      id4: 2
-    },
-    {
-      id1: 3,
-      id3: 5
-    }
-  ]
+    [
+      {
+        id1: 2,
+        id2: 1,
+        id3: 3,
+        id4: 2
+      },
+      {
+        id1: 3,
+        id3: 3,
+        id4: 2
+      },
+      {
+        id1: 3,
+        id3: 5
+      }
+    ]
   */
 
   // keep track of every round

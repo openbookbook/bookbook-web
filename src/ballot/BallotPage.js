@@ -2,6 +2,7 @@ import { Component } from 'react';
 import { getBallot, getSuggestions, getUsers, getVotes, addUser, addVote } from '../utils/backend-api';
 import { getBook } from '../utils/gbooks-api';
 import { relocateItemInArray } from '../utils/utils.js';
+import { rankedChoiceVote, parseWinner } from '../utils/voting-methods.js';
 import './BallotPage.css';
 
 export default class BallotPage extends Component {
@@ -13,7 +14,8 @@ export default class BallotPage extends Component {
     votes: [], 
     users: [],
     currentUser: null,
-    isDataLoaded: false
+    isDataLoaded: false,
+    winners: null
   }
 
   async componentDidMount() {
@@ -25,6 +27,7 @@ export default class BallotPage extends Component {
 
       const votes = await getVotes(ballot.id);
       this.setState({ votes: votes });
+      console.log(votes);
 
       const users = await getUsers(ballot.id);
       this.setState({ users: users, isDataLoaded: true });
@@ -32,6 +35,13 @@ export default class BallotPage extends Component {
     catch (err) {
       console.log(err.message);
     }
+  }
+
+  onEndVote = async () => {
+    const cands = this.state.suggestions.map(suggestion => suggestion.gbooks);
+    const votes = this.state.votes.map(vote => vote.vote.split(' '));
+
+    this.setState({ winners: parseWinner(rankedChoiceVote(cands, votes)) });
   }
 
   onAdminInput = e => {
@@ -69,8 +79,8 @@ export default class BallotPage extends Component {
     this.setState({ currentUser: response });
   }
   
-
   render() {
+
     return (
       <div className="BallotPage page">
         <h3 className="page-title">ballot: {this.state.ballot.name}</h3>
@@ -78,12 +88,12 @@ export default class BallotPage extends Component {
         <LoginPanel currentUser={this.state.currentUser} users={this.state.users} onAdminInput={this.onAdminInput} onSignUp={this.signUp} onSignIn={this.signIn} />
         {this.state.isDataLoaded && <>
           <span className="panel-title">2. vote</span>
-          <VotingPanel suggestions={this.state.suggestions} onVote={this.submitVote} currentUser={this.state.currentUser}/>
+          <VotingPanel suggestions={this.state.suggestions} onVote={this.submitVote} currentUser={this.state.currentUser} winners={this.state.winners}/>
         </>}
         {/*only load adminpanel if showadmin is true, showadmin is true on if the code is entered*/}
         {this.state.showAdmin && <>
           <span className="panel-title">3. admin</span>
-          <AdminPanel/>
+          <AdminPanel onEndVote={this.onEndVote} winners={this.state.winners}/>
         </>}
       </div>
     );
@@ -210,22 +220,24 @@ class VotingPanel extends Component {
     // figure out new order
     const newOrder = relocateItemInArray(this.state.voteOrder, oldIndex, newIndex);
     this.setState({ voteOrder: newOrder });
+
+    console.log(this.state.voteOrder);
   }
 
   handleVoteClick = e => {
     e.preventDefault();
     
-    this.props.onVote(this.props.voteOrder);
+    this.props.onVote(this.state.voteOrder);
   }
 
   render() {
 
-    console.log(this.props.currentUser);
+    console.log('Signed in as: ', this.props.currentUser);
 
     return (
       <div className="VotingPanel panel">
         <p>This ballot uses ranked choice voting to vote. Please put the books in the order that you most desire to read them.</p>
-        <ul>
+        {Boolean(this.props.winners) && <ul>
           {Boolean(this.state.voteOrder) && this.state.suggestions.map(book => (
             <li className="book-candidate" key={book.googleId}>
               <input name={book.googleId} onChange={this.handleOrderChange} type="number" min="1" max={this.state.suggestions.length} value={this.state.voteOrder.indexOf(book.googleId) + 1}/>
@@ -236,7 +248,7 @@ class VotingPanel extends Component {
               </div>
             </li>
           ))}
-        </ul>
+        </ul>}
         <button onClick={this.handleVoteClick} disabled={!Boolean(this.props.currentUser)}>submit your vote{!Boolean(this.props.currentUser) && ' (please sign in)'}</button>
       </div>
     );
@@ -250,7 +262,7 @@ class AdminPanel extends Component {
     return (
       <div className="AdminPanel panel">
         hello, admin!
-        <button>End vote!</button>
+        <button onClick={this.props.onEndVote} disabled={Boolean(this.props.winners)}>End vote!</button>
       </div>
     );
   }
