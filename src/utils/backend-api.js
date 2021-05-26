@@ -41,6 +41,13 @@ export async function addSuggestion(suggestion) {
 
 }
 
+export async function deleteSuggestion(id) {
+  const response = await request
+    .delete(URL + `/api/suggestions/${id}`);
+  return response.body;
+}
+
+
 export async function getBallot(ballotid) {
   const response = await request
     .get(URL + `/api/ballots/${ballotid}`);
