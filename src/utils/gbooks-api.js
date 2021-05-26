@@ -14,6 +14,16 @@ export async function searchBooks(query, printType = 'books') {
   return response.body.items.map(mungeBook);
 };
 
+export async function getBook(gbooks) {
+  const response = await request.get(`${GBOOKS_API}/${gbooks}`);
+  
+  if (response.status === 400) {
+    throw response.body;
+  }
+
+  return mungeBook(response.body);
+}
+
 function mungeBook(book) {
   return {
     title: book.volumeInfo.title,
@@ -26,4 +36,3 @@ function mungeBook(book) {
     price: (book.saleInfo.retailPrice) ? book.saleInfo.retailPrice.amount : null
   };
 }
-
