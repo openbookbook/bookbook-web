@@ -72,7 +72,8 @@ class LoginPanel extends Component {
 
   state = {
     inputtedName: '',
-    inputtedPassword: ''
+    inputtedPassword: '',
+    showing: false
   }
 
   handleAdminInput = e => {
@@ -94,6 +95,12 @@ class LoginPanel extends Component {
 
     this.setState({ inputtedPassword: inputtedPassword });
   } 
+
+  handleAdminSwitch = (e) => {
+    e.preventDefault();
+
+    this.setState({ showing: !this.state.showing });
+  }
 
   handleSignIn = e => {
     e.preventDefault();
@@ -120,14 +127,19 @@ class LoginPanel extends Component {
   }
 
   render() {
-
+    const showing = this.state.showing;
     return (
       <div className="LoginPanel panel">
         <form>
           {!this.props.currentUser && <input placeholder="name" onChange={this.handleNameChange}/>}
           {!this.props.currentUser && <input placeholder="password (optional)" onChange={this.handlePasswordInput}/>}
           {!this.props.currentUser && <button onClick={this.handleSignIn}>Sign In</button>}
-          <input placeholder="admin code" onChange={this.handleAdminInput} />
+          <p className="admin-option"><span>Admin? </span><span className="admin-click" onClick={this.handleAdminSwitch}>Click here!</span></p>
+          { showing
+            ? <input placeholder="admin code" onChange={this.handleAdminInput} />
+            : null
+          }
+          
         </form>
       </div>
     );

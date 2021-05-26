@@ -1,0 +1,14 @@
+.admin-click {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.admin-option {
+  padding-top: .7rem;
+  font-size: .8rem;
+
+}
+
+.admin-option span {
+  text-transform: none!important;
+}
