@@ -1,56 +1,36 @@
 import { Component } from 'react';
+import { getBallot, getSuggestions, getUsers, getVotes, addUser } from '../utils/backend-api';
 import './BallotPage.css';
-
-const fakeBallot = {
-  id: 1,
-  adminCode: '1234',
-  name: 'bookclub',
-  voteCode: null
-};
-
-const fakeSuggestions = [
-  {
-    id: 1,
-    username: 'bookperson123',
-    title: 'The Fish Warrior',
-    ballotId: 1
-  },
-  {
-    id: 2,
-    username: 'bookperson123',
-    title: 'Crying in H-Mart',
-    ballotId: 1
-  },
-  {
-    id: 3,
-    username: 'bookperson123',
-    title: 'The Confederacy of Dunces',
-    ballotId: 1
-  }
-];
-
-const fakeVotes = [
-  {
-    username: 'daniella',
-    ballotId: 1,
-    id: 123,
-    vote: '3 1 2'
-  },
-  {
-    username: 'austin',
-    ballotId: 1,
-    id: 456,
-    vote: '1 3 2'
-  },
-];
 
 export default class BallotPage extends Component {
 
   state = {
     showAdmin: false,
-    ballot: fakeBallot,
-    suggestions: fakeSuggestions,
-    votes: fakeVotes
+    ballot: {},
+    suggestions: [],
+    votes: [], 
+    users: [],
+    currentUser: null,
+  }
+
+  async componentDidMount() {
+    try {
+      const ballot = await getBallot(this.props.match.params.id);
+      this.setState({ ballot: ballot });
+
+      const suggestions = await getSuggestions(ballot.id);
+      this.setState({ suggestions: suggestions });
+
+      const votes = await getVotes(ballot.id);
+      this.setState({ votes: votes });
+
+      const users = await getUsers(ballot.id);
+      this.setState({ users: users });
+    }
+
+    catch (err) {
+      console.log(err.message);
+    }
   }
 
   onAdminInput = e => {
@@ -63,12 +43,19 @@ export default class BallotPage extends Component {
 
   }
 
+  signUp = async user => {
+    user.ballotId = this.state.ballot.id;
+    const response = await addUser(user);
+    console.log(response);
+    this.setState({ currentUser: response });
+  } 
+
   render() {
     return (
       <div className="BallotPage page">
         <h3 className="page-title">ballot: blah blah</h3>
         <span className="panel-title">1. login</span>
-        <LoginPanel onAdminInput={this.onAdminInput} />
+        <LoginPanel currentUser={this.state.currentUser} users={this.state.users} onAdminInput={this.onAdminInput} onSignUp={this.signUp} />
         <span className="panel-title">2. vote</span>
         <VotingPanel />
         {/*only load adminpanel if showadmin is true, showadmin is true on if the code is entered*/}
@@ -84,17 +71,68 @@ export default class BallotPage extends Component {
 
 class LoginPanel extends Component {
 
+  state = {
+    inputtedName: '',
+    inputtedPassword: ''
+  }
+
   handleAdminInput = e => {
     this.props.onAdminInput(e);
   }
+
+  handleNameChange = e => {
+    e.preventDefault();
+
+    const inputtedName = e.target.value;
+
+    this.setState({ inputtedName: inputtedName });
+
+  } 
+  
+  handlePasswordInput = e => {
+    e.preventDefault();
+
+    const inputtedPassword = e.target.value;
+
+    this.setState({ inputtedPassword: inputtedPassword });
+
+  } 
+
+  handleSignIn = e => {
+    e.preventDefault();
+
+    //loop through users that we passed down as props, see if the user exists, if not create new user, if it does exist check if password is correct
+
+    let match = null;
+
+    this.props.users.forEach(user => {
+      if (user.name === this.state.inputtedName) {
+        match = user;
+      };
+    });
+
+    if (!match) { 
+      const user = {
+        username: this.state.inputtedName,
+        password: this.state.inputtedPassword,
+      };
+
+      this.props.onSignUp(user);
+
+    };
+
+  }
+
+
 
   render() {
 
     return (
       <div className="LoginPanel panel">
         <form>
-          <input placeholder="name" />
-          <input placeholder="password" />
+          {!this.props.currentUser && <input placeholder="name" onChange={this.handleNameChange}/>}
+          {!this.props.currentUser && <input placeholder="password (optional)" onChange={this.handlePasswordInput}/>}
+          {!this.props.currentUser && <button onClick={this.handleSignIn}>Sign In</button>}
           <input placeholder="admin code" onChange={this.handleAdminInput} />
         </form>
       </div>
