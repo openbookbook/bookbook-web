@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { addSuggestion } from '../utils/backend-api.js';
+import { addSuggestion, deleteSuggestion } from '../utils/backend-api.js';
 import { searchBooks } from '../utils/gbooks-api.js';
 import './BookSuggest.css';
 
@@ -34,6 +34,14 @@ export default class BookSuggest extends Component {
     this.setState({ added: [...currentAdded, bookResponse] });
   }
 
+  handleDeleteSuggestion = async e => {
+    e.preventDefault();
+    const response = await deleteSuggestion(e.target.value);
+    console.log(response);
+    const newAdded = this.state.added.filter(book => book.id.toString() !== e.target.value.toString());
+    this.setState({ added: newAdded });
+  }
+
   handleSearch = async e => {
     e.preventDefault();
 
@@ -61,7 +69,7 @@ export default class BookSuggest extends Component {
           {this.state.added.map(book => {
             return (
               <li className="search-result" key={book.gbooks}>
-                <button value={book.gbooks}>-</button>
+                <button value={book.id} onClick={this.handleDeleteSuggestion}>-</button>
                 <img src={book.result.image ? book.result.image : '/assets/nocover.jpeg'} alt={book.result.title}/>
                 <div>
                   <p>{book.result.title}{book.result.subtitle && <span>: {book.result.subtitle}</span>}</p>
