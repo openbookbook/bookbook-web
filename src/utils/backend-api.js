@@ -43,7 +43,7 @@ export async function addSuggestion(suggestion) {
 
 export async function getBallot(ballotid) {
   const response = await request
-    .get(`/api/ballots/${ballotid}`);
+    .get(URL + `/api/ballots/${ballotid}`);
 
   if (response.status === 400) {
     throw response.body;
@@ -55,7 +55,7 @@ export async function getBallot(ballotid) {
 
 export async function getSuggestions(ballotid) {
   const response = await request 
-    .get(`/api/${ballotid}/suggestions`);
+    .get(URL + `/api/${ballotid}/suggestions`);
 
   if (response.status === 400) {
     throw response.body;
@@ -67,7 +67,7 @@ export async function getSuggestions(ballotid) {
 
 export async function getVotes(ballotid) {
   const response = await request 
-    .get(`/api/${ballotid}/votes`);
+    .get(URL + `/api/${ballotid}/votes`);
 
   if (response.status === 400) {
     throw response.body;
@@ -79,7 +79,7 @@ export async function getVotes(ballotid) {
 
 export async function addVote(vote) {
   const response = await request 
-    .post(`/api/votes`)
+    .post(URL + `/api/votes`)
     .send(vote);
 
   if (response.status === 400) {
@@ -92,7 +92,7 @@ export async function addVote(vote) {
 
 export async function addUser(user) {
   const response = await request 
-    .post('/api/users')
+    .post(URL + '/api/users')
     .send(user);
 
   if (response.status === 400) {
@@ -103,3 +103,13 @@ export async function addUser(user) {
 
 }
 
+export async function getUsers(ballotid) {
+  const response = await request 
+    .get(URL + `/api/${ballotid}/users`);
+
+  if (response.status === 400) {
+    throw response.body;
+  }
+
+  return response.body;
+}
