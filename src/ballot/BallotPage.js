@@ -190,7 +190,7 @@ class VotingPanel extends Component {
 
   state = {
     suggestions: [],
-    voteOrder: null
+    voteOrder: null,
   }
 
   async componentDidMount() {
@@ -228,6 +228,7 @@ class VotingPanel extends Component {
     e.preventDefault();
     
     this.props.onVote(this.state.voteOrder);
+    e.target.disabled = true;
   }
 
   render() {
@@ -237,7 +238,7 @@ class VotingPanel extends Component {
     return (
       <div className="VotingPanel panel">
         <p>This ballot uses ranked choice voting to vote. Please put the books in the order that you most desire to read them.</p>
-        {Boolean(this.props.winners) && <ul>
+        <ul>
           {Boolean(this.state.voteOrder) && this.state.suggestions.map(book => (
             <li className="book-candidate" key={book.googleId}>
               <input name={book.googleId} onChange={this.handleOrderChange} type="number" min="1" max={this.state.suggestions.length} value={this.state.voteOrder.indexOf(book.googleId) + 1}/>
@@ -248,7 +249,7 @@ class VotingPanel extends Component {
               </div>
             </li>
           ))}
-        </ul>}
+        </ul>
         <button onClick={this.handleVoteClick} disabled={!Boolean(this.props.currentUser)}>submit your vote{!Boolean(this.props.currentUser) && ' (please sign in)'}</button>
       </div>
     );
