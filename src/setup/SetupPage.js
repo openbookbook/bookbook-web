@@ -24,7 +24,8 @@ export default class SetupPage extends Component {
     e.preventDefault();
 
     try {
-      await updateBallot(this.state.ballot);
+      const response = await updateBallot(this.state.ballot);
+      this.props.history.push(`/ballot/${response.id}`);
     }
     catch (err) {
       console.log(err);
