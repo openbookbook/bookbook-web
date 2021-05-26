@@ -4,6 +4,7 @@
 .page {
   display: flex;
   flex-direction: column;
+  counter-reset: panelCounter;
 }
 
 .panel {
@@ -17,6 +18,11 @@
 
 .panel-title {
   font-weight: 600;
+  counter-increment: panelCounter;
+}
+
+.panel-title::before {
+  content: counter(panelCounter) ". ";
 }
 
 * {
