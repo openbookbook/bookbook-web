@@ -1,7 +1,9 @@
 import { Component } from 'react';
 import Header from './Header';
 import Footer from './Footer';
-import Home from '../home/Home';
+// import Home from '../home/Home';
+import SetupPage from '../setup/SetupPage';
+import BallotPage from '../ballot/BallotPage';
 import {
   BrowserRouter as Router,
   Route,
@@ -9,6 +11,7 @@ import {
   Redirect
 } from 'react-router-dom';
 import './App.css';
+
 
 class App extends Component {
 
@@ -22,17 +25,24 @@ class App extends Component {
             <Switch>
               <Route path="/" exact={true}
                 render={routerProps => (
-                  <Home {...routerProps}/>
+                  // <Home {...routerProps}/>
+                  <Redirect to="/setup"/>
                 )}
               />
 
-              <Route path="/resources" exact={true}
+              <Route path="/setup" exact={true}
                 render={routerProps => (
-                  <div>Implement a page of resources</div>
+                  <SetupPage {...routerProps} />
                 )}
               />
 
-              <Route path="/resources/:id"
+              <Route path="/ballot/:id"
+                render={routerProps => (
+                  <BallotPage {...routerProps}/>
+                )}
+              />
+
+              <Route path="/about"
                 render={routerProps => (
                   <div>Implement a page for id {routerProps.match.params.id}</div>
                 )}

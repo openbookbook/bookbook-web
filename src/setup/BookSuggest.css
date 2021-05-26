@@ -1,0 +1,45 @@
+.search-result img {
+height: 100px;
+margin-right: 1rem;
+}
+
+.search-result p {
+  display: block!important;
+}
+
+.search-result {
+  display: flex;
+  align-items: center;
+  margin: 5px;
+}
+
+.search-result * {
+  text-transform: none;
+}
+
+.book-author {
+  font-weight: 200;
+}
+
+.search-result button {
+  margin-right: 1rem;
+  background-color: transparent;
+  /*border: none;
+  border: 2px solid black;*/
+  border-radius: 5px;
+}
+
+/*
+.book-display {
+  border-width: 3px !important;
+}
+
+.book-display span {
+  margin-right: 1rem;
+}
+
+.book-display button {
+  margin-right: 1rem;
+  background-color: transparent;
+}
+*/

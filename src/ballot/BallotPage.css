@@ -1,0 +1,36 @@
+.VotingPanel .book-candidate {
+  display: flex;
+  align-items: center;
+}
+
+.VotingPanel ul {
+  margin: 1rem 0;
+}
+
+.book-candidate * {
+  text-transform: none;
+}
+
+.book-candidate img {
+  height: 150px;
+  margin: 0 1rem;
+}
+
+.book-candidate input {
+  width: 3rem;
+}
+
+.admin-click {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.admin-option {
+  padding-top: .7rem;
+  font-size: .8rem;
+
+}
+
+.admin-option span {
+  text-transform: none!important;
+}

@@ -1,0 +1,9 @@
+.SetupPage .panel {
+  display: flex;
+  flex-direction: column;
+}
+
+.SetupPage label > span {
+  display: flex;
+  align-items: center;
+}
