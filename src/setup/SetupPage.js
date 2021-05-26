@@ -60,15 +60,15 @@ export default class SetupPage extends Component {
   }
 
   handleVoteCodeCheck = e => {
-    e.preventDefault();
+    // toggle the state
+    this.setState({ enableVoteCodeInput: !this.state.enableVoteCodeInput });
 
-    const currentBallot = this.state.ballot;
-    console.log(currentBallot);
-    if (!e.target.checked) {
+    // if it just got turned off, change the ballot's "voteCode" to null
+    if (!this.state.enableVoteCodeInput) {
+      const currentBallot = this.state.ballot;
       currentBallot.voteCode = null;
-      this.setState({ enableVoteCodeInput: false });
+      this.setState({ ballot: currentBallot });
     } 
-    else this.setState({ enableVoteCodeInput: true });
 
   }
 
@@ -77,7 +77,7 @@ export default class SetupPage extends Component {
     return (
       <div className="SetupPage">
         <h3 className="page-title">setup ballot</h3>
-        <form onSubmit={this.doNothing} className="page">
+        <form className="page">
 
           <span className="panel-title">1. setup</span>
           <fieldset className="panel">
@@ -95,7 +95,7 @@ export default class SetupPage extends Component {
           <fieldset className="panel">
             <label>
               <span><input type="checkbox" onClick={this.handleVoteCodeCheck}/>Voting Code:</span>
-              <input name="voteCode" disabled={this.state.enableVoteCodeInput}/>
+              <input name="voteCode" disabled={!this.state.enableVoteCodeInput}/>
             </label>
           </fieldset>
 
