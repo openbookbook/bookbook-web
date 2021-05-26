@@ -27,7 +27,6 @@ export default class BallotPage extends Component {
       const users = await getUsers(ballot.id);
       this.setState({ users: users });
     }
-
     catch (err) {
       console.log(err.message);
     }
@@ -53,7 +52,7 @@ export default class BallotPage extends Component {
   render() {
     return (
       <div className="BallotPage page">
-        <h3 className="page-title">ballot: blah blah</h3>
+        <h3 className="page-title">ballot: {this.state.ballot.name}</h3>
         <span className="panel-title">1. login</span>
         <LoginPanel currentUser={this.state.currentUser} users={this.state.users} onAdminInput={this.onAdminInput} onSignUp={this.signUp} />
         <span className="panel-title">2. vote</span>
@@ -86,7 +85,6 @@ class LoginPanel extends Component {
     const inputtedName = e.target.value;
 
     this.setState({ inputtedName: inputtedName });
-
   } 
   
   handlePasswordInput = e => {
@@ -95,7 +93,6 @@ class LoginPanel extends Component {
     const inputtedPassword = e.target.value;
 
     this.setState({ inputtedPassword: inputtedPassword });
-
   } 
 
   handleSignIn = e => {
@@ -118,12 +115,9 @@ class LoginPanel extends Component {
       };
 
       this.props.onSignUp(user);
-
     };
 
   }
-
-
 
   render() {
 
@@ -137,6 +131,7 @@ class LoginPanel extends Component {
         </form>
       </div>
     );
+
   }
 
 }
@@ -147,7 +142,6 @@ class VotingPanel extends Component {
     return (
       <div className="VotingPanel panel">
         <p>This ballot uses ranked choice voting to vote.  Please put the books in the order that you most desire to read them.</p>
-
       </div>
     );
   }
