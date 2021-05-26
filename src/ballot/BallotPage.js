@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { getBallot, getSuggestions, getUsers, getVotes, addUser } from '../utils/backend-api';
+import { getBallot, getSuggestions, getUsers, getVotes, addUser, addVote } from '../utils/backend-api';
 import { getBook } from '../utils/gbooks-api';
 import { relocateItemInArray } from '../utils/utils.js';
 import './BallotPage.css';
@@ -44,6 +44,18 @@ export default class BallotPage extends Component {
 
   }
 
+  submitVote = async voteOrder => {
+    // input: ["gbooksid1", "gbooksid2", etc]
+    const vote = {
+      userId: this.state.currentUser.id,
+      ballotId: this.state.ballot.id,
+      vote: voteOrder.join(' ')
+    };
+
+    await addVote(vote);
+    console.log(vote);
+  };
+
   signUp = async user => {
     user.ballotId = this.state.ballot.id;
     const response = await addUser(user);
@@ -59,7 +71,7 @@ export default class BallotPage extends Component {
         <LoginPanel currentUser={this.state.currentUser} users={this.state.users} onAdminInput={this.onAdminInput} onSignUp={this.signUp} />
         {this.state.isDataLoaded && <>
           <span className="panel-title">2. vote</span>
-          <VotingPanel suggestions={this.state.suggestions}/>
+          <VotingPanel suggestions={this.state.suggestions} onVote={this.submitVote} currentUser={this.state.currentUser}/>
         </>}
         {/*only load adminpanel if showadmin is true, showadmin is true on if the code is entered*/}
         {this.state.showAdmin && <>
@@ -188,7 +200,15 @@ class VotingPanel extends Component {
     this.setState({ voteOrder: newOrder });
   }
 
+  handleVoteClick = e => {
+    e.preventDefault();
+    
+    this.props.onVote(this.props.voteOrder);
+  }
+
   render() {
+
+    console.log(this.props.currentUser);
 
     return (
       <div className="VotingPanel panel">
@@ -205,6 +225,7 @@ class VotingPanel extends Component {
             </li>
           ))}
         </ul>
+        <button onClick={this.handleVoteClick} disabled={!Boolean(this.props.currentUser)}>submit your vote{!Boolean(this.props.currentUser) && ' (please sign in)'}</button>
       </div>
     );
   }
