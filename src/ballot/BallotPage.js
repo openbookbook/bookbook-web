@@ -42,11 +42,34 @@ export default class BallotPage extends Component {
 
   }
 
+  //if (user already exist) {
+  // check for password
+  // if (password match){
+  //    sign user in
+  //} 
+  // else {
+  // (create user)
+//}
+
+// if (user exist) {
+//   if (pass exist && pass match) {
+//       sign user in
+//   }
+// } else {
+  
+
   signUp = async user => {
-    user.ballotId = this.state.ballot.id;
-    const response = await addUser(user);
-    console.log(response);
-    this.setState({ currentUser: response });
+    const userList = await getUsers(this.state.ballot.id)
+    if (userList.filter(existingUser => user.username === existingUser.username).length > 0) {
+      if (pass exist && pass match) {
+          sign user in
+      }
+    } else {
+      user.ballotId = this.state.ballot.id;
+      const response = await addUser(user);
+      console.log(response);
+      this.setState({ currentUser: response });
+    }
   } 
 
   render() {
@@ -110,11 +133,11 @@ class LoginPanel extends Component {
     let match = null;
 
     this.props.users.forEach(user => {
-      if (user.name === this.state.inputtedName) {
+      if (user.username === this.state.inputtedName) {
         match = user;
       };
     });
-
+    console.log(this.props.users);
     if (!match) { 
       const user = {
         username: this.state.inputtedName,
