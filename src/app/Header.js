@@ -8,17 +8,12 @@ class Header extends Component {
     return (
       <header className="Header">
 
-        <h1>Book Book</h1>
+        <h1>bookbook</h1>
         
         <nav>
-
           <Link to="/about">About</Link>
           <Link to="/">Home</Link>
-
-        
         </nav>
-        
-        
       </header>
     );
   }
