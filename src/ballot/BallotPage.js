@@ -80,10 +80,11 @@ export default class BallotPage extends Component {
   }
   
   render() {
-
+    console.log(this.props.match.url);
     return (
       <div className="BallotPage page">
-        <h3 className="page-title">ballot: {this.state.ballot.name}</h3>
+        <h3 className="page-title">ballot: {this.state.ballot.name}</h3> 
+        <span className="url-instructions">share this ballot with your group: https://bookbookbook.netlify.app{this.props.match.url}</span>
         <span className="panel-title">login</span>
         <LoginPanel currentUser={this.state.currentUser} users={this.state.users} onAdminInput={this.onAdminInput} onSignUp={this.signUp} onSignIn={this.signIn} />
         {this.state.isDataLoaded && <>
