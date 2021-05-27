@@ -1,9 +1,17 @@
 /* this css file is meant for fonts and classes used across all pages */
 @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
 
+* {
+  text-transform: lowercase;
+  font-family: "Josefin Sans", sans-serif;
+  box-sizing: border-box;
+  font-size: 20px;
+}
+
 .page {
   display: flex;
   flex-direction: column;
+  counter-reset: panelCounter;
 }
 
 .panel {
@@ -15,15 +23,25 @@
   flex-direction: column;
 }
 
-.panel-title {
-  font-weight: 600;
+.panel * {
+  text-transform: none;
 }
 
-* {
+.panel button {
   text-transform: lowercase;
-  font-family: "Josefin Sans", sans-serif;
-  box-sizing: border-box;
-  font-size: 20px;
+}
+
+.panel-title {
+  font-weight: 600;
+  counter-increment: panelCounter;
+}
+
+.panel-title > span {
+  font-weight: 400;
+}
+
+.panel-title::before {
+  content: counter(panelCounter) ". ";
 }
 
 h1 {

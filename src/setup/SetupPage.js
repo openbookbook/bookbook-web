@@ -80,7 +80,7 @@ export default class SetupPage extends Component {
         <h3 className="page-title">setup ballot</h3>
         <form className="page">
 
-          <span className="panel-title">1. setup</span>
+          <span className="panel-title">setup</span>
           <fieldset className="panel">
             <label>
               <span>Ballot Name:</span>
@@ -92,7 +92,7 @@ export default class SetupPage extends Component {
             </label>
           </fieldset>
 
-          <span className="panel-title">2. permissions (optional)</span>
+          <span className="panel-title">permissions (optional)</span>
           <fieldset className="panel">
             <label>
               <span><input type="checkbox" onClick={this.handleVoteCodeCheck}/>Voting Code:</span>
@@ -100,7 +100,7 @@ export default class SetupPage extends Component {
             </label>
           </fieldset>
 
-          <span className="panel-title">3. add books</span>
+          <span className="panel-title">add books</span>
           <fieldset className="panel">
             <BookSuggest ballotId={this.state.ballot.id}/>
           </fieldset>
