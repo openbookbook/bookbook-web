@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { getBallot, getSuggestions, getUsers, getVotes, addUser, addVote } from '../utils/backend-api';
+import { getBallot, getSuggestions, getUsers, getVotes, addUser, addVote, updateBallot } from '../utils/backend-api';
 import { getBook } from '../utils/gbooks-api';
 import { getByProperty } from '../utils/utils.js';
 import { rankedChoiceVote, parseWinner } from '../utils/voting-methods.js';
@@ -43,15 +43,17 @@ export default class BallotPage extends Component {
 
       const users = await getUsers(ballot.id);
       this.setState({ users: users, isDataLoaded: true });
+      
+      if (ballot.endDate) {
+        this.calculateWinners();
+      }
     }
     catch (err) {
       console.log(err.message);
     }
   }
 
-  onEndVote = async () => {
-    // when the admin hits "end vote", we set the state's "winners" property 
-
+  calculateWinners = () => {
     // we want cands to look like this: ['fdsa4D3', 'fd5HH3a', 'fdsa4af']
     const cands = this.state.suggestions.map(suggestion => suggestion.gbooks);
     // we want votes to be an array or arrays, each inner array representing a single vote
@@ -59,6 +61,20 @@ export default class BallotPage extends Component {
     const votes = this.state.votes.map(vote => vote.vote.split(' '));
 
     this.setState({ winners: parseWinner(rankedChoiceVote(cands, votes)) });
+  }
+
+  onEndVote = async () => {
+    // when the admin hits "end vote", we set the state's "winners" property 
+
+    //send put request to update endDate of ballot
+    const ballot = this.state.ballot;
+    ballot.endDate = Date.now().toString();
+    const response = await updateBallot(ballot);
+    console.log(ballot);
+
+    this.setState({ ballot: response });
+
+    this.calculateWinners();
   }
 
   onAdminInput = e => {
