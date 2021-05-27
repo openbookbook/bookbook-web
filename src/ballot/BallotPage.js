@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import { getBallot, getSuggestions, getUsers, getVotes, addUser, addVote } from '../utils/backend-api';
 import { getBook } from '../utils/gbooks-api';
-import { relocateItemInArray } from '../utils/utils.js';
+import { getByProperty, relocateItemInArray } from '../utils/utils.js';
 import { rankedChoiceVote, parseWinner } from '../utils/voting-methods.js';
 import './BallotPage.css';
 
@@ -23,7 +23,13 @@ export default class BallotPage extends Component {
       const ballot = await getBallot(this.props.match.params.id);
       this.setState({ ballot: ballot });
 
-      this.setState({ suggestions: await getSuggestions(ballot.id) });
+      const suggestions = await getSuggestions(ballot.id);
+      const suggestionsFull = [];
+      for (let suggestion of suggestions) {
+        const book = await getBook(suggestion.gbooks);
+        suggestionsFull.push(book);
+      }
+      this.setState({ suggestions: suggestions, suggestionsFull: suggestionsFull });
 
       const votes = await getVotes(ballot.id);
       this.setState({ votes: votes });
@@ -87,11 +93,23 @@ export default class BallotPage extends Component {
         <span className="url-instructions">share this ballot with your group: https://bookbookbook.netlify.app{this.props.match.url}</span>
         <span className="panel-title">login</span>
         <LoginPanel currentUser={this.state.currentUser} users={this.state.users} onAdminInput={this.onAdminInput} onSignUp={this.signUp} onSignIn={this.signIn} />
-        {this.state.isDataLoaded && <>
-          <span className="panel-title">vote</span>
-          <VotingPanel suggestions={this.state.suggestions} onVote={this.submitVote} currentUser={this.state.currentUser} winners={this.state.winners}/>
-        </>}
-        <span className="panel-title">results</span>
+        {!Boolean(this.state.winners)
+          ? <>
+            {this.state.isDataLoaded && <>
+              <span className="panel-title">vote <span>({this.state.votes.length} votes so far)</span></span>
+              <VotingPanel suggestions={this.state.suggestionsFull} onVote={this.submitVote} currentUser={this.state.currentUser} winners={this.state.winners}/>
+            </>}
+          </>
+          : <>
+            <span className="panel-title">results</span>
+            <div className="panel">
+              {this.state.winners.map(winner => {
+                const book = getByProperty(this.state.suggestionsFull, winner, 'googleId');
+                return <>{book.title}</>;
+              })}
+            </div>
+          </>
+        }
         {/*only load adminpanel if showadmin is true, showadmin is true on if the code is entered*/}
         {this.state.showAdmin && <>
           <span className="panel-title">admin</span>
@@ -205,16 +223,10 @@ class VotingPanel extends Component {
   async componentDidMount() {
     try {
       // fetch all the data for each suggestion and save that
-      const gSuggestions = [];
-      
-      for (let suggestion of this.props.suggestions) {
-        const book = await getBook(suggestion.gbooks);
-        gSuggestions.push(book);
-      }
-      this.setState({ suggestions: [...gSuggestions] });
+      this.setState({ suggestions: this.props.suggestions });
       
       // create a voteOrder array
-      this.setState({ voteOrder: gSuggestions.map(book => book.googleId) });
+      this.setState({ voteOrder: this.props.suggestions.map(book => book.googleId) });
     }
     catch (err) {
       console.log(err);
