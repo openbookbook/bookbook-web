@@ -12,7 +12,7 @@ export default class AboutPage extends Component {
         <h3>what our creators are currently reading:</h3>
         <p>Annaleigh:</p>
         <p>Austin: The Autistic Brain by Temple Grandin</p>
-        <p>Clem:</p>
+        <p>Clem: Delirious New York by Rem Koolhaas</p>
         <p>Culi:</p>
         <p>Daniella:</p>
       </div>
