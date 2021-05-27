@@ -127,10 +127,18 @@ export default class BallotPage extends Component {
           </>
           : <>
             <span className="panel-title">results</span>
-            <div className="panel">
+            <div className="panel"><div>The winner is...</div>
               {this.state.winners.map(winner => { // winner is a google books id
-                const book = getByProperty(this.state.suggestionsFull, winner, 'googleId'); // full google books data (title, author, etc)
-                return <>{book.title}</>;
+                const book = getByProperty(this.state.suggestionsFull, winner, 'googleId');
+                 // full google books data (title, author, etc)
+                return <> <li className="search-result" key={book.googleId}>
+                  <img src={book.image ? book.image : '/assets/nocover.jpeg'} alt={book.title} />
+                  <div>
+                    <p>{book.title}{book.subtitle && <span>: {book.subtitle}</span>}</p>
+                    <p className="book-author">{book.authors[0]}</p>
+                    {book.price && <p>${book.price}</p>}
+                  </div>
+                </li></>;
               })}
             </div>
           </>
