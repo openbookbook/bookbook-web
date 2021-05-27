@@ -121,8 +121,3 @@ export default class BallotPage extends Component {
     );
   }
 }
-
-
-
-
-

@@ -8,6 +8,15 @@
   align-items: center;
 }
 
-.SetupPage button {
+.SetupPage .page > button {
   margin-bottom: 1rem;
+}
+
+.PermissionsPanel > label{
+  display: flex;
+  align-items: center;
+}
+
+.PermissionsPanel input[type=text] {
+  margin-left: 1rem;
 }

@@ -47,7 +47,7 @@ export default class VotingPanel extends Component {
 
     return (
       <div className="VotingPanel panel">
-        <p>This ballot uses ranked choice voting to vote. Please put the books in the order that you most desire to read them.</p>
+        <p>This ballot uses <span title="RCV is a voting system in which voters rank candidates by preference">ranked choice voting</span> to vote. Please put the books in the order that you most desire to read them.</p>
         <ul>
           {Boolean(this.state.voteOrder) && this.state.suggestions.map(book => (
             <li className="book-candidate" key={book.googleId}>

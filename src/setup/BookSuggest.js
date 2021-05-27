@@ -30,14 +30,19 @@ export default class BookSuggest extends Component {
     // add the book to the state
     const currentAdded = this.state.added;
     bookResponse.result = result;
-    console.log(bookResponse);
     this.setState({ added: [...currentAdded, bookResponse] });
+
+    // update the count 
+    this.props.onBookCountChange(this.state.added.length);
   }
 
   handleDeleteSuggestion = async e => {
     e.preventDefault();
-    const response = await deleteSuggestion(e.target.value);
-    console.log(response);
+
+    // update the server
+    await deleteSuggestion(e.target.value);
+
+    // update the state
     const newAdded = this.state.added.filter(book => book.id.toString() !== e.target.value.toString());
     this.setState({ added: newAdded });
   }
@@ -48,24 +53,24 @@ export default class BookSuggest extends Component {
     try {
       const query = e.target.value.trim();
 
+      // only gets results if something has been searched
       let results = this.state.results;
-      //only gets results if something has been searched
       if (query) results = await searchBooks(query);
+      else results = [];
 
+      // set state
       this.setState({ search: query, results: results });
-
     }
     catch (err) {
       console.log(err);
     }
-
   }
 
   render() {
     return (
       <div className="BookSuggest">
         {Boolean(this.state.added.length) && <ul className="book-display panel">
-          Candidate Books:
+          candidate books:
           {this.state.added.map(book => {
             return (
               <li className="search-result" key={book.gbooks}>
@@ -76,16 +81,11 @@ export default class BookSuggest extends Component {
                   <p className="book-author">{book.result.authors[0]}</p>
                 </div>
               </li>
-              /*<li className="added-book" key={book.gbooks}>
-                <button>-</button>
-                <span>{book.result.title}{book.result.subtitle && <span>: {book.result.subtitle}</span>}</span>
-                <span className="book-author">&nbsp;{book.result.authors[0]}</span>
-              </li>*/
             );
           })}
         </ul>}
+
         <input type="text" onChange={this.handleSearch} placeholder="search for books"/>
-        {/*<button>🔎</button>*/}
         <ul>
           {this.state.results.map(book => {
             return (
