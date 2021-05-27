@@ -92,6 +92,10 @@ export default class BallotPage extends Component {
         <h3 className="page-title">ballot: {this.state.ballot.name}</h3>
         <span className="panel-title">login</span>
         <LoginPanel currentUser={this.state.currentUser} users={this.state.users} onAdminInput={this.onAdminInput} onSignUp={this.signUp} onSignIn={this.signIn} />
+        {this.state.showAdmin && <>
+          <span className="panel-title">admin</span>
+          <AdminPanel onEndVote={this.onEndVote} winners={this.state.winners}/>
+        </>}
         {!Boolean(this.state.winners)
           ? <>
             {this.state.isDataLoaded && <>
@@ -109,11 +113,6 @@ export default class BallotPage extends Component {
             </div>
           </>
         }
-        {/*only load adminpanel if showadmin is true, showadmin is true on if the code is entered*/}
-        {this.state.showAdmin && <>
-          <span className="panel-title">admin</span>
-          <AdminPanel onEndVote={this.onEndVote} winners={this.state.winners}/>
-        </>}
       </div>
     );
   }
