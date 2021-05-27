@@ -6,22 +6,22 @@ import './BookSuggest.css';
 export default class BookSuggest extends Component {
 
   state = {
-    search: '',
-    results: [],
-    added: []
+    search: '',   // user inputted query
+    results: [],  // results from google books api
+    added: []     // list of results the user added 
   }
 
   handleAddSuggestion = async e => {
     e.preventDefault();
 
-    // get the result
+    // get the result from our results list in the state (which we got from google books)
     const result = this.state.results.filter(result => result.googleId === e.target.value)[0];
 
-    // construct the book
+    // construct the book that we're gonna POST to our backend
     const book = {
-      ballotId: this.props.ballotId, // passed down from SetupPage
-      gbooks: e.target.value, // gotten from google books search api
-      userId: null
+      ballotId: this.props.ballotId,  // passed down from SetupPage
+      gbooks: e.target.value,         // gotten from google books search api
+      userId: null                    // default to null since it's added by admin
     };
 
     // add the book to the server
@@ -29,7 +29,8 @@ export default class BookSuggest extends Component {
 
     // add the book to the state
     const currentAdded = this.state.added;
-    bookResponse.result = result;
+    // add google books response data to our book to access full info (title, author, etc)
+    bookResponse.info = result;
     this.setState({ added: [...currentAdded, bookResponse] });
 
     // update the count 
@@ -75,10 +76,10 @@ export default class BookSuggest extends Component {
             return (
               <li className="search-result" key={book.gbooks}>
                 <button value={book.id} onClick={this.handleDeleteSuggestion}>-</button>
-                <img src={book.result.image ? book.result.image : '/assets/nocover.jpeg'} alt={book.result.title}/>
+                <img src={book.info.image ? book.info.image : '/assets/nocover.jpeg'} alt={book.info.title}/>
                 <div>
-                  <p>{book.result.title}{book.result.subtitle && <span>: {book.result.subtitle}</span>}</p>
-                  <p className="book-author">{book.result.authors[0]}</p>
+                  <p>{book.info.title}{book.info.subtitle && <span>: {book.info.subtitle}</span>}</p>
+                  <p className="book-author">{book.info.authors[0]}</p>
                 </div>
               </li>
             );
