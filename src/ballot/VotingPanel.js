@@ -29,7 +29,7 @@ export default class VotingPanel extends Component {
 
     // figure out new order
     const newOrder = relocateItemInArray(this.state.voteOrder, oldIndex, newIndex);
-    this.setState({ voteOrder: newOrder });
+    this.setState({ voteOrder: newOrder, suggestions: relocateItemInArray(this.state.suggestions, oldIndex, newIndex) });
 
     console.log(this.state.voteOrder);
   }
@@ -42,8 +42,6 @@ export default class VotingPanel extends Component {
   }
 
   render() {
-
-    console.log('Signed in as: ', this.props.currentUser);
 
     return (
       <div className="VotingPanel panel">
@@ -60,7 +58,10 @@ export default class VotingPanel extends Component {
             </li>
           ))}
         </ul>
-        <button onClick={this.handleVoteClick} disabled={!Boolean(this.props.currentUser)}>submit your vote{!Boolean(this.props.currentUser) && ' (please sign in)'}</button>
+
+        <button onClick={this.handleVoteClick} disabled={!Boolean(this.props.currentUser)}>
+          submit your vote{!Boolean(this.props.currentUser) && ' (please sign in)'}
+        </button>
       </div>
     );
   }
