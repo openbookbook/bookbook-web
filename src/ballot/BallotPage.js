@@ -97,7 +97,7 @@ export default class BallotPage extends Component {
   }
   
   render() {
-    console.log(this.props.match.url);
+    
     return (
       <div className="BallotPage page">
 
