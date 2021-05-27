@@ -1,6 +1,6 @@
 import React from 'react';
 import { Component } from 'react';
-import { relocateItemInArray } from '../utils/utils';
+import { relocateItemInArray } from '../utils/utils.js';
 
 export default class VotingPanel extends Component {
 
