@@ -30,7 +30,14 @@
   font-size: .8rem;
 }
 
+.read-only {
+  font-size: 0.8rem;
+  width: clamp(12rem, 40%, 24rem);
+  background: none;
+  border: none;
+}
+
 .url-instructions {
-  font-size: .8em;
+  font-size: .8rem;
   margin-bottom: 1rem;
 }

@@ -11,18 +11,22 @@ import AdminPanel from './AdminPanel';
 export default class BallotPage extends Component {
 
   state = {
-    showAdmin: false,
-    ballot: {},
-    suggestions: [],
-    votes: [], 
-    users: [],
-    currentUser: null,
-    isDataLoaded: false,
-    winners: null
+    ballot: {},           // from our API route: get('/api/ballots/:id)
+    votes: [],            // from our API route: get('/api/:ballotid/votes)
+    users: [],            // from our API route: get('/api/:ballotid/users)
+    suggestions: [],      // from our API route: get('/api/:ballotid/suggestions)
+    suggestionsFull: [],  // from google books API
+
+    hasUserVoted: false,  // this will tell us whether this user has already voted or not
+    showAdmin: false,     // this is whether or not we're displaying the admin panel
+    currentUser: null,    // this is how we know if a user is logged in or not
+    isDataLoaded: false,  // this is to make sure the other components don't load until our awaits have completed
+    winners: null         // this is how we know if the vote is over
   }
 
   async componentDidMount() {
     try {
+      // make API calls to get: (1) the ballot, (2) the suggestions for that ballot, (3) the votes for that ballot, (4) the users for that ballot
       const ballot = await getBallot(this.props.match.params.id);
       this.setState({ ballot: ballot });
 
@@ -36,7 +40,6 @@ export default class BallotPage extends Component {
 
       const votes = await getVotes(ballot.id);
       this.setState({ votes: votes });
-      console.log(votes);
 
       const users = await getUsers(ballot.id);
       this.setState({ users: users, isDataLoaded: true });
@@ -47,6 +50,7 @@ export default class BallotPage extends Component {
   }
 
   onEndVote = async () => {
+    // when the admin hits "end vote", we set the state's "winners" property 
     const cands = this.state.suggestions.map(suggestion => suggestion.gbooks);
     const votes = this.state.votes.map(vote => vote.vote.split(' '));
 
@@ -56,11 +60,8 @@ export default class BallotPage extends Component {
   onAdminInput = e => {
     e.preventDefault();
 
-    const input = e.target.value;
-    if (input === this.state.ballot.adminCode) {
-      this.setState({ showAdmin: true });
-    }
-
+    // if the inputted admin code is correct, set showAdmin to true
+    if (e.target.value === this.state.ballot.adminCode) this.setState({ showAdmin: true });
   }
 
   submitVote = async voteOrder => {
@@ -71,35 +72,46 @@ export default class BallotPage extends Component {
       vote: voteOrder.join(' ')
     };
 
-    await addVote(vote);
-    console.log(vote);
+    const response = await addVote(vote);
+    
+    // add the vote to state 
+    this.setState({ votes: [...this.state.votes, response], hasUserVoted: true });
   };
   
   signIn = user => {
-    
     this.setState({ currentUser: user });
-    console.log(user);
+
+    // check if the user has already voted
+    if (this.state.votes.filter(vote => vote.userId === user.id).length) this.setState({ hasUserVoted: true });
   }
 
   signUp = async user => {
+    // set the ballot_id for the user
     user.ballotId = this.state.ballot.id;
+
+    // add the user to our sql table
     const response = await addUser(user);
-    console.log(response);
-    this.setState({ currentUser: response });
+
+    // add the user to our state
+    this.signIn(response);
   }
   
   render() {
     console.log(this.props.match.url);
     return (
       <div className="BallotPage page">
+
         <h3 className="page-title">ballot: {this.state.ballot.name}</h3> 
-        <span className="url-instructions">share this ballot with your group: https://bookbookbook.netlify.app{this.props.match.url}</span>
+        <span className="url-instructions">share this ballot with your group: <input className="read-only" value={window.location.href} readOnly={true} /></span>
+
         <span className="panel-title">login</span>
-        <LoginPanel currentUser={this.state.currentUser} users={this.state.users} onAdminInput={this.onAdminInput} onSignUp={this.signUp} onSignIn={this.signIn} />
+        <LoginPanel currentUser={this.state.currentUser} users={this.state.users} showAdmin={this.state.showAdmin} onAdminInput={this.onAdminInput} onSignUp={this.signUp} onSignIn={this.signIn}/>
+        
         {this.state.showAdmin && <>
           <span className="panel-title">admin</span>
           <AdminPanel onEndVote={this.onEndVote} winners={this.state.winners}/>
         </>}
+
         {!Boolean(this.state.winners)
           ? <>
             {this.state.isDataLoaded && <>

@@ -6,49 +6,49 @@ export default class LoginPanel extends Component {
   state = {
     inputtedName: '',
     inputtedPassword: '',
-    showing: false,
+    showingAdminInput: false,
+    upOrIn: 'up',
+    requiredPassword: false,
     error: false,
-  }
-
-  handleAdminInput = e => {
-    this.props.onAdminInput(e);
   }
 
   handleNameChange = e => {
     e.preventDefault();
 
-    const inputtedName = e.target.value;
+    let requiredPassword = false;
+    let upOrIn = 'up';
 
-    this.setState({ inputtedName: inputtedName });
+    const matchingUsers = this.props.users.filter(u => u.username === e.target.value);
+    if (matchingUsers.length) {
+      upOrIn = 'in';
+      if (matchingUsers[0].password) requiredPassword = true;
+    }
+
+    this.setState({ inputtedName: e.target.value, upOrIn: upOrIn, requiredPassword: requiredPassword });
   } 
   
   handlePasswordInput = e => {
     e.preventDefault();
-
-    const inputtedPassword = e.target.value;
-
-    this.setState({ inputtedPassword: inputtedPassword });
+    this.setState({ inputtedPassword: e.target.value });
   } 
 
   handleAdminSwitch = (e) => {
     e.preventDefault();
-
-    this.setState({ showing: !this.state.showing });
+    this.setState({ showingAdminInput: !this.state.showingAdminInput });
   }
 
   handleSignIn = e => {
     e.preventDefault();
 
-    //loop through users that we passed down as props, see if the user exists, if not create new user, if it does exist check if password is correct
-
+    // loop through the list of existing users and try to find a match
     let match = null;
-
     this.props.users.forEach(user => {
       if (user.username === this.state.inputtedName) {
         match = user;
       };
     });
-    console.log(this.props.users);
+
+    // if there's no match, we're signing a user up not in
     if (!match) { 
       const user = {
         username: this.state.inputtedName,
@@ -57,35 +57,43 @@ export default class LoginPanel extends Component {
 
       this.props.onSignUp(user);
 
-    } else {
-      if (match.password) {
-        if (match.password === this.state.inputtedPassword) this.props.onSignIn(match); 
-        else if (this.state.inputtedPassword !== match.password) {
-          this.setState({ error: true });
-        }
+    } else { // if there is a match we're gonna check if that match has a password set or not
+      if (match.password) { // if there is a password set
+
+        if (match.password === this.state.inputtedPassword) this.props.onSignIn(match); // if the passwords match, sign them in
+        else this.setState({ error: true }); // if the passwords don't match, show the error
+
       } 
-      else {
+      else { // if there's not a password set for this existing user, just sign them in
         this.props.onSignIn(match); 
       }
     }
   }
 
-
   render() {
-    const showing = this.state.showing;
-    return (
-      <div className="LoginPanel panel">
-        <form>
-          {!this.props.currentUser && <input placeholder="name" onChange={this.handleNameChange}/>}
-          {!this.props.currentUser && <input placeholder="password (optional)" onChange={this.handlePasswordInput}/>}
-          {!this.props.currentUser && <button onClick={this.handleSignIn}>Sign In</button>}
-          {this.state.error === true && <div>Incorrect password.</div>}
-          <p className="admin-option"><span>Admin? </span><span className="admin-click" onClick={this.handleAdminSwitch}>Click here!</span></p>
-          { showing
-            ? <input placeholder="admin code" onChange={this.handleAdminInput} />
-            : null
-          }
 
+    const { showingAdminInput, upOrIn, requiredPassword } = this.state;
+
+    return (
+      <div className="LoginPanel">
+        <form className="panel">
+          {!this.props.currentUser && <>
+            <input placeholder="name" onChange={this.handleNameChange}/>
+            <input placeholder={`password (${requiredPassword ? 'required' : 'optional'})`} onChange={this.handlePasswordInput}/>
+            <button onClick={this.handleSignIn}>sign {upOrIn}</button>
+          </>}
+          {this.props.currentUser && <>
+            <span>hello, {this.props.currentUser.username}</span>
+            <button>sign out</button>
+          </>}
+          {this.state.error === true && <div>Incorrect password.</div>}
+          {!this.props.showAdmin && <>
+            <p className="admin-option"><span>{showingAdminInput && 'Not '}Admin? </span><span className="admin-click" onClick={this.handleAdminSwitch}>Click here!</span></p>
+            { showingAdminInput
+              ? <input placeholder="admin code" onChange={this.props.onAdminInput} />
+              : null
+            }
+          </>}
         </form>
       </div>
     );
