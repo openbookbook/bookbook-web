@@ -16,7 +16,7 @@ export async function createBallot(ballot = { adminCode: 'default', name: 'defau
 };
 
 export async function updateBallot(ballot) {
-  const response = await request 
+  const response = await request
     .put(URL + `/api/ballots/${ballot.id}`)
     .send(ballot);
 
@@ -29,7 +29,7 @@ export async function updateBallot(ballot) {
 }
 
 export async function addSuggestion(suggestion) {
-  const response = await request 
+  const response = await request
     .post(URL + '/api/suggestions')
     .send(suggestion);
 
@@ -57,11 +57,11 @@ export async function getBallot(ballotid) {
   }
 
   return response.body;
-    
+
 }
 
 export async function getSuggestions(ballotid) {
-  const response = await request 
+  const response = await request
     .get(URL + `/api/${ballotid}/suggestions`);
 
   if (response.status === 400) {
@@ -69,11 +69,11 @@ export async function getSuggestions(ballotid) {
   }
 
   return response.body;
-  
+
 }
 
 export async function getVotes(ballotid) {
-  const response = await request 
+  const response = await request
     .get(URL + `/api/${ballotid}/votes`);
 
   if (response.status === 400) {
@@ -85,7 +85,7 @@ export async function getVotes(ballotid) {
 }
 
 export async function addVote(vote) {
-  const response = await request 
+  const response = await request
     .post(URL + `/api/votes`)
     .send(vote);
 
@@ -98,7 +98,7 @@ export async function addVote(vote) {
 }
 
 export async function addUser(user) {
-  const response = await request 
+  const response = await request
     .post(URL + '/api/users')
     .send(user);
 
@@ -111,8 +111,20 @@ export async function addUser(user) {
 }
 
 export async function getUsers(ballotid) {
-  const response = await request 
+  const response = await request
     .get(URL + `/api/${ballotid}/users`);
+
+  if (response.status === 400) {
+    throw response.body;
+  }
+
+  return response.body;
+}
+
+export async function updateVote(vote) {
+  const response = await request
+    .put(URL + `/api/votes/${vote.id}`)
+    .send(vote);
 
   if (response.status === 400) {
     throw response.body;
