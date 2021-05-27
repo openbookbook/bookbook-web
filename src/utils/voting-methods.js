@@ -3,8 +3,11 @@ export function formatVotes(votes) {
 }
 
 export function parseWinner(results) {
+  // get last round
   const lastRound = results[results.length - 1];
+  // get highest score in last round
   const maxScore = Math.max(...Object.values(lastRound));
+  // return all keys with that highest score
   return Object.keys(lastRound).filter(key => lastRound[key] === maxScore);
 }
 

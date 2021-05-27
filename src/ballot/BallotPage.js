@@ -21,7 +21,7 @@ export default class BallotPage extends Component {
     showAdmin: false,     // this is whether or not we're displaying the admin panel
     currentUser: null,    // this is how we know if a user is logged in or not
     isDataLoaded: false,  // this is to make sure the other components don't load until our awaits have completed
-    winners: null         // this is how we know if the vote is over
+    winners: null         // this is how we know if the vote is over. The winners will be an array (in case there are ties)
   }
 
   async componentDidMount() {
@@ -51,7 +51,11 @@ export default class BallotPage extends Component {
 
   onEndVote = async () => {
     // when the admin hits "end vote", we set the state's "winners" property 
+
+    // we want cands to look like this: ['fdsa4D3', 'fd5HH3a', 'fdsa4af']
     const cands = this.state.suggestions.map(suggestion => suggestion.gbooks);
+    // we want votes to be an array or arrays, each inner array representing a single vote
+    // .split(' ') turns 'fdsa4D3 fd5HH3a fdsa4af' into ['fdsa4D3', 'fd5HH3a', 'fdsa4af']
     const votes = this.state.votes.map(vote => vote.vote.split(' '));
 
     this.setState({ winners: parseWinner(rankedChoiceVote(cands, votes)) });
@@ -69,7 +73,7 @@ export default class BallotPage extends Component {
     const vote = {
       userId: this.state.currentUser.id,
       ballotId: this.state.ballot.id,
-      vote: voteOrder.join(' ')
+      vote: voteOrder.join(' ') // ['fdsa5RR', 'F43sf4a', 'HJ54mLi'] ==> 'fdsa5RR F43sf4a HJ54mLi'
     };
 
     const response = await addVote(vote);
@@ -82,10 +86,12 @@ export default class BallotPage extends Component {
     this.setState({ currentUser: user });
 
     // check if the user has already voted
-    if (this.state.votes.filter(vote => vote.userId === user.id).length) this.setState({ hasUserVoted: true });
+    if (this.state.votes.some(vote => vote.userId === user.id)) this.setState({ hasUserVoted: true });
   }
 
   signUp = async user => {
+    // user object is passed in with "username" and "password" already set
+
     // set the ballot_id for the user
     user.ballotId = this.state.ballot.id;
 
@@ -102,7 +108,7 @@ export default class BallotPage extends Component {
       <div className="BallotPage page">
 
         <h3 className="page-title">ballot: {this.state.ballot.name}</h3> 
-        <span className="url-instructions">share this ballot with your group: <input className="read-only" value={window.location.href} readOnly={true} /></span>
+        <span className="url-instructions">share this ballot with your group: <input className="read-only" value={window.location.href} readOnly={true}/></span>
 
         <span className="panel-title">login</span>
         <LoginPanel currentUser={this.state.currentUser} users={this.state.users} showAdmin={this.state.showAdmin} onAdminInput={this.onAdminInput} onSignUp={this.signUp} onSignIn={this.signIn}/>
@@ -122,8 +128,8 @@ export default class BallotPage extends Component {
           : <>
             <span className="panel-title">results</span>
             <div className="panel">
-              {this.state.winners.map(winner => {
-                const book = getByProperty(this.state.suggestionsFull, winner, 'googleId');
+              {this.state.winners.map(winner => { // winner is a google books id
+                const book = getByProperty(this.state.suggestionsFull, winner, 'googleId'); // full google books data (title, author, etc)
                 return <>{book.title}</>;
               })}
             </div>

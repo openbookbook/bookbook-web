@@ -5,8 +5,8 @@ import { relocateItemInArray } from '../utils/utils';
 export default class VotingPanel extends Component {
 
   state = {
-    suggestions: [],
-    voteOrder: null,
+    suggestions: [],    // list of candidate books (full google books api results, not sql results)
+    voteOrder: null,    // a list in order of vote preference. Looks like: ['fdsa5RR', 'F43sf4a', 'HJ54mLi']
   }
 
   async componentDidMount() {
@@ -30,8 +30,6 @@ export default class VotingPanel extends Component {
     // figure out new order
     const newOrder = relocateItemInArray(this.state.voteOrder, oldIndex, newIndex);
     this.setState({ voteOrder: newOrder, suggestions: relocateItemInArray(this.state.suggestions, oldIndex, newIndex) });
-
-    console.log(this.state.voteOrder);
   }
 
   handleVoteClick = e => {
@@ -46,6 +44,7 @@ export default class VotingPanel extends Component {
     return (
       <div className="VotingPanel panel">
         <p>This ballot uses <span title="RCV is a voting system in which voters rank candidates by preference">ranked choice voting</span> to vote. Please put the books in the order that you most desire to read them.</p>
+        
         <ul>
           {Boolean(this.state.voteOrder) && this.state.suggestions.map(book => (
             <li className="book-candidate" key={book.googleId}>

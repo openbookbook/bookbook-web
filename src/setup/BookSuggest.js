@@ -33,6 +33,9 @@ export default class BookSuggest extends Component {
     bookResponse.info = result;
     this.setState({ added: [...currentAdded, bookResponse] });
 
+    // update the state to remove the book from the search results
+    this.setState({ results: this.state.results.filter(book => book.googleId !== e.target.value) });
+
     // update the count 
     this.props.onBookCountChange(this.state.added.length);
   }
@@ -46,6 +49,9 @@ export default class BookSuggest extends Component {
     // update the state
     const newAdded = this.state.added.filter(book => book.id.toString() !== e.target.value.toString());
     this.setState({ added: newAdded });
+    
+    // update the count 
+    this.props.onBookCountChange(this.state.added.length);
   }
 
   handleSearch = async e => {
