@@ -92,7 +92,7 @@ export default class LoginPanel extends Component {
 
           {this.props.currentUser && <>
             <span>hello, {this.props.currentUser.username}</span>
-            <button>sign out</button>
+            <button onClick={this.props.onSignOut}>sign out</button>
           </>}
 
           {this.state.error === true && <div>Incorrect password.</div>}

@@ -127,6 +127,10 @@ export default class BallotPage extends Component {
     this.signIn(response);
   }
 
+  signOut = () => {
+    this.setState({ currentUser: null, hasUserVoted: false });
+  }
+
   render() {
 
     return (
@@ -136,7 +140,7 @@ export default class BallotPage extends Component {
         <span className="url-instructions">share this ballot with your group: <input className="read-only" value={window.location.href} readOnly={true} /></span>
 
         {!Boolean(this.state.ballot.endDate) && <><span className="panel-title">login</span>
-          <LoginPanel currentUser={this.state.currentUser} users={this.state.users} showAdmin={this.state.showAdmin} onAdminInput={this.onAdminInput} onSignUp={this.signUp} onSignIn={this.signIn} /></>}
+          <LoginPanel currentUser={this.state.currentUser} users={this.state.users} showAdmin={this.state.showAdmin} onAdminInput={this.onAdminInput} onSignUp={this.signUp} onSignIn={this.signIn} onSignOut={this.signOut} /></>}
 
         {this.state.showAdmin && <>
           <span className="panel-title">admin</span>
