@@ -79,7 +79,7 @@ export default class LoginPanel extends Component {
         <form className="panel">
           {!this.props.currentUser && <>
             <input placeholder="name" onChange={this.handleNameChange}/>
-            <input placeholder={`password (${requiredPassword ? 'required' : 'optional'})`} onChange={this.handlePasswordInput}/>
+            {(upOrIn === 'up' || requiredPassword) && <input placeholder={`password (${requiredPassword ? 'required' : 'optional'})`} onChange={this.handlePasswordInput}/>}
             <button onClick={this.handleSignIn}>sign {upOrIn}</button>
           </>}
           {this.props.currentUser && <>
