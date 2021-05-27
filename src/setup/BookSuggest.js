@@ -52,9 +52,10 @@ export default class BookSuggest extends Component {
     e.preventDefault();
 
     try {
+      // trim whitespace before/after the inputted search query
       const query = e.target.value.trim();
 
-      // only gets results if something has been searched
+      // only gets results if something has been searched, otherwise set results to empty array
       let results = this.state.results;
       if (query) results = await searchBooks(query);
       else results = [];
@@ -68,6 +69,7 @@ export default class BookSuggest extends Component {
   }
 
   render() {
+    
     return (
       <div className="BookSuggest">
         {Boolean(this.state.added.length) && <ul className="book-display panel">
@@ -87,6 +89,7 @@ export default class BookSuggest extends Component {
         </ul>}
 
         <input type="text" onChange={this.handleSearch} placeholder="search for books"/>
+
         <ul>
           {this.state.results.map(book => {
             return (
