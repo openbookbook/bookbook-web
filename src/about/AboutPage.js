@@ -13,7 +13,7 @@ export default class AboutPage extends Component {
         <p>Annaleigh:</p>
         <p>Austin: The Autistic Brain by Temple Grandin</p>
         <p>Clem: Delirious New York by Rem Koolhaas</p>
-        <p>Culi:</p>
+        <p>Culi: Arts of Living on a Damaged Planet</p>
         <p>Daniella:</p>
       </div>
     );
