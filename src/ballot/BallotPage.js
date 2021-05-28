@@ -151,7 +151,7 @@ export default class BallotPage extends Component {
           ? <>
             {this.state.isDataLoaded && <>
               <span className="panel-title">vote <span>({this.state.votes.length} votes so far)</span></span>
-              <VotingPanel suggestions={this.state.suggestionsFull} onVote={this.submitVote} currentUser={this.state.currentUser} winners={this.state.winners} hasUserVoted={this.state.hasUserVoted} />
+              <VotingPanel suggestions={this.state.suggestionsFull} onVote={this.submitVote} currentUser={this.state.currentUser} votes={this.state.votes} winners={this.state.winners} hasUserVoted={this.state.hasUserVoted} />
             </>}
           </>
           : <>

@@ -1,42 +1,54 @@
-import React from 'react';
-import { Component } from 'react';
-import { relocateItemInArray } from '../utils/utils.js';
+import React, { Component } from 'react';
+import { relocateItemInArray, shuffleArray } from '../utils/utils.js';
 
 export default class VotingPanel extends Component {
 
   state = {
     suggestions: [],    // list of candidate books (full google books api results, not sql results)
-    voteOrder: null,    // a list in order of vote preference. Looks like: ['fdsa5RR', 'F43sf4a', 'HJ54mLi']
   }
 
   async componentDidMount() {
     try {
       // fetch all the data for each suggestion and save that
-      this.setState({ suggestions: this.props.suggestions });
+      let arr = this.props.suggestions;
 
-      // create a voteOrder array
-      this.setState({ voteOrder: this.props.suggestions.map(book => book.googleId) });
+      // shuffle the array
+      shuffleArray(arr);
+
+      // save state
+      this.setState({ suggestions: arr });
     }
     catch (err) {
       console.log(err);
     }
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.currentUser !== this.props.currentUser) {
+      // if user has already voted, organize the suggestions in the order the user had them in
+      if (this.props.hasUserVoted) {
+        const voteOrder = this.props.votes.find(vote => vote.userId === this.props.currentUser.id).vote.split(' ');
+        const arr = this.props.suggestions.sort((a, b) => {
+          return voteOrder.indexOf(a.googleId) - voteOrder.indexOf(b.googleId);
+        });
+        this.setState({ suggestions: arr });
+      }
+    }
+  }
+
   handleOrderChange = e => {
     // get the old and new index
-    let oldIndex = Number(this.state.voteOrder.indexOf(e.target.name));
+    let oldIndex = Number(this.state.suggestions.map(b => b.googleId).indexOf(e.target.name));
     let newIndex = Number(e.target.value - 1);
 
     // figure out new order
-    const newOrder = relocateItemInArray(this.state.voteOrder, oldIndex, newIndex);
-    this.setState({ voteOrder: newOrder, suggestions: relocateItemInArray(this.state.suggestions, oldIndex, newIndex) });
+    this.setState({ suggestions: relocateItemInArray(this.state.suggestions, oldIndex, newIndex) });
   }
 
   handleVoteClick = e => {
     e.preventDefault();
 
-    this.props.onVote(this.state.voteOrder);
-    e.target.disabled = true;
+    this.props.onVote(this.state.suggestions.map(b => b.googleId));
   }
 
   render() {
@@ -46,9 +58,9 @@ export default class VotingPanel extends Component {
         <p>This ballot uses <span title="RCV is a voting system in which voters rank candidates by preference">ranked choice voting</span> to vote. Please put the books in the order that you most desire to read them.</p>
 
         <ul>
-          {Boolean(this.state.voteOrder) && this.state.suggestions.map(book => (
+          {Boolean(this.state.suggestions) && this.state.suggestions.map(book => (
             <li className="book-candidate" key={book.googleId}>
-              <input name={book.googleId} onChange={this.handleOrderChange} type="number" min="1" max={this.state.suggestions.length} value={this.state.voteOrder.indexOf(book.googleId) + 1} />
+              <input name={book.googleId} onChange={this.handleOrderChange} type="number" min="1" max={this.state.suggestions.length} value={this.state.suggestions.map(b => b.googleId).indexOf(book.googleId) + 1} />
               <img src={book.image ? book.image : '/assets/nocover.jpeg'} alt={book.title} />
               <div>
                 <p>{book.title}{book.subtitle && <span>: {book.subtitle}</span>}</p>
