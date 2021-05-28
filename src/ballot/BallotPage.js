@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { getBallot, getSuggestions, getUsers, getVotes, addUser, addVote } from '../utils/backend-api';
+import { getBallot, getSuggestions, getUsers, getVotes, addUser, addVote, updateBallot, updateVote } from '../utils/backend-api';
 import { getBook } from '../utils/gbooks-api';
 import { getByProperty } from '../utils/utils.js';
 import { rankedChoiceVote, parseWinner } from '../utils/voting-methods.js';
@@ -43,15 +43,17 @@ export default class BallotPage extends Component {
 
       const users = await getUsers(ballot.id);
       this.setState({ users: users, isDataLoaded: true });
+
+      if (ballot.endDate) {
+        this.calculateWinners();
+      }
     }
     catch (err) {
       console.log(err.message);
     }
   }
 
-  onEndVote = async () => {
-    // when the admin hits "end vote", we set the state's "winners" property 
-
+  calculateWinners = () => {
     // we want cands to look like this: ['fdsa4D3', 'fd5HH3a', 'fdsa4af']
     const cands = this.state.suggestions.map(suggestion => suggestion.gbooks);
     // we want votes to be an array or arrays, each inner array representing a single vote
@@ -59,6 +61,20 @@ export default class BallotPage extends Component {
     const votes = this.state.votes.map(vote => vote.vote.split(' '));
 
     this.setState({ winners: parseWinner(rankedChoiceVote(cands, votes)) });
+  }
+
+  onEndVote = async () => {
+    // when the admin hits "end vote", we set the state's "winners" property 
+
+    //send put request to update endDate of ballot
+    const ballot = this.state.ballot;
+    ballot.endDate = Date.now().toString();
+    const response = await updateBallot(ballot);
+    console.log(ballot);
+
+    this.setState({ ballot: response });
+
+    this.calculateWinners();
   }
 
   onAdminInput = e => {
@@ -76,12 +92,21 @@ export default class BallotPage extends Component {
       vote: voteOrder.join(' ') // ['fdsa5RR', 'F43sf4a', 'HJ54mLi'] ==> 'fdsa5RR F43sf4a HJ54mLi'
     };
 
-    const response = await addVote(vote);
-    
-    // add the vote to state 
-    this.setState({ votes: [...this.state.votes, response], hasUserVoted: true });
+    let response;
+    if (this.state.hasUserVoted) {
+      const match = this.state.votes.find(vote => vote.userId === this.state.currentUser.id); // goes through the array and for each vote finds first matching userId
+      match.vote = voteOrder.join(' ');
+      response = await updateVote(match);
+      this.setState({ votes: (await getVotes((this.state.ballot.id))) });
+    }
+    else {
+      response = await addVote(vote);
+      // add the vote to state 
+      this.setState({ votes: [...this.state.votes, response], hasUserVoted: true });
+    }
+
   };
-  
+
   signIn = user => {
     this.setState({ currentUser: user });
 
@@ -101,36 +126,48 @@ export default class BallotPage extends Component {
     // add the user to our state
     this.signIn(response);
   }
-  
+
+  signOut = () => {
+    this.setState({ currentUser: null, hasUserVoted: false });
+  }
+
   render() {
-    
+
     return (
       <div className="BallotPage page">
 
-        <h3 className="page-title">ballot: {this.state.ballot.name}</h3> 
-        <span className="url-instructions">share this ballot with your group: <input className="read-only" value={window.location.href} readOnly={true}/></span>
+        <h3 className="page-title">ballot: {this.state.ballot.name}</h3>
+        <span className="url-instructions">share this ballot with your group: <input className="read-only" value={window.location.href} readOnly={true} /></span>
 
-        <span className="panel-title">login</span>
-        <LoginPanel currentUser={this.state.currentUser} users={this.state.users} showAdmin={this.state.showAdmin} onAdminInput={this.onAdminInput} onSignUp={this.signUp} onSignIn={this.signIn}/>
-        
+        {!Boolean(this.state.ballot.endDate) && <><span className="panel-title">login</span>
+          <LoginPanel currentUser={this.state.currentUser} users={this.state.users} showAdmin={this.state.showAdmin} onAdminInput={this.onAdminInput} onSignUp={this.signUp} onSignIn={this.signIn} onSignOut={this.signOut} /></>}
+
         {this.state.showAdmin && <>
           <span className="panel-title">admin</span>
-          <AdminPanel onEndVote={this.onEndVote} winners={this.state.winners}/>
+          <AdminPanel onEndVote={this.onEndVote} winners={this.state.winners} />
         </>}
 
         {!Boolean(this.state.winners)
           ? <>
             {this.state.isDataLoaded && <>
               <span className="panel-title">vote <span>({this.state.votes.length} votes so far)</span></span>
-              <VotingPanel suggestions={this.state.suggestionsFull} onVote={this.submitVote} currentUser={this.state.currentUser} winners={this.state.winners}/>
+              <VotingPanel suggestions={this.state.suggestionsFull} onVote={this.submitVote} currentUser={this.state.currentUser} winners={this.state.winners} hasUserVoted={this.state.hasUserVoted} />
             </>}
           </>
           : <>
             <span className="panel-title">results</span>
-            <div className="panel">
+            <div className="panel"><div>The winner is...</div>
               {this.state.winners.map(winner => { // winner is a google books id
-                const book = getByProperty(this.state.suggestionsFull, winner, 'googleId'); // full google books data (title, author, etc)
-                return <>{book.title}</>;
+                const book = getByProperty(this.state.suggestionsFull, winner, 'googleId');
+                // full google books data (title, author, etc)
+                return <> <li className="search-result" key={book.googleId}>
+                  <img src={book.image ? book.image : '/assets/nocover.jpeg'} alt={book.title} />
+                  <div>
+                    <p>{book.title}{book.subtitle && <span>: {book.subtitle}</span>}</p>
+                    <p className="book-author">{book.authors[0]}</p>
+                    {book.price && <p>${book.price}</p>}
+                  </div>
+                </li></>;
               })}
             </div>
           </>

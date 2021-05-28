@@ -13,7 +13,7 @@ export default class VotingPanel extends Component {
     try {
       // fetch all the data for each suggestion and save that
       this.setState({ suggestions: this.props.suggestions });
-      
+
       // create a voteOrder array
       this.setState({ voteOrder: this.props.suggestions.map(book => book.googleId) });
     }
@@ -34,7 +34,7 @@ export default class VotingPanel extends Component {
 
   handleVoteClick = e => {
     e.preventDefault();
-    
+
     this.props.onVote(this.state.voteOrder);
     e.target.disabled = true;
   }
@@ -44,11 +44,11 @@ export default class VotingPanel extends Component {
     return (
       <div className="VotingPanel panel">
         <p>This ballot uses <span title="RCV is a voting system in which voters rank candidates by preference">ranked choice voting</span> to vote. Please put the books in the order that you most desire to read them.</p>
-        
+
         <ul>
           {Boolean(this.state.voteOrder) && this.state.suggestions.map(book => (
             <li className="book-candidate" key={book.googleId}>
-              <input name={book.googleId} onChange={this.handleOrderChange} type="number" min="1" max={this.state.suggestions.length} value={this.state.voteOrder.indexOf(book.googleId) + 1}/>
+              <input name={book.googleId} onChange={this.handleOrderChange} type="number" min="1" max={this.state.suggestions.length} value={this.state.voteOrder.indexOf(book.googleId) + 1} />
               <img src={book.image ? book.image : '/assets/nocover.jpeg'} alt={book.title} />
               <div>
                 <p>{book.title}{book.subtitle && <span>: {book.subtitle}</span>}</p>
@@ -59,7 +59,9 @@ export default class VotingPanel extends Component {
         </ul>
 
         <button onClick={this.handleVoteClick} disabled={!Boolean(this.props.currentUser)}>
-          submit your vote{!Boolean(this.props.currentUser) && ' (please sign in)'}
+          {Boolean(this.props.hasUserVoted)
+            ? 'edit your vote'
+            : 'submit your vote' + (!Boolean(this.props.currentUser) ? ' (please sign in)' : '')}
         </button>
       </div>
     );
