@@ -122,7 +122,8 @@ export default class BallotPage extends Component {
 
     // add the user to our sql table
     const response = await addUser(user);
-
+    this.setState({ users: [...this.state.users, response] });
+    
     // add the user to our state
     this.signIn(response);
   }
