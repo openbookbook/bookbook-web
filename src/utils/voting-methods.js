@@ -77,7 +77,7 @@ export function rankedChoiceVote(candidates, votes) {
       if (result[key] === Math.min(...Object.values(result))) dropped.push(key);
     });
 
-    // check the isOver conditions: (1) everyone is tied, (2) someone has more than 50% of the (remaining) votes, 
+    // check the isOver conditions: (1) everyone remaining is tied, (2) someone has more than 50% of the (remaining) votes, 
     if (Object.values(result).every(val => val === Object.values(result)[0])) isOver = true;
     else {
       const topScore = Math.max(...Object.values(result));
