@@ -1,37 +1,128 @@
-# React Project
+- The name of the project
+    -- bookbook
 
-Basic template for starting a react project.
+- Names of the team members
+    -- Annaleigh, Austin, Clem, Culi, Daniella
 
-After cloning locally, don't forget to `npm i`!
+- A description of the project
+    -- Create a more equitable way for bookclubs to choose and vote on books to read.
 
-## Create React App 
+- The overall problem domain and how the project solves those problems
+    -- Create a more equitable way for bookclubs to choose and vote on books to read. By using Ranked Choice Voting bookbook helps ensure that a reading group will not read the same books reccomended by the same person over and over again.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+- Semantic versioning, beginning with version 1.0.0 and incremented as changes are made
+    -- 0.0.1 (5/24/2021)
+    -- 1.0.0 (5/28/2021)
 
-### Available Scripts
+- A list of any libraries, frameworks, or packages that your application requires in order to properly function
+    -- React, Express
 
-In the project directory, you can run:
+- Instructions that the user may need to follow in order to get your application up and running on their own 
+    -- Create a ballot as an admin of your group, use the unique url as a member of your group to vote.
+    
+- Data Model (Back End)
+    - /__tests__
+        - /app.test.js
+    - /data 
+        - /create-tables.js
+        - /drop-tables.js
+        - /load-seed-data.js
+        - /users.js
+    - /lib
+        - /auth
+            - /create-auth-routes.js
+            - /ensure-auth.js
+            - /jwt.js
+        - /middleware
+            - /error.js
+            - /not-found.js
+        - /app.js
+        - /client.js
 
-#### `npm start`
+- Data Model (Front End)
+    - /src
+        - /app
+            - /App.css
+            - /App.js
+            - /Footer.css
+            - /Footer.js
+            - /Header.css
+            - /Header.js
+        - /ballot
+            - /AdminPanel.js
+            - /BallotPage.css
+            - /BallotPage.js
+            - /LoginPanel.js
+            - /VotingPanel.js
+        -/home
+            - /Home.css
+            - /Home.js
+        -setup
+            - /BookSuggest.css
+            - /BookSuggest.js
+            - /BooksPage.css
+            - /BooksPage.js
+        -/utils
+            - /backend-api.js
+            - /gbooks-api.js
+            - /utils.js
+            - /voting-methods.js
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- FE Routes
+    - .POST'/api/ballots'
+        - Post a ballot
+    - .PUT'/api/ballot:id'
+        - Update a ballot by id
+    - .GET'/api/:ballotid/suggestions'
+        - Get suggestions from a ballot by ballotId
+    - .POST'/api/suggestions'
+        - Post a suggestion
+    - .DELETE'/api/suggestions/:id'
+        - Delete a suggestion by Id
+    - .GET'/api/ballots/:id
+        - Get a specific ballot by Id
+    - .GET'/api/:ballotid/votes'
+        - Get the votes of a specific ballot by ballotId
+    - .POST'/api/votes'
+        - Post a vote
+    - .POST'/api/users'
+        - Post a user
+    - .GET'/api/:ballotid/users'
+        - Get specific users from a ballot by ballotId
+    - .PUT'/api/votes/:id'
+        - Update a vote by Id
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- Data Schema
 
-#### `npm test`
+Ballots
+|id|admincode|name|vote_code|end_date|
+|--|---------|----|---------|--------|
+|  |         |    |         |        |
+|  |         |    |         |        |
+|  |         |    |         |        |
+|  |         |    |         |        |
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Suggestions
+|id|user_id|ballot_id|gbooks|
+|--|-------|---------|------|
+|  |       |         |      |        
+|  |       |         |      |        
+|  |       |         |      |        
+|  |       |         |      |        
 
-#### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Users
+|id|username|ballot_id|password|
+|--|--------|---------|--------|
+|  |        |         |        |
+|  |        |         |        |
+|  |        |         |        |
+|  |        |         |        |
+        
+Vote
+|id|user_id|ballot_id|vote|
+|--|-------|---------|------|
+|  |       |         |      |        
+|  |       |         |      |        
+|  |       |         |      |        
+|  |       |         |      |        
 
