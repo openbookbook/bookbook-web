@@ -2,7 +2,7 @@ import request from 'superagent';
 
 const URL = 'https://quiet-reaches-96525.herokuapp.com';
 
-export async function createBallot(ballot = { adminCode: 'default', name: 'default', voteCode: null }) {
+export async function createBallot(ballot = { adminCode: '__default__', name: '__default__', voteCode: null }) {
   const response = await request
     .post(URL + '/api/ballots')
     .send(ballot);

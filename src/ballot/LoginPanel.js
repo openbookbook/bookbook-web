@@ -14,6 +14,7 @@ export default class LoginPanel extends Component {
 
   handleNameChange = e => {
     e.preventDefault();
+    e.target.value = e.target.value.trim();
 
     // set default values
     let requiredPassword = false;
@@ -32,6 +33,7 @@ export default class LoginPanel extends Component {
   
   handlePasswordInput = e => {
     e.preventDefault();
+    e.target.value = e.target.value.trim();
     this.setState({ inputtedPassword: e.target.value });
   } 
 
@@ -83,9 +85,9 @@ export default class LoginPanel extends Component {
         <form className="panel">
 
           {!this.props.currentUser && <>
-            <input placeholder="name" onChange={this.handleNameChange}/>
+            <input type="text" placeholder="name" onChange={this.handleNameChange}/>
             {(upOrIn === 'up' || requiredPassword) && 
-              <input placeholder={`password (${requiredPassword ? 'required' : 'optional'})`} onChange={this.handlePasswordInput}/>
+              <input type="password" placeholder={`password (${requiredPassword ? 'required' : 'optional'})`} onChange={this.handlePasswordInput}/>
             }
             <button onClick={this.handleSignIn}>sign {upOrIn}</button>
           </>}
@@ -98,7 +100,7 @@ export default class LoginPanel extends Component {
           {this.state.error === true && <div>Incorrect password.</div>}
           
           {!this.props.showAdmin && <>
-            <p className="admin-option"><span>{showingAdminInput && 'Not '}Admin? </span><span className="admin-click" onClick={this.handleAdminSwitch}>Click here!</span></p>
+            <p className="admin-option"><span>{showingAdminInput && 'not an '}admin? </span><span className="admin-click" onClick={this.handleAdminSwitch}>click here!</span></p>
             { showingAdminInput
               ? <input placeholder="admin code" onChange={this.props.onAdminInput} />
               : null

@@ -27,12 +27,14 @@ export default class SetupPage extends Component {
     e.preventDefault();
 
     try {
+      const { ballot, bookCount } = this.state;
+
       // check the three conditions before sending the PUT request to make the actual ballot
-      if (this.state.ballot.name === 'default') this.setState({ errorMessage: 'please enter a name!' });
-      else if (this.state.ballot.adminCode === 'default') this.setState({ errorMessage: 'please enter an admin code!' });
-      else if (this.state.bookCount < 2) this.setState({ errorMessage: 'please add at least 2 books!' });
+      if (ballot.name === '__default__' || !Boolean(ballot.name)) this.setState({ errorMessage: 'please enter a name!' });
+      else if (ballot.adminCode === '__default__' || !Boolean(ballot.adminCode)) this.setState({ errorMessage: 'please enter an admin code!' });
+      else if (bookCount < 2) this.setState({ errorMessage: 'please add at least 2 books!' });
       else {
-        const response = await updateBallot(this.state.ballot);
+        const response = await updateBallot(ballot);
         this.props.history.push(`/ballot/${response.id}`); // redirect to ballot page
       }
     }
@@ -47,6 +49,7 @@ export default class SetupPage extends Component {
 
   handleNameChange = e => {
     e.preventDefault();
+    e.target.value = e.target.value.trim();
 
     // update the "name" property of the ballot in our state
     const currentBallot = this.state.ballot;
@@ -56,6 +59,7 @@ export default class SetupPage extends Component {
 
   handleAdminCodeChange = e => {
     e.preventDefault();
+    e.target.value = e.target.value.trim();
 
     // update the "adminCode" property of the ballot in our state
     const currentBallot = this.state.ballot;
@@ -65,6 +69,7 @@ export default class SetupPage extends Component {
 
   handleVoteCodeChange = e => {
     e.preventDefault();
+    e.target.value = e.target.value.trim();
 
     // update the "voteCode" property of the ballot in our state
     const currentBallot = this.state.ballot;
