@@ -17,7 +17,8 @@
 }
 
 .book-candidate input {
-  width: 3rem;
+  width: 2rem;
+  width: clamp(2rem, auto, 4rem);
 }
 
 .admin-click {

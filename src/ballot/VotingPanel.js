@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { relocateItemInArray, shuffleArray } from '../utils/utils.js';
+import './VotingPanel.css';
 
 export default class VotingPanel extends Component {
 
@@ -36,10 +37,10 @@ export default class VotingPanel extends Component {
     }
   }
 
-  handleOrderChange = e => {
+  handleOrderChange = ({ target }) => {
     // get the old and new index
-    let oldIndex = Number(this.state.suggestions.map(b => b.googleId).indexOf(e.target.name));
-    let newIndex = Number(e.target.value - 1);
+    let oldIndex = Number(this.state.suggestions.map(b => b.googleId).indexOf(target.name));
+    let newIndex = Number(target.value - 1);
 
     // figure out new order
     this.setState({ suggestions: relocateItemInArray(this.state.suggestions, oldIndex, newIndex) });
@@ -51,6 +52,20 @@ export default class VotingPanel extends Component {
     this.props.onVote(this.state.suggestions.map(b => b.googleId));
   }
 
+  onStepUp = e => {
+    e.preventDefault();
+    const input = document.querySelector(`.steps > input[name="${e.target.value}"]`);
+    input.value = Math.max(Number(input.value) - 1, Number(input.min));
+    this.handleOrderChange({ target: input });
+  }
+
+  onStepDown = e => {
+    e.preventDefault();
+    const input = document.querySelector(`.steps > input[name="${e.target.value}"]`);
+    input.value = Math.min(Number(input.value) + 1, Number(input.max));
+    this.handleOrderChange({ target: input });
+  }
+
   render() {
 
     return (
@@ -60,7 +75,11 @@ export default class VotingPanel extends Component {
         <ul>
           {Boolean(this.state.suggestions) && this.state.suggestions.map(book => (
             <li className="book-candidate" key={book.googleId}>
-              <input name={book.googleId} onChange={this.handleOrderChange} type="number" min="1" max={this.state.suggestions.length} value={this.state.suggestions.map(b => b.googleId).indexOf(book.googleId) + 1} />
+              <div className="steps">
+                <button onClick={this.onStepUp} value={book.googleId} className="step-up">▲</button>
+                <input className="preference-input" name={book.googleId} onChange={this.handleOrderChange} type="number" min="1" max={this.state.suggestions.length} value={this.state.suggestions.map(b => b.googleId).indexOf(book.googleId) + 1} />
+                <button onClick={this.onStepDown} value={book.googleId} className="step-down">▼</button>
+              </div>
               <img src={book.image ? book.image : '/assets/nocover.jpeg'} alt={book.title} />
               <div>
                 <p>{book.title}{book.subtitle && <span>: {book.subtitle}</span>}</p>
