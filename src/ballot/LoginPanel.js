@@ -28,13 +28,13 @@ export default class LoginPanel extends Component {
     }
 
     // set the state
-    this.setState({ inputtedName: e.target.value, upOrIn: upOrIn, requiredPassword: requiredPassword });
+    this.setState({ inputtedName: e.target.value, upOrIn: upOrIn, requiredPassword: requiredPassword, error: false });
   } 
   
   handlePasswordInput = e => {
     e.preventDefault();
     e.target.value = e.target.value.trim();
-    this.setState({ inputtedPassword: e.target.value });
+    this.setState({ inputtedPassword: e.target.value, error: false });
   } 
 
   handleAdminSwitch = (e) => {
@@ -42,7 +42,7 @@ export default class LoginPanel extends Component {
     this.setState({ showingAdminInput: !this.state.showingAdminInput });
   }
 
-  handleSignIn = e => {
+  handleSignOn = e => {
     e.preventDefault();
 
     // loop through the list of existing users and try to find a match
@@ -76,6 +76,12 @@ export default class LoginPanel extends Component {
     }
   }
 
+  handleSignOut = e => {
+    e.preventDefault();
+    this.setState({ requiredPassword: false, upOrIn: 'up' });
+    this.props.onSignOut(e);
+  }
+
   render() {
 
     const { showingAdminInput, upOrIn, requiredPassword } = this.state;
@@ -89,12 +95,12 @@ export default class LoginPanel extends Component {
             {(upOrIn === 'up' || requiredPassword) && 
               <input type="password" placeholder={`password (${requiredPassword ? 'required' : 'optional'})`} onChange={this.handlePasswordInput}/>
             }
-            <button onClick={this.handleSignIn}>sign {upOrIn}</button>
+            <button onClick={this.handleSignOn}>sign {upOrIn}</button>
           </>}
 
           {this.props.currentUser && <>
             <span>hello, {this.props.currentUser.username}</span>
-            <button onClick={this.props.onSignOut}>sign out</button>
+            <button onClick={this.handleSignOut}>sign out</button>
           </>}
 
           {this.state.error === true && <div>Incorrect password.</div>}
