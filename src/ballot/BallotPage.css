@@ -36,6 +36,7 @@
   width: clamp(12rem, 40%, 24rem);
   background: none;
   border: none;
+  text-transform: none;
 }
 
 .url-instructions {
