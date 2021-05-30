@@ -6,7 +6,7 @@ class Footer extends Component {
   render() { 
     return (
       <footer className="Footer">
-        🄯 steal this content
+        🄯 <a href="https://github.com/openbookbook/bookbook-web">steal this content</a>
       </footer>
     );
   }
