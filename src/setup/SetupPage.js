@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import { createBallot, updateBallot } from '../utils/backend-api';
+import { base62 } from '../utils/utils';
 import BookSuggest from './BookSuggest';
 import './SetupPage.css';
 
@@ -35,7 +36,7 @@ export default class SetupPage extends Component {
       else if (bookCount < 2) this.setState({ errorMessage: 'please add at least 2 books!' });
       else {
         const response = await updateBallot(ballot);
-        this.props.history.push(`/ballot/${response.id}`); // redirect to ballot page
+        this.props.history.push(`/ballot/${base62.encode(Number(response.id))}`); // redirect to ballot page
       }
     }
     catch (err) {
