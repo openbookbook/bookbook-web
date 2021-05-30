@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import { getBallot, getSuggestions, getUsers, getVotes, addUser, addVote, updateBallot, updateVote } from '../utils/backend-api';
 import { getBook } from '../utils/gbooks-api';
-import { getByProperty } from '../utils/utils.js';
+import { base62, getByProperty } from '../utils/utils.js';
 import { rankedChoiceVote, parseWinner } from '../utils/voting-methods.js';
 import './BallotPage.css';
 import LoginPanel from './LoginPanel';
@@ -27,7 +27,7 @@ export default class BallotPage extends Component {
   async componentDidMount() {
     try {
       // make API calls to get: (1) the ballot, (2) the suggestions for that ballot, (3) the votes for that ballot, (4) the users for that ballot
-      const ballot = await getBallot(this.props.match.params.id);
+      const ballot = await getBallot(base62.decode(this.props.match.params.id));
       this.setState({ ballot: ballot });
 
       const suggestions = await getSuggestions(ballot.id);
@@ -53,6 +53,10 @@ export default class BallotPage extends Component {
     }
   }
 
+  componentDidCatch() {
+    this.props.history.push('/');
+  }
+
   calculateWinners = () => {
     // we want cands to look like this: ['fdsa4D3', 'fd5HH3a', 'fdsa4af']
     const cands = this.state.suggestions.map(suggestion => suggestion.gbooks);
@@ -70,7 +74,6 @@ export default class BallotPage extends Component {
     const ballot = this.state.ballot;
     ballot.endDate = Date.now().toString();
     const response = await updateBallot(ballot);
-    console.log(ballot);
 
     this.setState({ ballot: response });
 
