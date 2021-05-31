@@ -1,24 +1,3 @@
-.search-result img {
-  height: 100px;
-  margin-right: 1rem;
-}
-
-.search-result {
-  display: flex;
-  align-items: center;
-  margin: 5px;
-}
-
-.search-result * {
-  text-transform: none;
-}
-
-.search-result button {
-  margin-right: 1rem;
-  background-color: transparent;
-  border-radius: 5px;
-}
-
 .BookSuggest div.panel {
   display: inline-block;
   width: 100%;
