@@ -70,7 +70,13 @@ export default class VotingPanel extends Component {
 
     return (
       <div className="VotingPanel panel">
-        <p>This ballot uses <span title="RCV is a voting system in which voters rank candidates by preference">ranked choice voting</span> to vote. Please put the books in the order that you most desire to read them.</p>
+        <p>
+          <input className="switch-checkbox" id="switch-checkbox" type="checkbox"/>
+          <label className="switch" for="switch-checkbox">
+            <div></div>
+          </label>
+          This ballot uses <span title="RCV is a voting system in which voters rank candidates by preference">ranked choice voting</span> to vote. Please put the books in the order that you most desire to read them.
+        </p>
 
         <ul>
           {Boolean(this.state.suggestions) && this.state.suggestions.map(book => (
