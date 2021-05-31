@@ -83,12 +83,14 @@ export default class BookSuggest extends Component {
     return (
       <div className="BookSuggest">
         {Boolean(this.state.added.length) && <>
-          <span>candidate books: </span>
           <div className="panel">
-            <input onClick={this.onSwitchView} className="switch-checkbox" id="switch-checkbox" type="checkbox"/>
-            <label className="switch" for="switch-checkbox">
-              <div></div>
-            </label>
+            <div>
+              <span>candidate books: </span>
+              <input onClick={this.onSwitchView} className="switch-checkbox" id="switch-checkbox" type="checkbox"/>
+              <label className="switch" for="switch-checkbox">
+                <div></div>
+              </label>
+            </div>
             <ul className={'book-display ' + (this.state.boxView ? 'box-view' : 'list-view')}>
               {this.state.added.map(book => {
                 return (
