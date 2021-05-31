@@ -74,25 +74,37 @@ export default class BookSuggest extends Component {
     }
   }
 
+  onSwitchView = e => {
+    this.setState({ boxView: !this.state.boxView });
+  }
+
   render() {
     
     return (
       <div className="BookSuggest">
-        {Boolean(this.state.added.length) && <ul className="book-display panel">
-          candidate books:
-          {this.state.added.map(book => {
-            return (
-              <li className="search-result" key={book.gbooks}>
-                <button value={book.id} onClick={this.handleDeleteSuggestion}>-</button>
-                <img src={book.info.image ? book.info.image : '/assets/nocover.jpeg'} alt={book.info.title}/>
-                <div>
-                  <p>{book.info.title}{book.info.subtitle && <span>: {book.info.subtitle}</span>}</p>
-                  <p className="book-author">{book.info.authors[0]}</p>
-                </div>
-              </li>
-            );
-          })}
-        </ul>}
+        {Boolean(this.state.added.length) && <>
+          <span>candidate books: </span>
+          <div className="panel">
+            <input onClick={this.onSwitchView} className="switch-checkbox" id="switch-checkbox" type="checkbox"/>
+            <label className="switch" for="switch-checkbox">
+              <div></div>
+            </label>
+            <ul className={'book-display ' + (this.state.boxView ? 'box-view' : 'list-view')}>
+              {this.state.added.map(book => {
+                return (
+                  <li key={book.gbooks}>
+                    <button value={book.id} onClick={this.handleDeleteSuggestion}>-</button>
+                    <img src={book.info.image ? book.info.image : '/assets/nocover.jpeg'} alt={book.info.title}/>
+                    <div>
+                      <p>{book.info.title}{book.info.subtitle && <span>: {book.info.subtitle}</span>}</p>
+                      <p className="book-author">{book.info.authors[0]}</p>
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        </>}
 
         <input type="text" onChange={this.handleSearch} placeholder="search for books"/>
 

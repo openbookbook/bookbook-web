@@ -1,10 +1,6 @@
 .search-result img {
-height: 100px;
-margin-right: 1rem;
-}
-
-.search-result p {
-  display: block!important;
+  height: 100px;
+  margin-right: 1rem;
 }
 
 .search-result {
@@ -17,20 +13,66 @@ margin-right: 1rem;
   text-transform: none;
 }
 
-.book-author {
-  font-weight: 200;
-}
-
 .search-result button {
   margin-right: 1rem;
   background-color: transparent;
   border-radius: 5px;
 }
 
+.BookSuggest div.panel {
+  display: inline-block;
+  width: 100%;
+}
+
+/* book display */
 .book-display {
   border-width: 3px !important;
 }
 
+.book-display.box-view {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.book-display.box-view li {
+  width: 20rem;
+}
+
+.book-display.box-view li p {
+  font-size: 1rem;
+  width: 12rem;
+}
+
+.book-display li {
+  text-transform: none;
+  display: flex;
+  align-items: center;
+  margin: 5px;
+}
+
+.book-display li img {
+  height: 100px;
+  max-width: 150px;
+  margin: 0 1rem;
+}
+
+.book-display li > *:first-child {
+  margin: 0;
+  padding: 0;
+}
+
 .book-display span {
   margin-right: 1rem;
+}
+
+.book-display button {
+  background: none;
+  height: 2rem;
+  width: 2rem;
+  border-radius: 5px;
+}
+
+.book-author {
+  font-weight: 200;
 }

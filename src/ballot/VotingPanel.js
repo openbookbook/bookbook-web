@@ -6,6 +6,7 @@ export default class VotingPanel extends Component {
 
   state = {
     suggestions: [],    // list of candidate books (full google books api results, not sql results)
+    boxView: false      // if true show box view, if false show list view
   }
 
   async componentDidMount() {
@@ -66,19 +67,19 @@ export default class VotingPanel extends Component {
     this.handleOrderChange({ target: input });
   }
 
+  onSwitchView = e => {
+    this.setState({ boxView: !this.state.boxView });
+  }
+
   render() {
 
     return (
       <div className="VotingPanel panel">
         <p>
-          <input className="switch-checkbox" id="switch-checkbox" type="checkbox"/>
-          <label className="switch" for="switch-checkbox">
-            <div></div>
-          </label>
           This ballot uses <span title="RCV is a voting system in which voters rank candidates by preference">ranked choice voting</span> to vote. Please put the books in the order that you most desire to read them.
         </p>
 
-        <ul>
+        <ul className={this.state.boxView ? 'box-view' : 'list-view'}>
           {Boolean(this.state.suggestions) && this.state.suggestions.map(book => (
             <li className="book-candidate" key={book.googleId}>
               <div className="steps">
