@@ -141,7 +141,7 @@ export default class BallotPage extends Component {
       <div className="BallotPage page">
 
         <h3 className="page-title">ballot: {this.state.ballot.name}</h3>
-        <span className="url-instructions">share this ballot with your group: <input className="read-only" value={window.location.href} readOnly={true} /></span>
+        <span className="url-instructions"><input className="read-only" value={window.location.href} readOnly={true} /></span>
 
         {!Boolean(this.state.ballot.endDate) && <><span className="panel-title">login</span>
           <LoginPanel currentUser={this.state.currentUser} users={this.state.users} showAdmin={this.state.showAdmin} onAdminInput={this.onAdminInput} onSignUp={this.signUp} onSignIn={this.signIn} onSignOut={this.signOut} /></>}

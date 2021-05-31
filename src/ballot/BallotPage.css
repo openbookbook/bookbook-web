@@ -37,6 +37,7 @@
   background: none;
   border: none;
   text-transform: none;
+  font-family: 'Fira Pro', monospace;
 }
 
 .url-instructions {
