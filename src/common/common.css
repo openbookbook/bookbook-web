@@ -1,5 +1,6 @@
 /* this css file is meant for fonts and classes used across all pages */
 @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap');
 
 * {
   text-transform: lowercase;
@@ -77,4 +78,41 @@ h6 {
   font-size: 1.1rem;
   font-weight: 500;
   opacity: 0.8;
+}
+
+/* switch toggle button thing */
+.switch-checkbox {
+  display: none;
+}
+
+.switch {
+  --border-width: 3px;
+  --switch-size: 1.5rem;
+  z-index: 1;
+  order: 2;
+  position: relative;
+  display: block;
+  width: calc(var(--switch-size) * 2 + 2 * var(--border-width));
+  height: calc(var(--switch-size) + 2 * var(--border-width));
+  background-color: #fff0;
+  cursor: pointer;
+  border: var(--border-width) solid #000;
+  border-radius: 5px;
+  float: right;
+  shape-outside: inset(calc(100% - var(--switch-size)) 0 0);
+}
+
+.switch > div {
+  width: var(--switch-size);
+  height: var(--switch-size);
+  background-image: url('../common/toggle.png');
+  background-size: 3rem;
+  position: relative;
+  left: 0;
+  transition: 0.25s ease left, 0.25s ease background-position;
+}
+
+.switch-checkbox:checked + .switch > div {
+  left: var(--switch-size);
+  background-position: -1.5rem 0;
 }

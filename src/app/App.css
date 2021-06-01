@@ -1,4 +1,4 @@
-@import url('./common.css');
+@import url('../common/common.css');
 
 .App {
   min-height: 100vh;

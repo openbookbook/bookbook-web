@@ -66,6 +66,10 @@ export default class BookSuggest extends Component {
       if (query) results = await searchBooks(query);
       else results = [];
 
+      // make sure none of the results haven't already been added
+      const added = this.state.added.map(b => b.gbooks);
+      results = results.filter(book => !added.includes(book.googleId));
+
       // set state
       this.setState({ search: query, results: results });
     }
@@ -74,41 +78,51 @@ export default class BookSuggest extends Component {
     }
   }
 
+  onSwitchView = e => {
+    this.setState({ boxView: !this.state.boxView });
+  }
+
   render() {
     
     return (
       <div className="BookSuggest">
-        {Boolean(this.state.added.length) && <ul className="book-display panel">
-          candidate books:
-          {this.state.added.map(book => {
-            return (
-              <li className="search-result" key={book.gbooks}>
-                <button value={book.id} onClick={this.handleDeleteSuggestion}>-</button>
-                <img src={book.info.image ? book.info.image : '/assets/nocover.jpeg'} alt={book.info.title}/>
-                <div>
-                  <p>{book.info.title}{book.info.subtitle && <span>: {book.info.subtitle}</span>}</p>
-                  <p className="book-author">{book.info.authors[0]}</p>
-                </div>
-              </li>
-            );
-          })}
-        </ul>}
+        {Boolean(this.state.added.length) && <>
+          <div className="panel">
+            <div>
+              <span>candidate books: </span>
+              <input onClick={this.onSwitchView} className="switch-checkbox" id="switch-checkbox" type="checkbox"/>
+              <label className="switch" htmlFor="switch-checkbox">
+                <div></div>
+              </label>
+            </div>
+            <ul className={'book-display ' + (this.state.boxView ? 'box-view' : 'list-view')}>
+              {this.state.added.map(book => (
+                <li key={book.gbooks}>
+                  <button value={book.id} onClick={this.handleDeleteSuggestion}>-</button>
+                  <img src={book.info.image ? book.info.image : '/assets/nocover.jpeg'} alt={book.info.title}/>
+                  <div>
+                    <p>{book.info.title}{book.info.subtitle && <span>: {book.info.subtitle}</span>}</p>
+                    <p className="book-author">{book.info.authors.join(', ')}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </>}
 
         <input type="text" onChange={this.handleSearch} placeholder="search for books"/>
 
-        <ul>
-          {this.state.results.map(book => {
-            return (
-              <li className="search-result" key={book.googleId}>
-                <button value={book.googleId} onClick={this.handleAddSuggestion}>+</button>
-                <img src={book.image ? book.image : '/assets/nocover.jpeg'} alt={book.title} />
-                <div>
-                  <p>{book.title}{book.subtitle && <span>: {book.subtitle}</span>}</p>
-                  <p className="book-author">{book.authors[0]}</p>
-                </div>
-              </li>
-            );
-          })}
+        <ul className="book-display list-view">
+          {this.state.results.map(book => (
+            <li className="search-result" key={book.googleId}>
+              <button value={book.googleId} onClick={this.handleAddSuggestion}>+</button>
+              <img src={book.image ? book.image : '/assets/nocover.jpeg'} alt={book.title} />
+              <div>
+                <p>{book.title}{book.subtitle && <span>: {book.subtitle}</span>}</p>
+                <p className="book-author">{book.authors.join(', ')}</p>
+              </div>
+            </li>
+          ))}
         </ul>
       </div>
     );
