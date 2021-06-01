@@ -168,7 +168,7 @@ export default class BallotPage extends Component {
                   <img src={book.image ? book.image : '/assets/nocover.jpeg'} alt={book.title} />
                   <div>
                     <p>{book.title}{book.subtitle && <span>: {book.subtitle}</span>}</p>
-                    <p className="book-author">{book.authors[0]}</p>
+                    <p className="book-author">{book.authors.join(', ')}</p>
                     {book.price && <p>${book.price}</p>}
                   </div>
                 </li>;

@@ -102,7 +102,7 @@ export default class BookSuggest extends Component {
                   <img src={book.info.image ? book.info.image : '/assets/nocover.jpeg'} alt={book.info.title}/>
                   <div>
                     <p>{book.info.title}{book.info.subtitle && <span>: {book.info.subtitle}</span>}</p>
-                    <p className="book-author">{book.info.authors[0]}</p>
+                    <p className="book-author">{book.info.authors.join(', ')}</p>
                   </div>
                 </li>
               ))}
@@ -119,7 +119,7 @@ export default class BookSuggest extends Component {
               <img src={book.image ? book.image : '/assets/nocover.jpeg'} alt={book.title} />
               <div>
                 <p>{book.title}{book.subtitle && <span>: {book.subtitle}</span>}</p>
-                <p className="book-author">{book.authors[0]}</p>
+                <p className="book-author">{book.authors.join(', ')}</p>
               </div>
             </li>
           ))}
