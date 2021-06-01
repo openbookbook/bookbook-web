@@ -140,7 +140,7 @@ export default class BallotPage extends Component {
     return (
       <div className="BallotPage page">
 
-        <h3 className="page-title">ballot: {this.state.ballot.name}</h3>
+        <h3 className="page-title">{this.state.ballot.name} ballot</h3>
         <span className="url-instructions"><input className="read-only" value={window.location.href} readOnly={true} /></span>
 
         {!Boolean(this.state.ballot.endDate) && <><span className="panel-title">login</span>
