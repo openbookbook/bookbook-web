@@ -1,6 +1,6 @@
 import { Component } from 'react';
-import { createBallot, updateBallot } from '../utils/backend-api';
-import { base62 } from '../utils/utils';
+import { createBallot, updateBallot } from '../../utils/backend-api';
+import { base62 } from '../../utils/utils';
 import BookSuggest from './BookSuggest';
 import './SetupPage.css';
 

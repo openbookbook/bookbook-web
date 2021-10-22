@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { relocateItemInArray, shuffleArray } from '../utils/utils.js';
+import { relocateItemInArray, shuffleArray } from '../../utils/utils.js';
 import './VotingPanel.css';
 
 export default class VotingPanel extends Component {

@@ -1,6 +1,6 @@
 import { Component } from 'react';
-import { addSuggestion, deleteSuggestion } from '../utils/backend-api.js';
-import { searchBooks } from '../utils/gbooks-api.js';
+import { addSuggestion, deleteSuggestion } from '../../utils/backend-api.js';
+import { searchBooks } from '../../utils/gbooks-api.js';
 import './BookSuggest.css';
 
 export default class BookSuggest extends Component {

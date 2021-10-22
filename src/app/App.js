@@ -2,9 +2,9 @@ import { Component } from 'react';
 import Header from './Header';
 import Footer from './Footer';
 // import Home from '../home/Home';
-import SetupPage from '../setup/SetupPage';
-import BallotPage from '../ballot/BallotPage';
-import AboutPage from '../about/AboutPage';
+import SetupPage from '../pages/setup/SetupPage';
+import BallotPage from '../pages/ballot/BallotPage';
+import AboutPage from '../pages/about/AboutPage';
 import {
   BrowserRouter as Router,
   Route,

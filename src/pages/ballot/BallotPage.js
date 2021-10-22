@@ -1,8 +1,8 @@
 import { Component } from 'react';
-import { getBallot, getSuggestions, getUsers, getVotes, addUser, addVote, updateBallot, updateVote } from '../utils/backend-api';
-import { getBook } from '../utils/gbooks-api';
-import { base62, getByProperty } from '../utils/utils.js';
-import { rankedChoiceVote, parseWinner } from '../utils/voting-methods.js';
+import { getBallot, getSuggestions, getUsers, getVotes, addUser, addVote, updateBallot, updateVote } from '../../utils/backend-api';
+import { getBook } from '../../utils/gbooks-api';
+import { base62, getByProperty } from '../../utils/utils.js';
+import { rankedChoiceVote, parseWinner } from '../../utils/voting-methods.js';
 import './BallotPage.css';
 import LoginPanel from './LoginPanel';
 import VotingPanel from './VotingPanel';
