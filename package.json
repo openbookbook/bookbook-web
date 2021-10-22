@@ -1,5 +1,5 @@
 {
-  "name": "foundations-2-react-template",
+  "name": "bookbook",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -37,5 +37,8 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:8001"
+  "proxy": "http://localhost:8001",
+  "devDependencies": {
+    "chokidar": "^3.5.2"
+  }
 }

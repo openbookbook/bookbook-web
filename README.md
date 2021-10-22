@@ -1,9 +1,16 @@
 # bookbook
+## about
 **developers**: annaleigh, austin, clem, culi, daniella
 
-**goal**: create a more equitable way for bookclubs to choose and vote on books to read
+## set-up
+Requirements: npm or yarn
+Environmental Variables: none
 
-**dependencies**: React, Express, ...
+```
+git clone git@github.com:openbookbook/bookbook-web.git
+cd ./bookbook-web
+npm i
+```
 
 ## version history
 currently in beta
