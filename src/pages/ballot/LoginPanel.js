@@ -95,12 +95,12 @@ export default class LoginPanel extends Component {
             {(upOrIn === 'up' || requiredPassword) && 
               <input type="password" placeholder={`password (${requiredPassword ? 'required' : 'optional'})`} onChange={this.handlePasswordInput}/>
             }
-            <button onClick={this.handleSignOn}>sign {upOrIn}</button>
+            <button className="primary" onClick={this.handleSignOn}>sign {upOrIn}</button>
           </>}
 
           {this.props.currentUser && <>
             <span>hello, {this.props.currentUser.username}</span>
-            <button onClick={this.handleSignOut}>sign out</button>
+            <button className="primary" onClick={this.handleSignOut}>sign out</button>
           </>}
 
           {this.state.error === true && <div>Incorrect password.</div>}
@@ -108,7 +108,7 @@ export default class LoginPanel extends Component {
           {!this.props.showAdmin && <>
             <p className="admin-option"><span>{showingAdminInput && 'not an '}admin? </span><span className="admin-click" onClick={this.handleAdminSwitch}>click here!</span></p>
             { showingAdminInput
-              ? <input placeholder="admin code" onChange={this.props.onAdminInput} />
+              ? <input type="text" placeholder="admin code" onChange={this.props.onAdminInput} />
               : null
             }
           </>}

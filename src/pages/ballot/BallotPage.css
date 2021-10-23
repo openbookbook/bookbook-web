@@ -5,6 +5,11 @@
 
 .VotingPanel ul {
   margin: 1rem 0;
+  list-style: none;
+}
+
+.VotingPanel li {
+  list-style: none;
 }
 
 .book-candidate * {

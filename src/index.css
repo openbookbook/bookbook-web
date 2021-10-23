@@ -1,3 +1,22 @@
+@import url('./styles/_normalize.css');
+@import url('./styles/_reset.css');
+
+html {
+  --color-straw: #ffd97a;
+  --color-straw-rgb: 255, 217, 122;
+  --color-wheat: #fbeecf;
+  --color-wheat-rgb: 251, 238, 207;
+  --color-white: #f9f9f9;
+
+  --clr-bg: var(--color-straw);
+  --clr-fg: var(--color-white);
+  --clr-input: var(--clr-fg);
+  --clr-button: var(--clr-fg);
+  --clr-line: #000c;
+
+  --border: 2px solid var(--clr-line);
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',

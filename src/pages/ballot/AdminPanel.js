@@ -7,7 +7,7 @@ export default class AdminPanel extends Component {
     return (
       <div className="AdminPanel panel">
         hello, admin!
-        <button onClick={this.props.onEndVote} disabled={Boolean(this.props.winners)}>End vote!</button>
+        <button className="primary" onClick={this.props.onEndVote} disabled={Boolean(this.props.winners)}>End vote!</button>
       </div>
     );
   }

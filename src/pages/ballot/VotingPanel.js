@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { relocateItemInArray, shuffleArray } from '../utils/utils.js';
+import { relocateItemInArray, shuffleArray } from '../../utils/utils.js';
 import './VotingPanel.css';
 
 export default class VotingPanel extends Component {
@@ -96,7 +96,7 @@ export default class VotingPanel extends Component {
           ))}
         </ul>
 
-        <button onClick={this.handleVoteClick} disabled={!Boolean(this.props.currentUser)}>
+        <button className="primary" onClick={this.handleVoteClick} disabled={!Boolean(this.props.currentUser)}>
           {Boolean(this.props.hasUserVoted)
             ? 'edit your vote'
             : 'submit your vote' + (!Boolean(this.props.currentUser) ? ' (please sign in)' : '')}
