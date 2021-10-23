@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { createBallot, updateBallot } from '../../utils/backend-api';
+import { addBallot, updateBallot } from '../../utils/backend-api';
 import { base62 } from '../../utils/utils';
 import BookSuggest from './BookSuggest';
 import './SetupPage.css';
@@ -16,7 +16,7 @@ export default class SetupPage extends Component {
   async componentDidMount() {
     try {
       // on load, create a default ballot so we have a ballot id to work with for the suggestions
-      const ballot = await createBallot();
+      const ballot = await addBallot();
       this.setState({ ballot: ballot });
     }
     catch (err) {
