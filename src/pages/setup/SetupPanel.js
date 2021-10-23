@@ -14,7 +14,6 @@ const SetupPanel = props => {
           type="text" 
           onChange={e => {
             e.preventDefault();
-            console.log(e.target.value);
             setBallotName(e.target.value);
           }}
           name="name"
@@ -27,7 +26,6 @@ const SetupPanel = props => {
           type="text" 
           onChange={e => {
             e.preventDefault();
-            console.log(e.target.value);
             setAdminCode(e.target.value);
           }}
           name="adminCode" 

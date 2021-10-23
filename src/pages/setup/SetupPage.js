@@ -13,7 +13,8 @@ const SetupPage = () => {
     setAdminCode,
     setVoteCode,
     createBallot,
-    addSuggestion
+    addSuggestion,
+    deleteSuggestion
   } = useSetup();
 
   const [enableVoteCodeInput, setEnableVoteCodeInput] = useState(false);
@@ -39,11 +40,12 @@ const SetupPage = () => {
         </>}
 
         <span className="panel-title">
-          add books {Boolean(suggestions.length) && <span>({suggestions.length} books added)</span>}:
+          add books{Boolean(suggestions.length) && <span>({suggestions.length} books added)</span>}:
         </span>
         <SuggestPanel
           suggestions={suggestions}
           addSuggestion={addSuggestion}
+          deleteSuggestion={deleteSuggestion}
         />
 
         <span>{errorMessage}</span>
