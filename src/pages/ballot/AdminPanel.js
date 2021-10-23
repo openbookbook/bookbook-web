@@ -1,9 +1,9 @@
 
-const AdminPanel = () => {
+const AdminPanel = props => {
   return (
     <div className="AdminPanel panel">
       hello, admin!
-      <button className="primary" onClick={this.props.onEndVote} disabled={Boolean(this.props.winners)}>End vote!</button>
+      <button className="primary" onClick={props.onEndVote} disabled={Boolean(props.winners)}>End vote!</button>
     </div>
   );
 };
