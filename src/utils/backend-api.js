@@ -1,8 +1,8 @@
 import request from 'superagent';
 
 const URL = process.env.NODE_ENV === 'development' 
-  ? 'https://quiet-reaches-96525.herokuapp.com' 
-  : 'https://quiet-reaches-96525.herokuapp.com'
+  ? 'http://localhost:8001' 
+  : 'https://openbookbook.herokuapp.com/'
 ;
 
 const postReq = async (path, data) => {
@@ -57,6 +57,7 @@ const getVotes = async (ballotid) => getReq(`api/${ballotid}/votes`);
 const updateVote = async (vote) => putReq('api/votes', vote);
 
 const addUser = async (user) => postReq('api/users', user);
+const updateUser = async (user) => putReq(`api/users/${user.id}`, user);
 const getUsers = async (ballotid) => getReq(`api/${ballotid}/users`);
 
 export {
@@ -70,5 +71,6 @@ export {
   getVotes,
   updateVote,
   addUser,
+  updateUser,
   getUsers
 };
