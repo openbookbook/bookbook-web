@@ -94,18 +94,18 @@ export default class SetupPage extends Component {
 
     return (
       <div className="SetupPage">
-        <h3 className="page-title">setup ballot</h3>
+        <h3 className="page-title">ballot setup</h3>
         <form className="page">
 
           <span className="panel-title">setup</span>
           <fieldset className="panel">
             <label>
               <span title="the name of the ballot">ballot name:</span>
-              <input onChange={this.handleNameChange} name="name" required={true}/>
+              <input type="text" onChange={this.handleNameChange} name="name" required={true}/>
             </label>
             <label>
               <span title="don't lose this! you need this in order to get the results of an election">admin code:</span>
-              <input onChange={this.handleAdminCodeChange} name="adminCode" required={true}/>
+              <input type="text" onChange={this.handleAdminCodeChange} name="adminCode" required={true}/>
             </label>
           </fieldset>
 
@@ -114,7 +114,7 @@ export default class SetupPage extends Component {
             <fieldset className="panel PermissionsPanel">
               <label>
                 <span title="requires users to know the voting code in order to submit a vote"><input type="checkbox" onClick={this.handleVoteCodeCheck}/>voting code:</span>
-                <input onChange={this.handleVoteCodeChange} type="text" name="voteCode" disabled={!this.state.enableVoteCodeInput}/>
+                <input type="text" onChange={this.handleVoteCodeChange} name="voteCode" disabled={!this.state.enableVoteCodeInput}/>
               </label>
             </fieldset>
           </>}
@@ -125,7 +125,7 @@ export default class SetupPage extends Component {
           </fieldset>
 
           <span>{this.state.errorMessage}</span>
-          <button type="submit" onClick={this.handleCreateBallot}>create ballot</button>
+          <button className="primary" type="submit" onClick={this.handleCreateBallot}>create ballot</button>
         </form>
       </div>
     );

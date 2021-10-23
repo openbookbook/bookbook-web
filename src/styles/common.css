@@ -25,6 +25,11 @@
   padding: 1rem;
   display: flex;
   flex-direction: column;
+  gap: 0.25rem;
+  box-shadow: 
+    0 0.5rem 1rem -0.125rem rgba(50, 50, 50, 0.1), 
+    0 0.25rem 0.5rem -0.25rem rgba(0, 0, 0, 0.15)
+  ;
 }
 
 .panel * {
@@ -49,15 +54,34 @@
 }
 
 /* default element stylings */
-button, input {
+button.primary, input[type="text"], input[type="password"], input[type="number"], textarea {
   border: var(--border);
   padding: 0.125rem 0.25rem;
   border-radius: 0.25rem;
-  background: var(--clr-fg);
+  background: var(--clr-input);
   box-shadow: 
-    -2px -2px 4px #fff3,
-    2px 2px 4px #0003
+    inset 0 0.5rem 1rem -0.125rem rgba(50, 50, 50, 0.1), 
+    inset 0 0.25rem 0.5rem -0.25rem rgba(0, 0, 0, 0.15)
   ;
+}
+
+button, summary {
+  cursor: pointer;
+}
+
+button.primary {
+  border: none;
+  padding: 0.25rem;
+  background: var(--clr-line);
+  color: var(--color-wheat);
+  box-shadow: 
+    0 0.5rem 1rem -0.125rem rgba(50, 50, 50, 0.1), 
+    0 0.25rem 0.5rem -0.25rem rgba(0, 0, 0, 0.15)
+  ;
+}
+
+button:disabled {
+  opacity: 0.8;
 }
 
 /* default styling for headers */
