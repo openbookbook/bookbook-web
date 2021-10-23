@@ -54,7 +54,7 @@
 }
 
 /* default element stylings */
-button.primary, input[type="text"], input[type="password"], input[type="number"], textarea {
+button.primary, input[type="text"], input[type="password"], input[type="number"], input[type="search"], textarea {
   border: var(--border);
   padding: 0.125rem 0.25rem;
   border-radius: 0.25rem;
@@ -80,7 +80,7 @@ button.primary {
   ;
 }
 
-button:disabled {
+*:disabled {
   opacity: 0.8;
 }
 
