@@ -11,11 +11,18 @@ const useSetup = () => {
   const [ballotName, setBallotName] = useState('');
   const [adminCode, setAdminCode] = useState('');
   const [voteCode, setVoteCode] = useState(null);
+  const [votingMethod, setVotingMethod] = useState('default');
   const [suggestions, setSuggestions] = useState([]);
 
   const history = useHistory();
 
-  const addSuggestion = suggestion => setSuggestions([...suggestions, suggestion]);
+  const addSuggestion = (suggestion, type = 'book') => 
+    setSuggestions([...suggestions, suggestion])
+  ;
+
+  const deleteSuggestion = (val, key = 'gbooks') => 
+    setSuggestions(suggestions.filter(s => s[key] !== val));
+  ;
 
   const createBallot = async () => {
     console.log(ballotName, adminCode, voteCode, suggestions);
@@ -28,10 +35,15 @@ const useSetup = () => {
         // first post the ballot, then post all the suggestions, and then redirect
         await postBallot({
           name: ballotName, 
+          votingMethod,
           adminCode,
           voteCode
         }).then(async res => {
-          await Promise.all(suggestions.map(suggestion => postSuggestion(suggestion)))
+          await Promise.all(suggestions.map(suggestion => postSuggestion({
+            ballotId: res.id,
+            userId: null,
+            ...suggestion
+          })))
             .then(() => history.push(`/ballot/${base62.encode(Number(res.id))}`))
           ;
         });
@@ -45,8 +57,9 @@ const useSetup = () => {
     setBallotName,
     setAdminCode,
     setVoteCode,
+    suggestions,
     addSuggestion,
-    suggestions
+    deleteSuggestion
   };
 };
 
