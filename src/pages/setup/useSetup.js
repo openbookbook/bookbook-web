@@ -12,6 +12,7 @@ const useSetup = () => {
   const [adminCode, setAdminCode] = useState('');
   const [voteCode, setVoteCode] = useState(null);
   const [votingMethod, setVotingMethod] = useState('default');
+  const [candidateType, setCandidateType] = useState('book');
   const [suggestions, setSuggestions] = useState([]);
 
   const history = useHistory();
@@ -36,6 +37,7 @@ const useSetup = () => {
         await postBallot({
           name: ballotName, 
           votingMethod,
+          candidateType,
           adminCode,
           voteCode
         }).then(async res => {
