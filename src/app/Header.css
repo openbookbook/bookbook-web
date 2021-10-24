@@ -10,12 +10,12 @@
 
 .Header h1 {
   font-size: 2.5rem;
+  font-family: var(--fnt-serif);
 }
 
 .Header nav * {
   font-size: 20px;
   margin-left: 0.5rem;
   text-decoration: none;
-  color: black;
   font-weight: 500;
 }

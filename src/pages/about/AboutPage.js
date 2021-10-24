@@ -2,9 +2,11 @@ import './AboutPage.css';
 
 const AboutPage = () => {
   return <div className="AboutPage page">
+    <h3 className="page-title">about</h3>
     <span className="panel-title">description</span>
     <div className="panel">
       <p>bookbook helps create a more equitable process when choosing a new book for your club</p>
+      <br/>
       <p>bookbook allows a club admin to create a ballot where users can vote in a ranked choice voting system</p>
     </div>
 

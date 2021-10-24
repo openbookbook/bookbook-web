@@ -38,7 +38,7 @@
 
 .read-only {
   font-size: 0.8rem;
-  width: clamp(12rem, 40%, 24rem);
+  width: 100%;
   background: none;
   border: none;
   text-transform: none;
