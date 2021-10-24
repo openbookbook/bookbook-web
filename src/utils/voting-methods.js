@@ -1,6 +1,3 @@
-export function formatVotes(votes) {
-  return votes.map(vote => vote.vote.split(' '));
-}
 
 export function parseWinner(results) {
   // get last round
@@ -11,7 +8,7 @@ export function parseWinner(results) {
   return Object.keys(lastRound).filter(key => lastRound[key] === maxScore);
 }
 
-export function rankedChoiceVote(candidates, votes) {
+export function rankedChoiceVote(candidates, votes, fullResults = true) {
   /*
   ==INPUT==
   candidates is an array of suggestion ids like:
@@ -92,5 +89,5 @@ export function rankedChoiceVote(candidates, votes) {
     if (results.length > 999) break;
   }
 
-  return results;
+  return fullResults ? results : parseWinner(results);
 }
