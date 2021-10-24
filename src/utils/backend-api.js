@@ -44,17 +44,13 @@ const deleteReq = async (path) => {
 };
 
 const addBallot = async (ballot) => postReq('api/ballots', ballot);
-const updateBallot = async (ballot) => putReq('api/ballots', ballot);
+const updateBallot = async (ballot) => putReq(`api/ballots/${ballot.id}`, ballot);
 
 const addSuggestion = async (suggestion) => postReq('api/suggestions', suggestion);
 const getSuggestions = async (ballotid) => getReq(`api/${ballotid}/suggestions`);
 const deleteSuggestion = async (id) => deleteReq(`api/suggestions/${id}`);
 
 const getBallot = async (ballotid) => getReq(`api/ballots/${ballotid}`);
-
-const addVote = async (vote) => postReq('api/votes', vote);
-const getVotes = async (ballotid) => getReq(`api/${ballotid}/votes`);
-const updateVote = async (vote) => putReq('api/votes', vote);
 
 const addUser = async (user) => postReq('api/users', user);
 const updateUser = async (user) => putReq(`api/users/${user.id}`, user);
@@ -67,9 +63,6 @@ export {
   getSuggestions,
   deleteSuggestion,
   getBallot,
-  addVote,
-  getVotes,
-  updateVote,
   addUser,
   updateUser,
   getUsers
