@@ -2,8 +2,8 @@
 @import url('./styles/_reset.css');
 
 html {
-  --color-straw: #ffd97a;
-  --color-straw-rgb: 255, 217, 122;
+  --color-straw: #fac94c;
+  --color-straw-rgb: 250, 201, 76;
   --color-wheat: #fbeecf;
   --color-wheat-rgb: 251, 238, 207;
   --color-white: #f9f9f9;
@@ -14,20 +14,24 @@ html {
   --clr-button: var(--clr-fg);
   --clr-line: #000c;
 
+  --fnt-default: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  --fnt-josefin: "Josefin Sans", 'Ubuntu', sans-serif;
+  --fnt-code: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+  --fnt-serif: 'Times New Roman', Times, serif;
+
   --border: 2px solid var(--clr-line);
 
   accent-color: #000c;
 }
 
 body {
+  color: var(--clr-line);
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: var(--fnt-default);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+  font-family: var(--fnt-code);
 }
