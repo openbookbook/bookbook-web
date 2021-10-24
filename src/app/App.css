@@ -11,10 +11,10 @@
 }
 
 .App > * {
-  width: 100px + 50vw;
+  width: calc(200px + 40vw);
   min-width: 300px;
   max-width: 95vw;
-  width: clamp(300px, 100px + 50vw, 95vw);
+  width: clamp(300px, calc(200px + 40vw), 95vw);
 }
 
 .App > main {
@@ -29,4 +29,3 @@
 main {
   background: var(--clr-fg);
 }
-
