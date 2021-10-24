@@ -2,7 +2,7 @@ import request from 'superagent';
 
 const URL = process.env.NODE_ENV === 'development' 
   ? 'http://localhost:8001' 
-  : 'https://openbookbook.herokuapp.com/'
+  : 'https://openbookbook.herokuapp.com'
 ;
 
 const postReq = async (path, data) => {

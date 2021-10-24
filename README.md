@@ -19,3 +19,5 @@ currently in beta
 
 ## useful resources
  - [usehooks.com](https://usehooks.com/)
+ - [freefrontend.com](https://freefrontend.com/)
+ - [Salesforce Lightning Component Library](https://developer.salesforce.com/docs/component-library/overview/components)
