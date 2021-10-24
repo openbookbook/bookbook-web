@@ -1,108 +1,81 @@
-import React, { Component } from 'react';
-import { relocateItemInArray, shuffleArray } from '../../utils/utils.js';
+import React, { useState } from 'react';
 import './VotingPanel.css';
 
-export default class VotingPanel extends Component {
+const VotingPanel = props => {
+  const { ballot, candidates, currentUser, currentRanking, updateVote, handleRankingChange } = props;
 
-  state = {
-    suggestions: [],    // list of candidate books (full google books api results, not sql results)
-    boxView: false      // if true show box view, if false show list view
-  }
+  const [showBoxView, setShowBoxView] = useState(false);
 
-  async componentDidMount() {
-    try {
-      // fetch all the data for each suggestion and save that
-      let arr = this.props.suggestions;
+  const handleMoveUp = ({ target }) => {
+    console.log(target.name);
+    const oldIndex = Number(currentRanking.map(c => c.id).indexOf(Number(target.name)));
+    const newIndex = Math.max(oldIndex - 1, 0);
 
-      // shuffle the array
-      shuffleArray(arr);
+    handleRankingChange(oldIndex, newIndex);
+  };
 
-      // save state
-      this.setState({ suggestions: arr });
-    }
-    catch (err) {
-      console.log(err);
-    }
-  }
+  const handleMoveDown = ({ target }) => {
+    const oldIndex = Number(currentRanking.map(c => c.id).indexOf(Number(target.name)));
+    const newIndex = Math.min(oldIndex + 1, currentRanking.length - 1);
 
-  componentDidUpdate(prevProps, prevState) {
-    if (prevProps.currentUser !== this.props.currentUser) {
-      // if user has already voted, organize the suggestions in the order the user had them in
-      if (this.props.hasUserVoted) {
-        const voteOrder = this.props.votes.find(vote => vote.userId === this.props.currentUser.id).vote.split(' ');
-        const arr = this.props.suggestions.sort((a, b) => {
-          return voteOrder.indexOf(a.googleId) - voteOrder.indexOf(b.googleId);
-        });
-        this.setState({ suggestions: arr });
-      }
-    }
-  }
+    handleRankingChange(oldIndex, newIndex);
+  };
 
-  handleOrderChange = ({ target }) => {
-    // get the old and new index
-    let oldIndex = Number(this.state.suggestions.map(b => b.googleId).indexOf(target.name));
-    let newIndex = Number(target.value - 1);
+  const onRankingChange = ({ target }) => {
+    target.value = Math.max(target.min, target.value);
+    target.value = Math.min(target.max, target.value);
 
-    // figure out new order
-    this.setState({ suggestions: relocateItemInArray(this.state.suggestions, oldIndex, newIndex) });
-  }
+    const oldIndex = Number(currentRanking.map(c => c.id).indexOf(Number(target.name)));
+    const newIndex = Number(target.value) - 1;
 
-  handleVoteClick = e => {
-    e.preventDefault();
+    handleRankingChange(oldIndex, newIndex);
+  };
 
-    this.props.onVote(this.state.suggestions.map(b => b.googleId));
-  }
+  return <div className="VotingPanel panel">
+    {/* TODO: make this bit dynamic based on ballot.votingMethod */}
+    <p>
+      This ballot uses <span title="RCV is a voting system in which voters rank candidates by preference">ranked choice voting</span> to vote. Please put the books in the order that you most desire to read them.
+    </p>
 
-  onStepUp = e => {
-    e.preventDefault();
-    const input = document.querySelector(`.steps > input[name="${e.target.value}"]`);
-    input.value = Math.max(Number(input.value) - 1, Number(input.min));
-    this.handleOrderChange({ target: input });
-  }
-
-  onStepDown = e => {
-    e.preventDefault();
-    const input = document.querySelector(`.steps > input[name="${e.target.value}"]`);
-    input.value = Math.min(Number(input.value) + 1, Number(input.max));
-    this.handleOrderChange({ target: input });
-  }
-
-  onSwitchView = e => {
-    this.setState({ boxView: !this.state.boxView });
-  }
-
-  render() {
-
-    return (
-      <div className="VotingPanel panel">
-        <p>
-          This ballot uses <span title="RCV is a voting system in which voters rank candidates by preference">ranked choice voting</span> to vote. Please put the books in the order that you most desire to read them.
-        </p>
-
-        <ul className={this.state.boxView ? 'box-view' : 'list-view'}>
-          {Boolean(this.state.suggestions) && this.state.suggestions.map(book => (
-            <li className="book-candidate" key={book.googleId}>
-              <div className="steps">
-                <button onClick={this.onStepUp} value={book.googleId} className="step-up">▲</button>
-                <input className="preference-input" name={book.googleId} onChange={this.handleOrderChange} type="number" min="1" max={this.state.suggestions.length} value={this.state.suggestions.map(b => b.googleId).indexOf(book.googleId) + 1} />
-                <button onClick={this.onStepDown} value={book.googleId} className="step-down">▼</button>
-              </div>
-              <img src={book.image ? book.image : '/assets/nocover.jpeg'} alt={book.title} />
+    {/* TODO: abstract this to work for non-books */}
+    <ul className={showBoxView ? 'box-view' : 'list-view'}>
+      {currentRanking.map(candidate => (
+        <li className="book-candidate" key={candidate.id}>
+          <div className="steps">
+            <button className="step-up" name={candidate.id} onClick={handleMoveUp}>▲</button>
+            <input 
+              type="number"
+              className="preference-input"
+              min="1"
+              max={candidates.length}
+              name={candidate.id}
+              value={currentRanking.map(c => c.id).indexOf(candidate.id) + 1}
+              onChange={onRankingChange}
+            />
+            <button className="step-down" name={candidate.id} onClick={handleMoveDown}>▼</button>
+          </div>
+          {candidate?.info 
+            ? <>
+              <img src={candidate.info?.image ? candidate.info.image : '/assets/nocover.jpeg'} alt={candidate.info?.title}/>
               <div>
-                <p>{book.title}{book.subtitle && <span>: {book.subtitle}</span>}</p>
-                <p className="book-author">{book.authors[0]}</p>
+                <p>{candidate.info?.title}{candidate.info?.subtitle && <span>: {candidate.info?.subtitle}</span>}</p>
+                <p className="book-author">{candidate.info?.authors?.join(', ')}</p>
               </div>
-            </li>
-          ))}
-        </ul>
+            </>
+            : <span>{candidate.id}</span>
+          }
+        </li>
+      ))}
+    </ul>
 
-        <button className="primary" onClick={this.handleVoteClick} disabled={!Boolean(this.props.currentUser)}>
-          {Boolean(this.props.hasUserVoted)
-            ? 'edit your vote'
-            : 'submit your vote' + (!Boolean(this.props.currentUser) ? ' (please sign in)' : '')}
-        </button>
-      </div>
-    );
-  }
+    <button 
+      className="primary" 
+      disabled={!Boolean(currentUser)}
+      onClick={updateVote}
+    >
+      {Boolean(currentUser?.vote) ? 'edit' : 'submit'} your vote {!Boolean(currentUser) && '(please sign in)'}
+    </button>
+  </div>;
+};
 
-}
+export default VotingPanel;
