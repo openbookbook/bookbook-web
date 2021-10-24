@@ -1,15 +1,13 @@
-import React from 'react';
-import { Component } from 'react';
 
-export default class AdminPanel extends Component {
+const AdminPanel = props => {
+  const { ballot, onEndVote } = props;
+  
+  return (
+    <div className="AdminPanel panel">
+      hello, admin!
+      <button className="primary" onClick={onEndVote} disabled={Boolean(ballot?.endDate)}>end vote!</button>
+    </div>
+  );
+};
 
-  render() {
-    return (
-      <div className="AdminPanel panel">
-        hello, admin!
-        <button className="primary" onClick={this.props.onEndVote} disabled={Boolean(this.props.winners)}>End vote!</button>
-      </div>
-    );
-  }
-
-}
+export default AdminPanel;

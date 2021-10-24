@@ -1,31 +1,42 @@
-.BookSuggest div.panel {
+.SuggestPanel div.panel {
   display: inline-block;
   border-width: 3px;
   width: 100%;
 }
 
-.BookSuggest div.panel > div:first-child {
+.SuggestPanel div.panel > div:first-child {
   display: flex;
   justify-content: space-between;
 }
 
 /* book display */
 .book-display {
-  border-width: 3px !important;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .book-display li {
   text-transform: none;
   display: flex;
   align-items: center;
-  margin: 5px;
   height: 100px;
+}
+
+.book-display li figure {
+  display: flex;
+  align-items: center;
+  justify-content: right;
+  min-height: 100px;
+  min-width: 100px;
+  margin: 0 1rem;
+  border-radius: 0.25rem;
+  overflow: hidden;
 }
 
 .book-display li img {
   height: 100px;
   max-width: 100px;
-  margin: 0 1rem;
 }
 
 .book-display li > *:first-child {

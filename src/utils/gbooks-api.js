@@ -7,9 +7,7 @@ export async function searchBooks(query, printType = 'books') {
     .get(GBOOKS_API) 
     .query({ q: query, printType: printType });
   
-  if (response.status === 400) {
-    throw response.body;
-  }
+  if (response.status >= 400) throw response.body;
 
   return response.body.items.map(mungeBook);
 };
@@ -17,9 +15,7 @@ export async function searchBooks(query, printType = 'books') {
 export async function getBook(gbooks) {
   const response = await request.get(`${GBOOKS_API}/${gbooks}`);
   
-  if (response.status === 400) {
-    throw response.body;
-  }
+  if (response.status === 400) throw response.body;
 
   return mungeBook(response.body);
 }
@@ -32,7 +28,7 @@ function mungeBook(book) {
     authors: book.volumeInfo.authors || [],
     googleId: book.id,
     pageCount: book.volumeInfo.pageCount,
-    image: (book.volumeInfo.imageLinks) ? book.volumeInfo.imageLinks.thumbnail : null,
-    price: (book.saleInfo.retailPrice) ? book.saleInfo.retailPrice.amount : null
+    image: book?.volumeInfo?.imageLinks?.thumbnail,
+    price: book?.saleInfo?.listPrice?.amount
   };
 }

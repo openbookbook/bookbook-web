@@ -1,134 +1,69 @@
 import request from 'superagent';
 
-const URL = 'https://quiet-reaches-96525.herokuapp.com';
+const URL = process.env.NODE_ENV === 'development' 
+  ? 'http://localhost:8001' 
+  : 'https://openbookbook.herokuapp.com/'
+;
 
-export async function createBallot(ballot = { adminCode: '__default__', name: '__default__', voteCode: null }) {
-  const response = await request
-    .post(URL + '/api/ballots')
-    .send(ballot);
+const postReq = async (path, data) => {
+  const resp = await request
+    .post(`${URL}/${path}`)
+    .send(data)
+  ;
 
-  if (response.status === 400) {
-    throw response.body;
-  }
+  if (resp.status >= 400) throw resp.body;
 
-  return response.body;
-
+  return resp.body;
 };
 
-export async function updateBallot(ballot) {
-  const response = await request
-    .put(URL + `/api/ballots/${ballot.id}`)
-    .send(ballot);
+const getReq = async (path) => {
+  const resp = await request.get(`${URL}/${path}`);
 
-  if (response.status === 400) {
-    throw response.body;
-  }
+  if (resp.status >= 400) throw resp.body;
 
-  return response.body;
+  return resp.body;
+};
 
-}
+const putReq = async (path, data) => {
+  const resp = await request
+    .put(`${URL}/${path}`)
+    .send(data)
+  ;
 
-export async function addSuggestion(suggestion) {
-  const response = await request
-    .post(URL + '/api/suggestions')
-    .send(suggestion);
+  if (resp.status >= 400) throw resp.body;
 
-  if (response.status === 400) {
-    throw response.body;
-  }
+  return resp.body;
+};
 
-  return response.body;
+const deleteReq = async (path) => {
+  const resp = await request.delete(`${URL}/${path}`);
 
-}
+  if (resp.status >= 400) throw resp.body;
 
-export async function deleteSuggestion(id) {
-  const response = await request
-    .delete(URL + `/api/suggestions/${id}`);
-  return response.body;
-}
+  return resp.body;
+};
 
+const addBallot = async (ballot) => postReq('api/ballots', ballot);
+const updateBallot = async (ballot) => putReq(`api/ballots/${ballot.id}`, ballot);
 
-export async function getBallot(ballotid) {
-  const response = await request
-    .get(URL + `/api/ballots/${ballotid}`);
+const addSuggestion = async (suggestion) => postReq('api/suggestions', suggestion);
+const getSuggestions = async (ballotid) => getReq(`api/${ballotid}/suggestions`);
+const deleteSuggestion = async (id) => deleteReq(`api/suggestions/${id}`);
 
-  if (response.status === 400) {
-    throw response.body;
-  }
+const getBallot = async (ballotid) => getReq(`api/ballots/${ballotid}`);
 
-  return response.body;
+const addUser = async (user) => postReq('api/users', user);
+const updateUser = async (user) => putReq(`api/users/${user.id}`, user);
+const getUsers = async (ballotid) => getReq(`api/${ballotid}/users`);
 
-}
-
-export async function getSuggestions(ballotid) {
-  const response = await request
-    .get(URL + `/api/${ballotid}/suggestions`);
-
-  if (response.status === 400) {
-    throw response.body;
-  }
-
-  return response.body;
-
-}
-
-export async function getVotes(ballotid) {
-  const response = await request
-    .get(URL + `/api/${ballotid}/votes`);
-
-  if (response.status === 400) {
-    throw response.body;
-  }
-
-  return response.body;
-
-}
-
-export async function addVote(vote) {
-  const response = await request
-    .post(URL + `/api/votes`)
-    .send(vote);
-
-  if (response.status === 400) {
-    throw response.body;
-  }
-
-  return response.body;
-
-}
-
-export async function addUser(user) {
-  const response = await request
-    .post(URL + '/api/users')
-    .send(user);
-
-  if (response.status === 400) {
-    throw response.body;
-  }
-
-  return response.body;
-
-}
-
-export async function getUsers(ballotid) {
-  const response = await request
-    .get(URL + `/api/${ballotid}/users`);
-
-  if (response.status === 400) {
-    throw response.body;
-  }
-
-  return response.body;
-}
-
-export async function updateVote(vote) {
-  const response = await request
-    .put(URL + `/api/votes/${vote.id}`)
-    .send(vote);
-
-  if (response.status === 400) {
-    throw response.body;
-  }
-
-  return response.body;
-}
+export {
+  addBallot,
+  updateBallot,
+  addSuggestion,
+  getSuggestions,
+  deleteSuggestion,
+  getBallot,
+  addUser,
+  updateUser,
+  getUsers
+};
