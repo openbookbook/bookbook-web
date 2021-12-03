@@ -52,6 +52,7 @@ const getSuggestions = async (ballotId) => getReq(`api/suggestions?ballot=${ball
 const deleteSuggestion = async (id) => deleteReq(`api/suggestions/${id}`);
 
 const addUser = async (user) => postReq('api/users', user);
+const loginUser = async (user) => postReq(`api/users/${user.id}/login`, user);
 const updateUser = async (user) => putReq(`api/users/${user.id}`, user);
 const getUsers = async (ballotId) => getReq(`api/users?ballot=${ballotId}`);
 
@@ -63,6 +64,7 @@ export {
   deleteSuggestion,
   getBallot,
   addUser,
+  loginUser,
   updateUser,
   getUsers
 };
