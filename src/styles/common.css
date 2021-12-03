@@ -54,7 +54,7 @@
 }
 
 /* default input element stylings */
-button.primary, input[type="text"], input[type="password"], input[type="number"], input[type="search"], textarea {
+button.primary, input[type="text"], input[type="password"], input[type="number"], input[type="search"], textarea, select {
   border: var(--border);
   padding: 0.125rem 0.25rem;
   border-radius: 0.25rem;

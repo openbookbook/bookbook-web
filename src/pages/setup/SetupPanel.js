@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
+import ToggleText from '../../components/ToggleText';
 
 const SetupPanel = props => {
+  const [showAdvanced, setShowAdvanced] = useState(false);
+
   const {
     setBallotName,
     setAdminCode
@@ -32,8 +35,31 @@ const SetupPanel = props => {
           required={true}
         />
       </label>
+      {showAdvanced 
+        ? <>
+          <label>
+            <span>voting method:</span>
+            <select defaultValue="rcv">
+              <option value="rcv">ranked choice vote</option>
+              <option value="fptp" disabled>first past the post</option>
+              <option value="approval" disabled>approval</option>
+            </select>
+          </label>
+          {/* <label>
+            <span>candidate type:</span>
+            <select defaultValue="book">
+              <option value="book">book</option>
+              <option value="other">other</option>
+            </select>
+          </label> */}
+        </>
+        : <ToggleText onClick={() => setShowAdvanced(true)}>Show advanced options</ToggleText>
+      }
     </fieldset>
   );
 };
 
+const MemoizedSetupPanel = React.memo(SetupPanel);
+
 export default SetupPanel;
+export { MemoizedSetupPanel };
