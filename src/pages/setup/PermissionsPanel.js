@@ -32,4 +32,7 @@ const PermissionsPanel = props => {
   );
 };
 
+const MemoizedPermissionsPanel = React.memo(PermissionsPanel);
+
 export default PermissionsPanel;
+export { MemoizedPermissionsPanel };

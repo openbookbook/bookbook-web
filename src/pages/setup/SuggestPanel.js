@@ -84,4 +84,7 @@ const SuggestPanel = props => {
   );
 };
 
-export default React.memo(SuggestPanel);
+const MemoizedSuggestPanel = React.memo(SuggestPanel);
+
+export default SuggestPanel;
+export { MemoizedSuggestPanel };

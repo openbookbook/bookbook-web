@@ -79,4 +79,7 @@ const VotingPanel = props => {
   </div>;
 };
 
+const MemoizedVotingPanel = React.memo(VotingPanel);
+
 export default VotingPanel;
+export { MemoizedVotingPanel };

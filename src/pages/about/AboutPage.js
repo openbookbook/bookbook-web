@@ -1,3 +1,4 @@
+import React from 'react';
 import './AboutPage.css';
 
 const AboutPage = () => {
@@ -21,4 +22,7 @@ const AboutPage = () => {
   </div>;
 };
 
+const MemoizedAboutPage = React.memo(AboutPage);
+
 export default AboutPage;
+export { MemoizedAboutPage };

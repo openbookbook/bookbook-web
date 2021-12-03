@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import useBallot from '../../state/useBallot';
 import LoginPanel from './LoginPanel';
 import VotingPanel from './VotingPanel';
@@ -82,4 +82,7 @@ const BallotPage = props => {
   </div>;
 };
 
+const MemoizedBallotPage = React.memo(BallotPage);
+
 export default BallotPage;
+export { MemoizedBallotPage };

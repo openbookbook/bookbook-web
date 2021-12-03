@@ -1,3 +1,4 @@
+import React from 'react';
 import { Link } from 'react-router-dom';
 import './Home.css';
 
@@ -11,4 +12,7 @@ const Home = () => {
   );
 };
 
+const MemoizedHomePage = React.memo(Home);
+
 export default Home;
+export { MemoizedHomePage };
