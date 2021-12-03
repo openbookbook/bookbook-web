@@ -9,6 +9,10 @@
   justify-content: space-between;
 }
 
+.SuggestPanel > :last-child {
+  margin-top: 0.25rem;
+}
+
 /* book display */
 .book-display {
   display: flex;
@@ -17,21 +21,17 @@
 }
 
 .book-display li {
-  text-transform: none;
   display: flex;
   align-items: center;
   height: 100px;
+  gap: 1rem;
 }
 
-.book-display li figure {
-  display: flex;
-  align-items: center;
-  justify-content: right;
-  min-height: 100px;
-  min-width: 100px;
-  margin: 0 1rem;
-  border-radius: 0.25rem;
-  overflow: hidden;
+.book-display li > :first-child {
+  background: none;
+  height: 2rem;
+  min-width: 2rem;
+  max-width: 2rem;
 }
 
 .book-display li img {
@@ -39,65 +39,43 @@
   max-width: 100px;
 }
 
-.book-display li > *:first-child {
-  margin: 0;
-  padding: 0;
-}
-
-.book-display span {
-  margin-right: 1rem;
-}
-
-.book-display button {
-  background: none;
-  height: 2rem;
-  min-width: 2rem;
-  max-width: 2rem;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.book-author {
-  font-weight: 200;
-}
-
-.book-display li p {
-  line-clamp: 3;
+.book-display li > div > * {
   display: -webkit-box;
+  /* display: box; */
+  -webkit-box-orient: vertical;
+  box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.book-display li > div p {
   -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  line-clamp: 3;
 }
 
-.book-display li .book-author {
-  line-clamp: 1;
-  display: -webkit-box;
+.book-display li > div .book-author {
+  font-weight: 200;
   -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  line-clamp: 1;
 }
 
 .book-display.box-view {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-}
 
-.book-display.box-view li img {
-  margin: 0;
-}
-
-.book-display.box-view li p {
-  font-size: 1rem;
-  width: 100%;
-  max-width: calc(16rem - 100px);
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
 }
 
 .book-display.box-view li {
   display: grid;
-  grid-template-columns: 2rem auto minmax(12rem, auto);
+  grid-template-columns: 2rem auto 1fr;
   column-gap: 1rem;
-  max-width: 20rem;
+  overflow: hidden;
+}
+
+.book-display.box-view li > div > * {
+  font-size: 1rem;
+  width: 100%;
 }
