@@ -32,7 +32,10 @@ const useBallot = idFromUrl => {
           const cands = await getSuggestions(ballot.id);
           if (!ballot.candidateType || ballot.candidateType === 'book') {
             Promise.all(
-              cands.map(async book => book.info ? book : { ...book, info: await getBook(book.googleBooks || book.gbooks || book.id) })
+              cands.map(async book => book.info 
+                ? book 
+                : { ...book, info: await getBook(book.suggestion) }
+              )
             ).then(books => {
               setCandidates(books);
               setCurrentRanking(shuffleArray(books));

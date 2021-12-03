@@ -34,21 +34,20 @@ const useSetup = () => {
       else if (suggestions.length < 2) setErrorMessage('please add at least 2 books!');
       else {
         // first post the ballot, then post all the suggestions, and then redirect
-        await postBallot({
+        const resp = await postBallot({
           name: ballotName, 
           votingMethod,
           candidateType,
           adminCode,
           voteCode
-        }).then(async res => {
-          await Promise.all(suggestions.map(suggestion => postSuggestion({
-            ballotId: res.id,
-            userId: null,
-            ...suggestion
-          })))
-            .then(() => history.push(`/ballot/${base62.encode(Number(res.id))}`))
-          ;
         });
+        
+        await Promise.all(suggestions.map(suggestion => postSuggestion({
+          ballotId: resp.id,
+          userId: null,
+          suggestion: suggestion.suggestion || suggestion.gbooks || suggestion.description,
+          ...suggestion
+        }))).then(() => history.push(`/ballot/${base62.encode(Number(resp.id))}`));
       }
     } catch (err) { console.error(err); }
   };
@@ -59,6 +58,8 @@ const useSetup = () => {
     setBallotName,
     setAdminCode,
     setVoteCode,
+    setVotingMethod,
+    setCandidateType,
     suggestions,
     addSuggestion,
     deleteSuggestion
