@@ -2,7 +2,7 @@ import { useState } from 'react';
 import SuggestPanel from './SuggestPanel';
 import SetupPanel from './SetupPanel';
 import PermissionsPanel from './PermissionsPanel';
-import useSetup from './useSetup';
+import useSetup from '../../state/useSetup';
 import './SetupPage.css';
 
 const SetupPage = () => {

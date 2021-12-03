@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { addUser, getBallot, getSuggestions, getUsers, updateBallot, updateUser } from '../../utils/backend-api';
-import { getBook } from '../../utils/gbooks-api';
-import { base62, relocateItemInArray, shuffleArray } from '../../utils/utils';
-import { rankedChoiceVote } from '../../utils/voting-methods.js';
+import { addUser, getBallot, getSuggestions, getUsers, loginUser, updateBallot, updateUser } from '../utils/backend-api';
+import { getBook } from '../utils/gbooks-api';
+import { base62, relocateItemInArray, shuffleArray } from '../utils/utils';
+import { rankedChoiceVote } from '../utils/voting-methods.js';
 
 const votingMethods = {
   'default': rankedChoiceVote,
@@ -71,7 +71,10 @@ const useBallot = idFromUrl => {
 
   // update the user when vote or password changes
   useEffect(() => {
-    if (currentUser?.vote || currentUser?.password) updateUser(currentUser);
+    if (
+      currentUser?.vote 
+      || (currentUser?.password && currentUser.password !== true)
+    ) updateUser(currentUser);
   }, [currentUser]);
 
   const endVote = () => {
@@ -93,13 +96,16 @@ const useBallot = idFromUrl => {
     });
   };
 
-  const signIn = credentials => {
-    // TODO: make a route for logging in and rewrite this whole function
+  const signIn = async credentials => {
     const match = users.find(u => u.username === credentials.username);
-    if (match && (!match.password || match.password === credentials.password)) {
+
+    const result = await loginUser({ ...match, ...credentials });
+
+    if (result.error) return null;
+    else {
       setCurrentUser(match);
-      return match;
-    } else return null;
+      return result;
+    }
   };
 
   const updateVote = () => {

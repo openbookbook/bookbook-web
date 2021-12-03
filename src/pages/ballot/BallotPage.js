@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import useBallot from './useBallot';
+import useBallot from '../../state/useBallot';
 import LoginPanel from './LoginPanel';
 import VotingPanel from './VotingPanel';
 import AdminPanel from './AdminPanel';

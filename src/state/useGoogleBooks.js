@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { searchBooks } from '../../utils/gbooks-api';
+import { searchBooks } from '../utils/gbooks-api';
 
 const useGoogleBooks = () => {
   const [results, setResults] = useState([]);

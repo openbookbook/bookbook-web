@@ -3,8 +3,8 @@ import { useHistory } from 'react-router';
 import { 
   addBallot as postBallot, 
   addSuggestion as postSuggestion 
-} from '../../utils/backend-api';
-import { base62 } from '../../utils/utils';
+} from '../utils/backend-api';
+import { base62 } from '../utils/utils';
 
 const useSetup = () => {
   const [errorMessage, setErrorMessage] = useState('');
