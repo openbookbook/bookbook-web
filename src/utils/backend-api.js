@@ -6,14 +6,15 @@ const URL = process.env.NODE_ENV === 'development'
 ;
 
 const req = async (method, path, data) => {
-  const resp = data 
-    ? await request[method](`${URL}/${path}`).send(data)
-    : await request[method](`${URL}/${path}`)
-  ;
-
-  if (resp.status >= 400) throw resp.body;
-
-  return resp.body;
+  try {
+    return (data 
+      ? await request[method](`${URL}/${path}`).send(data)
+      : await request[method](`${URL}/${path}`)
+    ).body;
+  } catch (err) {
+    console.error(err);
+    return { error: err.message };
+  }
 };
 const postReq = async (path, data) => await req('post', path, data);
 const getReq = async (path) => await req('get', path);
