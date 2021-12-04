@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import useGoogleBooks from './useGoogleBooks.js';
+import React, { useState } from 'react';
+import useGoogleBooks from '../../state/useGoogleBooks';
 import './SuggestPanel.css';
 
 const SuggestPanel = props => {
@@ -61,7 +61,7 @@ const SuggestPanel = props => {
       <ul className="book-display list-view">
         {results.filter(
           book => !suggestions.some(suggestion => suggestion.gbooks === book.googleId)
-        ).map(book => <>
+        ).map(book => (
           <li className="search-result" key={book.googleId}>
             <button
               value={book.googleId}
@@ -78,10 +78,13 @@ const SuggestPanel = props => {
               <p className="book-author">{book.authors.join(', ')}</p>
             </div>
           </li>
-        </>)}
+        ))}
       </ul>
     </fieldset>
   );
 };
 
+const MemoizedSuggestPanel = React.memo(SuggestPanel);
+
 export default SuggestPanel;
+export { MemoizedSuggestPanel };

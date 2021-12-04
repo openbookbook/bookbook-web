@@ -2,7 +2,7 @@ import request from 'superagent';
 
 const GBOOKS_API = 'https://www.googleapis.com/books/v1/volumes';
 
-export async function searchBooks(query, printType = 'books') {
+async function searchBooks(query, printType = 'books') {
   const response = await request
     .get(GBOOKS_API) 
     .query({ q: query, printType: printType });
@@ -12,7 +12,7 @@ export async function searchBooks(query, printType = 'books') {
   return response.body.items.map(mungeBook);
 };
 
-export async function getBook(gbooks) {
+async function getBook(gbooks) {
   const response = await request.get(`${GBOOKS_API}/${gbooks}`);
   
   if (response.status === 400) throw response.body;
@@ -32,3 +32,5 @@ function mungeBook(book) {
     price: book?.saleInfo?.listPrice?.amount
   };
 }
+
+export { getBook, searchBooks };

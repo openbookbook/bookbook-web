@@ -1,12 +1,16 @@
 import { useEffect, useState } from 'react';
-import { addUser, getBallot, getSuggestions, getUsers, updateBallot, updateUser } from '../../utils/backend-api';
-import { getBook } from '../../utils/gbooks-api';
-import { base62, relocateItemInArray, shuffleArray } from '../../utils/utils';
-import { rankedChoiceVote } from '../../utils/voting-methods.js';
+import { addUser, getBallot, getSuggestions, getUsers, loginUser, updateBallot, updateUser as putUser, patchUser } from '../utils/backend-api';
+import { getBook } from '../utils/gbooks-api';
+import { base62, relocateItemInArray, shuffleArray } from '../utils/utils';
+import { rankedChoiceVote } from '../utils/voting-methods';
 
 const votingMethods = {
   'default': rankedChoiceVote,
   'rcv': rankedChoiceVote,
+};
+
+const updateUserVote = async user => {
+  return await patchUser(user, ['vote', user.vote]);
 };
 
 const useBallot = idFromUrl => {
@@ -25,6 +29,8 @@ const useBallot = idFromUrl => {
           // set ballot
           setBallot(ballot);
 
+          console.log({ ballot });
+
           // set users
           setUsers(await getUsers(ballot.id));
 
@@ -32,7 +38,10 @@ const useBallot = idFromUrl => {
           const cands = await getSuggestions(ballot.id);
           if (!ballot.candidateType || ballot.candidateType === 'book') {
             Promise.all(
-              cands.map(async book => book.info ? book : { ...book, info: await getBook(book.googleBooks || book.gbooks || book.id) })
+              cands.map(async book => book.info 
+                ? book 
+                : { ...book, info: await getBook(book.suggestion) }
+              )
             ).then(books => {
               setCandidates(books);
               setCurrentRanking(shuffleArray(books));
@@ -66,10 +75,15 @@ const useBallot = idFromUrl => {
     }
   }, [currentUser, users, candidates]);
 
-  // update the user when vote or password changes
+  // update the user when vote changes
   useEffect(() => {
-    if (currentUser?.vote || currentUser?.password) updateUser(currentUser);
+    if (currentUser?.vote) updateUserVote(currentUser);
   }, [currentUser]);
+
+  // update the user when password changes
+  // useEffect(() => {
+
+  // }, [currentUser.password]);
 
   const endVote = () => {
     const endDate = Date.now().toString();
@@ -90,13 +104,16 @@ const useBallot = idFromUrl => {
     });
   };
 
-  const signIn = credentials => {
-    // TODO: make a route for logging in and rewrite this whole function
+  const signIn = async credentials => {
     const match = users.find(u => u.username === credentials.username);
-    if (match && (!match.password || match.password === credentials.password)) {
+
+    const result = await loginUser({ ...match, ...credentials });
+
+    if (result.error) return null;
+    else {
       setCurrentUser(match);
-      return match;
-    } else return null;
+      return result;
+    }
   };
 
   const updateVote = () => {

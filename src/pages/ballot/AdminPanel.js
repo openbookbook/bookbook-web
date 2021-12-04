@@ -1,3 +1,4 @@
+import React from 'react';
 
 const AdminPanel = props => {
   const { ballot, onEndVote } = props;
@@ -10,4 +11,7 @@ const AdminPanel = props => {
   );
 };
 
+const MemoizedAdminPanel = React.memo(AdminPanel);
+
 export default AdminPanel;
+export { MemoizedAdminPanel };

@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import './VotingPanel.css';
 
 const VotingPanel = props => {
-  const { ballot, candidates, currentUser, currentRanking, updateVote, handleRankingChange } = props;
+  const { candidates, currentUser, currentRanking, updateVote, handleRankingChange } = props;
+  // const { ballot } = props;
 
-  const [showBoxView, setShowBoxView] = useState(false);
+  const [showBoxView] = useState(false);
 
   const handleMoveUp = ({ target }) => {
     console.log(target.name);
@@ -78,4 +79,7 @@ const VotingPanel = props => {
   </div>;
 };
 
+const MemoizedVotingPanel = React.memo(VotingPanel);
+
 export default VotingPanel;
+export { MemoizedVotingPanel };

@@ -1,8 +1,10 @@
+import React from 'react';
 import { getByProperty } from '../../utils/utils';
 import './ResultsPanel.css';
 
 const ResultsPanel = props => {
-  const { winners, ballot, candidates, users } = props;
+  const { winners, ballot, candidates } = props;
+  // const { users } = props;
   
   // const votes = users.filter(u => u.vote).map(u => u.vote);
 
@@ -31,4 +33,7 @@ const ResultsPanel = props => {
   </div>;
 };
 
+const MemoizedResultsPanel = React.memo(ResultsPanel);
+
 export default ResultsPanel;
+export { MemoizedResultsPanel };

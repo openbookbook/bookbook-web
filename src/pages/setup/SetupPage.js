@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import SuggestPanel from './SuggestPanel';
 import SetupPanel from './SetupPanel';
 import PermissionsPanel from './PermissionsPanel';
-import useSetup from './useSetup';
+import useSetup from '../../state/useSetup';
 import './SetupPage.css';
 
 const SetupPage = () => {
@@ -62,4 +62,7 @@ const SetupPage = () => {
   );
 };
 
+const MemoizedSetupPage = React.memo(SetupPage);
+
 export default SetupPage;
+export { MemoizedSetupPage };

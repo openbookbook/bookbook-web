@@ -1,4 +1,11 @@
 import React, { useState } from 'react';
+import ToggleText from '../../components/ToggleText';
+
+/* 
+TODO:
+ - show loading when vote is updated or submitted
+ - fix having to click edit twice to register
+*/
 
 const LoginPanel = props => {
   const { 
@@ -84,11 +91,16 @@ const LoginPanel = props => {
     {!showAdminPanel && <>
       <p className="admin-option">
         <span>{showAdminCodeInput ? 'Not an a' : 'A'}dmin? </span>
-        <span className="admin-click" onClick={() => setShowAdminCodeInput(!showAdminCodeInput)}>Click here!</span>
+        <ToggleText
+          onClick={() => setShowAdminCodeInput(!showAdminCodeInput)}
+        >Click here!</ToggleText>
       </p>
       {showAdminCodeInput && <input type="text" placeholder="admin code" onChange={onAdminInput}/>}
     </>}
   </form>;
 };
 
+const MemoizedLoginPanel = React.memo(LoginPanel);
+
 export default LoginPanel;
+export { MemoizedLoginPanel };
