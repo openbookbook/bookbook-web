@@ -1,12 +1,16 @@
 import { useEffect, useState } from 'react';
-import { addUser, getBallot, getSuggestions, getUsers, loginUser, updateBallot, updateUser } from '../utils/backend-api';
+import { addUser, getBallot, getSuggestions, getUsers, loginUser, updateBallot, updateUser as putUser, patchUser } from '../utils/backend-api';
 import { getBook } from '../utils/gbooks-api';
 import { base62, relocateItemInArray, shuffleArray } from '../utils/utils';
-import { rankedChoiceVote } from '../utils/voting-methods.js';
+import { rankedChoiceVote } from '../utils/voting-methods';
 
 const votingMethods = {
   'default': rankedChoiceVote,
   'rcv': rankedChoiceVote,
+};
+
+const updateUserVote = async user => {
+  return await patchUser(user, ['vote', user.vote]);
 };
 
 const useBallot = idFromUrl => {
@@ -24,6 +28,8 @@ const useBallot = idFromUrl => {
         .then(async ballot => {
           // set ballot
           setBallot(ballot);
+
+          console.log({ ballot });
 
           // set users
           setUsers(await getUsers(ballot.id));
@@ -69,13 +75,15 @@ const useBallot = idFromUrl => {
     }
   }, [currentUser, users, candidates]);
 
-  // update the user when vote or password changes
+  // update the user when vote changes
   useEffect(() => {
-    if (
-      currentUser?.vote 
-      || (currentUser?.password && currentUser.password !== true)
-    ) updateUser(currentUser);
+    if (currentUser?.vote) updateUserVote(currentUser);
   }, [currentUser]);
+
+  // update the user when password changes
+  // useEffect(() => {
+
+  // }, [currentUser.password]);
 
   const endVote = () => {
     const endDate = Date.now().toString();
