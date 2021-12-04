@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
 import ToggleText from '../../components/ToggleText';
 
+/* 
+TODO:
+ - show loading when vote is updated or submitted
+ - fix having to click edit twice to register
+*/
+
 const LoginPanel = props => {
   const { 
     users, currentUser, 
