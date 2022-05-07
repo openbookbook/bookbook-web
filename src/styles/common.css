@@ -9,6 +9,10 @@
   font-size: 20px;
 }
 
+b, strong {
+  font-weight: bold;
+}
+
 /* page and panel classes */
 .page {
   display: flex;
@@ -70,7 +74,7 @@ button {
   border-radius: 0.25rem;
 }
 
-button, summary {
+button, summary, select {
   cursor: pointer;
 }
 
