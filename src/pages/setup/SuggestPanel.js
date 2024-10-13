@@ -52,10 +52,10 @@ const SuggestPanel = props => {
         </div>
       </>}
 
-      <input 
-        type="search" 
+      <input
+        type="search"
         placeholder="search for books"
-        onChange={e => handleSearch(e.target.value)}
+        onChange={handleSearch}
       />
 
       <ul className="book-display list-view">

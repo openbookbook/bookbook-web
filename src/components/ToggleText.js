@@ -3,17 +3,12 @@ import styles from './ToggleText.module.css';
 
 const ToggleText = ({ onClick, children }) => {
   return (
-    <span 
+    <span
       className={`ToggleText ${styles.ToggleText}`}
       role="button"
       onClick={onClick}
-    >
-      {children}
-    </span>
+    >{children}</span>
   );
 };
 
-const MemoizedToggleText = React.memo(ToggleText);
-
 export default ToggleText;
-export { MemoizedToggleText };

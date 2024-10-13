@@ -1,4 +1,4 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# https://git-scm.com/docs/gitignore
 
 # dependencies
 /node_modules
@@ -18,6 +18,11 @@
 .env.test.local
 .env.production.local
 
+# logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# environment
+.env*
+!.env*.example

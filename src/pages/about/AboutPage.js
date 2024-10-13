@@ -27,4 +27,3 @@ const AboutPage = () => {
 const MemoizedAboutPage = React.memo(AboutPage);
 
 export default AboutPage;
-export { MemoizedAboutPage };

@@ -4,9 +4,9 @@ const GBOOKS_API = 'https://www.googleapis.com/books/v1/volumes';
 
 async function searchBooks(query, printType = 'books') {
   const response = await request
-    .get(GBOOKS_API) 
+    .get(GBOOKS_API)
     .query({ q: query, printType: printType });
-  
+
   if (response.status >= 400) throw response.body;
 
   return response.body.items.map(mungeBook);
@@ -14,7 +14,7 @@ async function searchBooks(query, printType = 'books') {
 
 async function getBook(gbooks) {
   const response = await request.get(`${GBOOKS_API}/${gbooks}`);
-  
+
   if (response.status === 400) throw response.body;
 
   return mungeBook(response.body);
@@ -22,14 +22,14 @@ async function getBook(gbooks) {
 
 function mungeBook(book) {
   return {
-    title: book.volumeInfo.title,
-    subtitle: book.volumeInfo.subtitle,
-    description: book.volumeInfo.description,
     authors: book.volumeInfo.authors || [],
+    description: book.volumeInfo.description,
     googleId: book.id,
-    pageCount: book.volumeInfo.pageCount,
     image: book?.volumeInfo?.imageLinks?.thumbnail,
-    price: book?.saleInfo?.listPrice?.amount
+    pageCount: book.volumeInfo.pageCount,
+    price: book?.saleInfo?.listPrice?.amount,
+    subtitle: book.volumeInfo.subtitle,
+    title: book.volumeInfo.title,
   };
 }
 

@@ -13,10 +13,7 @@ const useGoogleBooks = () => {
     } catch (err) { console.error(err); }
   };
 
-  return {
-    results,
-    handleSearch
-  };
+  return { results, handleSearch, };
 };
 
 export default useGoogleBooks;

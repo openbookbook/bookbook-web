@@ -1,13 +1,13 @@
 import request from 'superagent';
 
-const URL = process.env.NODE_ENV === 'development' 
+const URL = process.env.NODE_ENV === 'development'
   ? 'http://localhost:8001' 
   : 'https://openbookbook.herokuapp.com'
 ;
 
 const req = async (method, path, data) => {
   try {
-    return (data 
+    return (data
       ? await request[method](`${URL}/${path}`).send(data)
       : await request[method](`${URL}/${path}`)
     ).body;
@@ -41,14 +41,14 @@ const getUsers = async (ballotId) => getReq(`api/users?ballot=${ballotId}`);
 
 export {
   addBallot,
-  updateBallot,
   addSuggestion,
-  getSuggestions,
+  addUser,
   deleteSuggestion,
   getBallot,
-  addUser,
+  getSuggestions,
+  getUsers,
   loginUser,
-  updateUser,
   patchUser,
-  getUsers
+  updateBallot,
+  updateUser,
 };
