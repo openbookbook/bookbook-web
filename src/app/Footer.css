@@ -1,11 +1,25 @@
 .Footer {
-  margin: 0.3rem 0;
-  margin-bottom: 1rem;
-  padding: 0;
   background: none;
+  display: flex;
+   align-items: center;
+   justify-content: center;
+   flex-direction: row;
+  margin: 0.3rem 0;
+   margin-bottom: 1rem;
+   margin-top: auto;
+  padding: 0;
 }
 
 .Footer a {
-  text-decoration: none;
+  border-radius: 0.25rem;
   color: black;
+  padding: 0 0.25rem;
+  text-decoration: none;
+  transition-duration: 0.1s;
+  transition-property: color, background-color;
+
+  &:hover {
+    background-color: black;
+    color: white;
+  }
 }

@@ -4,7 +4,6 @@
 
 * {
   text-transform: lowercase;
-  font-family: var(--fnt-josefin);
   box-sizing: border-box;
   font-size: 20px;
 }
@@ -87,6 +86,16 @@ button.primary {
     0 0.5rem 1rem -0.125rem rgba(50, 50, 50, 0.1),
     0 0.25rem 0.5rem -0.25rem rgba(0, 0, 0, 0.15)
   ;
+
+  transition-property: box-shadow, filter;
+  transition-duration: 0.2s;
+  &:hover {
+    filter: brightness(1.5);
+    box-shadow:
+      0 1rem 2rem -0.25rem rgba(50, 50, 50, 0.2),
+      0 0.5rem 1rem -0.5rem rgba(0, 0, 0, 0.3)
+    ;
+  }
 }
 
 *:disabled {
@@ -100,6 +109,10 @@ a {
 }
 
 /* default styling for headers */
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1;
+}
+
 h1 {
   font-size: 2rem;
   font-weight: 900;

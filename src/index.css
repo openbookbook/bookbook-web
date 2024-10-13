@@ -2,36 +2,41 @@
 @import url('./styles/_reset.css');
 
 html {
+  /* raw elements, should not be referenced directly outside this file */
   --color-straw: #fac94c;
   --color-straw-rgb: 250, 201, 76;
   --color-wheat: #fbeecf;
   --color-wheat-rgb: 251, 238, 207;
   --color-white: #f9f9f9;
 
+  --font-transitional: Charter, 'Bitstream Charter', 'Sitka Text', Cambria, serif;
+  --font-humanist: Seravek, 'Gill Sans Nova', Ubuntu, Calibri, 'DejaVu Sans', source-sans-pro, sans-serif;
+  --font-code: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, 'DejaVu Sans Mono', monospace;
+
+  /* semantic variables */
   --clr-bg: var(--color-straw);
   --clr-fg: var(--color-white);
   --clr-input: var(--clr-fg);
   --clr-button: var(--clr-fg);
   --clr-line: #000c;
 
-  --fnt-default: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-  --fnt-josefin: "Josefin Sans", 'Ubuntu', sans-serif;
-  --fnt-code: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
-  --fnt-serif: 'Times New Roman', Times, serif;
+  --fnt-sans: var(--font-humanist);
+  --fnt-serif: var(--font-transitional);
+  --fnt-mono: var(--font-code);
 
   --border: 2px solid var(--clr-line);
-
-  accent-color: #000c;
 }
 
 body {
+  accent-color: #000c;
   color: var(--clr-line);
+  font-family: var(--fnt-sans);
+  line-height: 1.4;
   margin: 0;
-  font-family: var(--fnt-default);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: var(--fnt-code);
+  font-family: var(--fnt-mono);
 }
