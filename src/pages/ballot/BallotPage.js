@@ -6,17 +6,10 @@ import AdminPanel from './AdminPanel';
 import ResultsPanel from './ResultsPanel';
 import './BallotPage.css';
 
-/*
-TODO:
- - [x] login panel
- - [ ] admin panel
- - [x] voting panel
- - [x] result panel
-*/
 
 const BallotPage = props => {
-  const { 
-    loading, ballot, 
+  const {
+    loading, ballot,
     users, signIn, signUp, signOut, currentUser,
     candidates, winners, endVote,
     currentRanking, updateVote, handleRankingChange

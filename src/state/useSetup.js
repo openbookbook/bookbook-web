@@ -41,7 +41,7 @@ const useSetup = () => {
           adminCode,
           voteCode
         });
-        
+
         await Promise.all(suggestions.map(suggestion => postSuggestion({
           ballotId: resp.id,
           userId: null,

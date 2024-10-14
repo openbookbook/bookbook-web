@@ -4,7 +4,7 @@ import { getBook } from '../utils/gbooks-api';
 import { base62, relocateItemInArray, shuffleArray } from '../utils/utils';
 import { rankedChoiceVote } from '../utils/voting-methods';
 
-const votingMethods = {
+const VOTING_METHODS = {
   'default': rankedChoiceVote,
   'rcv': rankedChoiceVote,
 };
@@ -38,8 +38,8 @@ const useBallot = idFromUrl => {
           const cands = await getSuggestions(ballot.id);
           if (!ballot.candidateType || ballot.candidateType === 'book') {
             Promise.all(
-              cands.map(async book => book.info 
-                ? book 
+              cands.map(async book => book.info
+                ? book
                 : { ...book, info: await getBook(book.suggestion) }
               )
             ).then(books => {
@@ -59,9 +59,9 @@ const useBallot = idFromUrl => {
   // if ballot has .endDate set, calculate the winners
   useEffect(() => {
     if (ballot?.endDate && candidates?.length && users?.length) {
-      setWinners(votingMethods[ballot.votingMethod](
-        candidates.map(candidate => candidate.id), 
-        users.filter(u => u.vote).map(u => u.vote.split(' ')), 
+      setWinners(VOTING_METHODS[ballot.votingMethod](
+        candidates.map(candidate => candidate.id),
+        users.filter(u => u.vote).map(u => u.vote.split(' ')),
         false
       ));
     }
@@ -87,7 +87,7 @@ const useBallot = idFromUrl => {
 
   const endVote = () => {
     const endDate = Date.now().toString();
-    
+
     updateBallot({ ...ballot, endDate }).then(setBallot);
   };
 
@@ -126,10 +126,10 @@ const useBallot = idFromUrl => {
     setCurrentRanking(newRanking.map(id => currentRanking.find(c => c.id === id)));
   };
 
-  return { 
-    loading, ballot, currentUser, 
-    users, candidates, winners, 
-    endVote, signOut, signUp, 
+  return {
+    loading, ballot, currentUser,
+    users, candidates, winners,
+    endVote, signOut, signUp,
     signIn, currentRanking, updateVote,
     handleRankingChange
   };

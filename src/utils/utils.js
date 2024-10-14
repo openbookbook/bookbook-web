@@ -4,10 +4,6 @@ export function getByProperty(arr, val, prop = 'id') {
 }
 
 export function relocateItemInArray(arr, oldIndex, newIndex) {
-  /*
-  arr.splice(newIndex, 0, arr.splice(oldIndex, 1)[0]);
-  */
-
   // Here's a much more complicated, but more memory efficient (faster) one I found online:
   let i, tmp;
   oldIndex = parseInt(oldIndex, 10);

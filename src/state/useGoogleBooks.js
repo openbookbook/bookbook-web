@@ -1,17 +1,22 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { searchBooks } from '../utils/gbooks-api';
 
 const useGoogleBooks = () => {
   const [results, setResults] = useState([]);
 
-  const handleSearch = async query => {
-    try {
-      query = query.trim();
+  const handleSearch = useCallback(
+    async e => {
+      let query = e.target.value;
 
-      setResults(query ? await searchBooks(query) : []);
-
-    } catch (err) { console.error(err); }
-  };
+      try {
+        query = query.trim();
+        setResults(query ? await searchBooks(query) : []);
+      } catch (err) {
+        console.error(err);
+      }
+    },
+    []
+  );
 
   return { results, handleSearch, };
 };
