@@ -1,12 +1,14 @@
-export function getByProperty(arr, val, prop = 'id') {
-  // this is exactly like findById(arr, val) if the prop parameter isn't specified
-  return arr.filter(obj => obj[prop] === val)[0];
-}
-
+/**
+ * @template T @param {Array<T>} arr
+ * @param {number} oldIndex
+ * @param {number} newIndex
+ */
 export function relocateItemInArray(arr, oldIndex, newIndex) {
   // Here's a much more complicated, but more memory efficient (faster) one I found online:
   let i, tmp;
+  // @ts-ignore
   oldIndex = parseInt(oldIndex, 10);
+  // @ts-ignore
   newIndex = parseInt(newIndex, 10);
 
   if (oldIndex !== newIndex && 0 <= oldIndex && oldIndex <= arr.length && 0 <= newIndex && newIndex <= arr.length) {
@@ -27,6 +29,7 @@ export function relocateItemInArray(arr, oldIndex, newIndex) {
   return arr;
 }
 
+/** @template T @param {Array<T>} arr */
 export function shuffleArray(arr) {
   const array = [...arr];
   for (let i = (array.length - 1); i > 0; i--) {
@@ -38,8 +41,9 @@ export function shuffleArray(arr) {
 
 export const base62 = {
   charset: '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''),
+  /** @param {number} integer */
   encode: integer => {
-    if (integer === 0) return 0;
+    if (integer === 0) return '0';
 
     let s = [];
     while (integer > 0) {
@@ -48,5 +52,6 @@ export const base62 = {
     }
     return s.join('');
   },
+  /** @param {string} chars */
   decode: chars => chars.split('').reverse().reduce((prev, curr, i) => prev + (base62.charset.indexOf(curr) * (62 ** i)), 0)
 };

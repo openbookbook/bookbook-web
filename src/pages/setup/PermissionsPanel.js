@@ -1,11 +1,20 @@
 import React from 'react';
 
+/**
+ * @typedef {{
+ *   setVoteCode: React.Dispatch<React.SetStateAction<string>>;
+ * }} PermissionsPanelProps
+ */
+
+/** @param {PermissionsPanelProps} props */
 const PermissionsPanel = props => {
   const {
     setVoteCode,
     enableVoteCodeInput,
     setEnableVoteCodeInput
   } = props;
+
+  /** @type {React.ChangeEventHandler<HTMLInputElement>} */
   const handleTextChange = e => setVoteCode(e.target.value);
 
   return (

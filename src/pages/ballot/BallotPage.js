@@ -6,7 +6,9 @@ import AdminPanel from './AdminPanel';
 import ResultsPanel from './ResultsPanel';
 import './BallotPage.css';
 
+/** @typedef {{ match: import('react-router-dom').RouteComponentProps['match'] }} BallotPageProps */
 
+/** @param {BallotPageProps} props */
 const BallotPage = props => {
   const {
     loading, ballot,
@@ -49,7 +51,7 @@ const BallotPage = props => {
       />
     </>}
 
-    {Boolean(ballot?.endDate) 
+    {Boolean(ballot?.endDate)
       ? <>
         <span className="panel-title">results</span>
         <ResultsPanel

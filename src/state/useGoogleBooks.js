@@ -1,9 +1,13 @@
 import { useCallback, useState } from 'react';
 import { searchBooks } from '../utils/gbooks-api';
 
-const useGoogleBooks = () => {
-  const [results, setResults] = useState([]);
+/** @typedef {import('../utils/gbooks-api').Book} Book */
 
+const useGoogleBooks = () => {
+  /** @type {ReturnType<typeof useState<Book[]>>} */
+  const [results, setResults] = useState();
+
+  /** @type {React.ChangeEventHandler<HTMLInputElement>} */
   const handleSearch = useCallback(
     async e => {
       let query = e.target.value;

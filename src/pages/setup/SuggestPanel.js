@@ -59,7 +59,7 @@ const SuggestPanel = props => {
       />
 
       <ul className="book-display list-view">
-        {results.filter(
+        {(results || []).filter(
           book => !suggestions.some(suggestion => suggestion.gbooks === book.googleId)
         ).map(book => (
           <li className="search-result" key={book.googleId}>

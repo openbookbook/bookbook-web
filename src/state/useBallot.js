@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { addUser, getBallot, getSuggestions, getUsers, loginUser, updateBallot, updateUser as putUser, patchUser } from '../utils/backend-api';
+import { addUser, getBallot, getSuggestions, getUsers, loginUser, updateBallot, patchUser } from '../utils/backend-api';
 import { getBook } from '../utils/gbooks-api';
 import { base62, relocateItemInArray, shuffleArray } from '../utils/utils';
 import { rankedChoiceVote } from '../utils/voting-methods';
@@ -13,6 +13,7 @@ const updateUserVote = async user => {
   return await patchUser(user, ['vote', user.vote]);
 };
 
+/** @param {string} idFromUrl */
 const useBallot = idFromUrl => {
   const [ballot, setBallot] = useState(null);
   const [users, setUsers] = useState([]);
@@ -121,6 +122,7 @@ const useBallot = idFromUrl => {
     setUsers(users.map(u => u.id === currentUser.id ? currentUser : u));
   };
 
+  /** @param {number} oldIndex; @param {number} newIndex */
   const handleRankingChange = (oldIndex, newIndex) => {
     const newRanking = relocateItemInArray(currentRanking.map(c => c.id), oldIndex, newIndex);
     setCurrentRanking(newRanking.map(id => currentRanking.find(c => c.id === id)));

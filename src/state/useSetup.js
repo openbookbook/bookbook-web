@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { useHistory } from 'react-router';
-import { 
-  addBallot as postBallot, 
-  addSuggestion as postSuggestion 
+import {
+  addBallot as postBallot,
+  addSuggestion as postSuggestion
 } from '../utils/backend-api';
 import { base62 } from '../utils/utils';
 
 const useSetup = () => {
+  /** @type {[string, React.Dispatch<React.SetStateAction<string>>]} */
   const [errorMessage, setErrorMessage] = useState('');
   const [ballotName, setBallotName] = useState('');
   const [adminCode, setAdminCode] = useState('');
@@ -17,11 +18,11 @@ const useSetup = () => {
 
   const history = useHistory();
 
-  const addSuggestion = (suggestion, type = 'book') => 
+  const addSuggestion = (suggestion, _type = 'book') =>
     setSuggestions([...suggestions, suggestion])
   ;
 
-  const deleteSuggestion = (val, key = 'gbooks') => 
+  const deleteSuggestion = (val, key = 'gbooks') =>
     setSuggestions(suggestions.filter(s => s[key] !== val));
   ;
 

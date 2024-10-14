@@ -5,6 +5,11 @@ const URL = process.env.NODE_ENV === 'development'
   : 'https://openbookbook.herokuapp.com'
 ;
 
+/**
+ * @param {'get' | 'post' | 'put' | 'patch' | 'delete'} method
+ * @param {string} path
+ * @template Dto @param {Dto} [data]
+ */
 const req = async (method, path, data) => {
   try {
     return (data
@@ -16,6 +21,7 @@ const req = async (method, path, data) => {
     return { error: err.message };
   }
 };
+/** @param {string} path; @template T @param {T} data */
 const postReq = async (path, data) => await req('post', path, data);
 const getReq = async (path) => await req('get', path);
 const putReq = async (path, data) => await req('put', path, data);
