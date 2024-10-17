@@ -1,4 +1,10 @@
 {
   "editor.formatOnSave": true,
-  "editor.rulers": [100]
+  "editor.rulers": [100],
+  "files.associations": {
+    ".env.example": "properties"
+  },
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
+  "git.autofetch": true,
 }
