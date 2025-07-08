@@ -3,9 +3,6 @@ import './ResultsPanel.css';
 
 const ResultsPanel = props => {
   const { winners, ballot, candidates } = props;
-  // const { users } = props;
-
-  // const votes = users.filter(u => u.vote).map(u => u.vote);
 
   return (
     <div className="ResultsPanel panel">

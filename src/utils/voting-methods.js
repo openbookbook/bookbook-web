@@ -1,4 +1,5 @@
 
+/** @param {Record<string, number>[]} results */
 export function parseWinner(results) {
   // get last round
   const lastRound = results[results.length - 1];
@@ -8,7 +9,11 @@ export function parseWinner(results) {
   return Object.keys(lastRound).filter(key => lastRound[key] === maxScore);
 }
 
-export function rankedChoiceVote(candidates, votes, fullResults = true) {
+/**
+ * @param {string[]} candidates
+ * @param {string[][]} votes
+ */
+export function rankedChoiceVote(candidates, votes) {
   /*
   ==INPUT==
   candidates is an array of suggestion ids like:
@@ -54,6 +59,7 @@ export function rankedChoiceVote(candidates, votes, fullResults = true) {
   let isOver = false;
   while (!isOver) {
     // create the result object and initialize all its keys to suggestions that haven't been dropped and all its values to 0
+    /** @type {Record<string, number>} */
     const result = {};
     candidates.forEach(suggestion => {
       if (!dropped.includes(suggestion)) result[suggestion] = 0;

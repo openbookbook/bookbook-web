@@ -6,3 +6,4 @@
 - [ ] Allow voters to add a password
 - [ ] Consolidate input styling. Placeholder floats to label.
 - [ ] Allow users to provide their own Google Books API key (byoapik)
+- [ ] Setup Swagger in backend and use `ts-to-jsdoc` to generate "types"

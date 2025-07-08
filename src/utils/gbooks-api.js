@@ -2,7 +2,10 @@ import request from 'superagent';
 
 const GBOOKS_API = 'https://www.googleapis.com/books/v1/volumes';
 
-/** @returns {Promise<Book[]>} */
+/**
+ * @param {string} query
+ * @returns {Promise<Book[]>}
+ */
 async function searchBooks(query, printType = 'books') {
   const response = await request
     .get(GBOOKS_API)

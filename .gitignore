@@ -10,14 +10,11 @@
 
 # production
 /build
-/dist
+/dist/*
+!/dist/.keep
 
-# misc
+# OS files
 .DS_Store
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
 
 # logs
 npm-debug.log*

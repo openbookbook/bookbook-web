@@ -1,5 +1,5 @@
 # bookbook
-Front-end for bookbook. Written in React.
+front-end for bookbook. written in react. typed with js-docs.
 
 Originally developed by annaleigh, austin, clem, culi, daniella.
 

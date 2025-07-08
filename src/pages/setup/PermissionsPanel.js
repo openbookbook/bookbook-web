@@ -2,7 +2,9 @@ import React from 'react';
 
 /**
  * @typedef {{
- *   setVoteCode: React.Dispatch<React.SetStateAction<string>>;
+ *   enableVoteCodeInput: boolean;
+ *   setEnableVoteCodeInput: React.Dispatch<React.SetStateAction<boolean>>;
+ *   setVoteCode: React.Dispatch<React.SetStateAction<string | null>>;
  * }} PermissionsPanelProps
  */
 

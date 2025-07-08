@@ -6,8 +6,9 @@ import {
 } from '../utils/backend-api';
 import { base62 } from '../utils/utils';
 
-const useSetup = () => {
-  /** @type {[string, React.Dispatch<React.SetStateAction<string>>]} */
+/** @typedef {import('../utils/backend-api').CreateCandidateDto} CreateCandidateDto */
+
+/** @typedef {Omit<CreateCandidateDto, 'electionId'> & { info: import('../utils/gbooks-api').Book }} SelectedBook */
   const [errorMessage, setErrorMessage] = useState('');
   const [ballotName, setBallotName] = useState('');
   const [adminCode, setAdminCode] = useState('');
@@ -18,6 +19,7 @@ const useSetup = () => {
 
   const history = useHistory();
 
+  /** @param {SelectedBook} suggestion */
   const addSuggestion = (suggestion, _type = 'book') =>
     setSuggestions([...suggestions, suggestion])
   ;
