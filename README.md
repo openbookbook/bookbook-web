@@ -1,7 +1,7 @@
 # bookbook
 front-end for bookbook. written in react. typed with js-docs.
 
-Originally developed by annaleigh, austin, clem, culi, daniella.
+originally developed by annaleigh, austin, clem, culi, daniella.
 
 ## requirements
 * `npm`

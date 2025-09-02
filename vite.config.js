@@ -1,7 +1,6 @@
 import { defineConfig, transformWithEsbuild } from 'vite'
 import react from '@vitejs/plugin-react-swc'
 
-
 /** allow us to keep .js files as .js instead of .jsx */
 const treatJsAsJsxPlugin = {
   name: 'treat-js-files-as-jsx',

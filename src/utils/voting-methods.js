@@ -30,7 +30,7 @@ export function rankedChoiceVote(candidates, votes) {
       ['id1', 'id2', 'id4', 'id3'],
       ['id3', 'id2', 'id1', 'id4']
     ];
-  
+
   ==OUTPUT==
   an array of objects. each object represents a round of voting
     [
@@ -80,7 +80,7 @@ export function rankedChoiceVote(candidates, votes) {
       if (result[key] === Math.min(...Object.values(result))) dropped.push(key);
     });
 
-    // check the isOver conditions: (1) everyone remaining is tied, (2) someone has more than 50% of the (remaining) votes, 
+    // check the isOver conditions: (1) everyone remaining is tied, (2) someone has more than 50% of the (remaining) votes,
     if (Object.values(result).every(val => val === Object.values(result)[0])) isOver = true;
     else {
       const topScore = Math.max(...Object.values(result));
