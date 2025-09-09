@@ -1,6 +1,6 @@
 .SuggestPanel div.panel {
   display: inline-block;
-  border-width: 3px;
+  border-width: 2px;
   width: 100%;
 }
 
@@ -44,6 +44,7 @@
 }
 
 .book-display li > div > * {
+  line-height: 1;
   display: -webkit-box;
   /* display: box; */
   -webkit-box-orient: vertical;
@@ -57,7 +58,7 @@
   line-clamp: 3;
 }
 
-.book-display li > div .book-author {
+.book-author {
   font-weight: 200;
   -webkit-line-clamp: 1;
   line-clamp: 1;

@@ -9,6 +9,13 @@ html {
   --color-wheat-rgb: 251, 238, 207;
   --color-white: #f9f9f9;
 
+  /*
+    TODO: neobrutalist redesign
+     - https://fractal.snowball.xyz/?path=/docs/atoms-colors--documentation
+     - https://www.neobrutalism.dev/showcase
+  */
+  /* --color-icterine: #fde047; */
+
   --font-transitional: Charter, 'Bitstream Charter', 'Sitka Text', Cambria, serif;
   --font-humanist: Seravek, 'Gill Sans Nova', Ubuntu, Calibri, 'DejaVu Sans', source-sans-pro, sans-serif;
   --font-code: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, 'DejaVu Sans Mono', monospace;

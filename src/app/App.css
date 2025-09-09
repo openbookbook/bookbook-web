@@ -11,10 +11,9 @@
 }
 
 .App > * {
-  width: calc(200px + 40vw);
   min-width: 300px;
   max-width: 95vw;
-  width: clamp(300px, calc(200px + 40vw), 95vw);
+  width: clamp(300px, calc(250px + 45vw), 95vw);
 }
 
 .App > main {
@@ -23,7 +22,8 @@
   display: flex;
   flex-direction: column;
   border: var(--border);
-  border-width: 8px;
+  border-width: 2px;
+  border-top-width: 8px;
 }
 
 main {
