@@ -95,5 +95,5 @@ export function rankedChoiceVote(candidates, votes) {
     if (results.length > 999) break;
   }
 
-  return fullResults ? results : parseWinner(results);
+  return parseWinner(results);
 }

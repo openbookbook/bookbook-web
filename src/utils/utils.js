@@ -55,3 +55,18 @@ export const base62 = {
   /** @param {string} chars */
   decode: chars => chars.split('').reverse().reduce((prev, curr, i) => prev + (base62.charset.indexOf(curr) * (62 ** i)), 0)
 };
+
+/**
+ * @template {{ [key in KeyT]: string | number | symbol }} ObjT
+ * @template {string} KeyT
+ * @param {ObjT[]} items
+ * @param {KeyT} key
+ */
+export const groupByKey = (items, key) =>
+  items.reduce((acc, item) => {
+    const typename = item[key];
+    acc[typename] ||= [];
+    acc[typename].push(item);
+    return acc;
+  }, /** @type {Record<ObjT[KeyT], ObjT[]>} */({}));
+

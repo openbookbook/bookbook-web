@@ -1,6 +1,7 @@
 import request from 'superagent';
 
 const GBOOKS_API = 'https://www.googleapis.com/books/v1/volumes';
+const IN_MEMORY_CACHE = {};
 
 /**
  * @param {string} query
@@ -16,12 +17,22 @@ async function searchBooks(query, printType = 'books') {
   return response.body.items.map(mungeBook);
 };
 
-async function getBook(gbooks) {
-  const response = await request.get(`${GBOOKS_API}/${gbooks}`);
+/**
+ * @param {string} gbooks - Google Books ID
+ * @returns {Promise<Book>}
+ */
+async function getBook(gbooks, cache = IN_MEMORY_CACHE) {
+  const reqId = `getBook(${gbooks})`;
 
-  if (response.status === 400) throw response.body;
+  if (!cache[reqId]) {
+    const response = await request.get(`${GBOOKS_API}/${gbooks}`);
 
-  return mungeBook(response.body);
+    if (response.status === 400) throw response.body;
+
+    cache[reqId] = mungeBook(response.body);
+  }
+
+  return cache[reqId];
 }
 
 /**
