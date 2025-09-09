@@ -1,12 +1,20 @@
 import React from 'react';
+import useBallot from '../../state/useBallot';
 
+/** @typedef {import('../../utils/backend-api').Election} Election */
+
+/**
+ * @param {{
+ *   election: Pick<Election, 'isCompleted'>;
+ *   onEndVote: ReturnType<typeof useBallot>['endVote'];
+ * }} props
+ */
 const AdminPanel = props => {
-  const { ballot, onEndVote } = props;
-  
+  const { election, onEndVote } = props;
+
   return (
     <div className="AdminPanel panel">
-      hello, admin!
-      <button className="primary" onClick={onEndVote} disabled={Boolean(ballot?.endDate)}>end vote!</button>
+      <button className="primary" onClick={onEndVote} disabled={Boolean(election?.isCompleted)}>end vote!</button>
     </div>
   );
 };

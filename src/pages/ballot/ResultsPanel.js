@@ -1,15 +1,26 @@
 import React from 'react';
 import './ResultsPanel.css';
 
+/** @typedef {import('../../utils/backend-api').Election} Election */
+/** @typedef {import('../../utils/backend-api').Candidate} Candidate */
+/** @typedef {ReturnType<typeof import('../../state/useBallot')['default']>} UseBallotReturn */
+
+/**
+ * @param {{
+ *   election: Pick<Election, 'id'> & Partial<{ candidateType: string; }>;
+ *   candidates: UseBallotReturn['candidates'];
+ *   winners: Array<Candidate['id'] | string>;
+ * }} props
+ */
 const ResultsPanel = props => {
-  const { winners, ballot, candidates } = props;
+  const { winners, election, candidates } = props;
 
   return (
     <div className="ResultsPanel panel">
       <p>the winner is...</p>
       {winners.map(winnerId => {
-        if (!ballot.candidateType || ballot.candidateType === 'book') {
-          const book = candidates.find(c => c.id === Number(winnerId));
+        if (!election.candidateType || election.candidateType === 'book') { // TODO: deprecate candidateType?
+          const book = candidates.find(c => c.id === winnerId.toString());
 
           return (
             <li key={winnerId}>
