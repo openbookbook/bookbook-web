@@ -18,7 +18,7 @@ const SetupPage = () => {
   } = useSetup();
 
   const [enableVoteCodeInput, setEnableVoteCodeInput] = useState(false);
-  
+
   return (
     <div className="SetupPage">
       <h3 className="page-title">ballot setup</h3>
@@ -49,8 +49,8 @@ const SetupPage = () => {
         />
 
         <span>{errorMessage}</span>
-        <button 
-          className="primary" 
+        <button
+          className="primary"
           type="submit"
           onClick={e => {
             e.preventDefault();

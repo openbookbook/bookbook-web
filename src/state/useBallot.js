@@ -1,139 +1,122 @@
-import { useEffect, useState } from 'react';
-import { addUser, getBallot, getSuggestions, getUsers, loginUser, updateBallot, patchUser } from '../utils/backend-api';
+import { useCallback, useEffect, useState } from 'react';
+import { getBallot, completeBallot, upsertVote } from '../utils/backend-api';
 import { getBook } from '../utils/gbooks-api';
-import { base62, relocateItemInArray, shuffleArray } from '../utils/utils';
+import { base62, groupByKey, relocateItemInArray, shuffleArray } from '../utils/utils';
 import { rankedChoiceVote } from '../utils/voting-methods';
 
-const VOTING_METHODS = {
-  'default': rankedChoiceVote,
-  'rcv': rankedChoiceVote,
-};
-
-const updateUserVote = async user => {
-  return await patchUser(user, ['vote', user.vote]);
-};
+/** @typedef {import('../utils/backend-api').Election} Election */
+/** @typedef {import('../utils/backend-api').Candidate} Candidate */
+/** @typedef {import('../utils/backend-api').Vote} Vote */
+/** @typedef {import('./useGoogleBooks').Book} Book */
 
 /** @param {string} idFromUrl */
 const useBallot = idFromUrl => {
-  const [ballot, setBallot] = useState(null);
-  const [users, setUsers] = useState([]);
-  const [candidates, setCandidates] = useState([]);
+  const [candidates, setCandidates] = useState(/** @type {(Candidate & { info?: Book })[]} */([]));
+  const [currentRanking, setCurrentRanking] = useState(/** @type {(Candidate & { info?: Book })[]} */([]));
+  const [election, setElection] = useState(/** @type {Election | null} */(null));
   const [loading, setLoading] = useState(true);
-  const [winners, setWinners] = useState([]);
-  const [currentUser, setCurrentUser] = useState(null);
-  const [currentRanking, setCurrentRanking] = useState([]);
+  const [username, setUsername] = useState('');
+  const [winners, setWinners] = useState(/** @type {string[]} */([]));
 
   useEffect(() => {
-    if (loading) {
-      getBallot(base62.decode(idFromUrl))
-        .then(async ballot => {
-          // set ballot
-          setBallot(ballot);
+    if (!loading) return;
 
-          console.log({ ballot });
+    getBallot(base62.decode(idFromUrl))
+      .then(async ballot => {
+        setElection(ballot);
 
-          // set users
-          setUsers(await getUsers(ballot.id));
+        const candidates = ballot.candidates || [];
+        if (candidates?.some(c => c.kind === 'book')) {
+          Promise.all(
+            candidates.map(async book => {
+              const info = await getBook(book.googleBooksId || '');
 
-          // set candidates, get full info from google books
-          const cands = await getSuggestions(ballot.id);
-          if (!ballot.candidateType || ballot.candidateType === 'book') {
-            Promise.all(
-              cands.map(async book => book.info
-                ? book
-                : { ...book, info: await getBook(book.suggestion) }
-              )
-            ).then(books => {
-              setCandidates(books);
-              setCurrentRanking(shuffleArray(books));
-            });
-          } else {
-            setCandidates(cands);
-            setCurrentRanking(shuffleArray(cands));
-          }
-        })
-        .finally(setLoading(false));
-      ;
-    }
+              return { ...book, info };
+            })
+          ).then(books => {
+            setCandidates(books);
+            setCurrentRanking(shuffleArray(books));
+          });
+        } else {
+          setCandidates(candidates);
+          setCurrentRanking(shuffleArray(candidates));
+        }
+      })
+      .finally(() => setLoading(false));
+    ;
   }, [idFromUrl, loading]);
 
   // if ballot has .endDate set, calculate the winners
   useEffect(() => {
-    if (ballot?.endDate && candidates?.length && users?.length) {
-      setWinners(VOTING_METHODS[ballot.votingMethod](
-        candidates.map(candidate => candidate.id),
-        users.filter(u => u.vote).map(u => u.vote.split(' ')),
-        false
-      ));
+    const votes = election?.candidates?.map(cand => cand.votes.map(vote => ({ ...vote, candidateId: cand.id }))).flat() || [];
+
+    if (election?.isCompleted && candidates?.length && votes?.length) {
+      const groupedVotes = Object.values(groupByKey(votes, 'author'))
+        .map(votes => [...votes].sort((a, b) => b.score - a.score))
+        .map(votes => votes.map(vote => vote.candidateId))
+      ;
+      console.log(Object.values(groupByKey(votes, 'author')))
+      const winners = rankedChoiceVote(candidates.map(candidate => candidate.id), groupedVotes);
+      setWinners(winners);
     }
-  }, [ballot?.endDate, ballot?.votingMethod, users, candidates]);
+  }, [candidates, election?.isCompleted, election?.votes]);
 
-  // when currentUser or currentUser.vote changes, update the list of users
-  useEffect(() => {
-    if (currentUser) {
-      if (!users.map(u => u.id).includes(currentUser.id)) setUsers([...users, currentUser]);
-      if (currentUser.vote) setCurrentRanking(currentUser.vote.split(' ').map(id => candidates.find(c => c.id === Number(id))));
-    }
-  }, [currentUser, users, candidates]);
+  const endVote = useCallback(() => {
+    if (!election?.id || !idFromUrl) return;
 
-  // update the user when vote changes
-  useEffect(() => {
-    if (currentUser?.vote) updateUserVote(currentUser);
-  }, [currentUser]);
+    completeBallot({ id: election.id, isCompleted: true }).then(setElection);
+  }, [idFromUrl, election]);
 
-  // update the user when password changes
-  // useEffect(() => {
+  const handleRankingChange = useCallback(
+    /** @param {number} oldIndex; @param {number} newIndex */
+    (oldIndex, newIndex) => {
+      const newRanking = relocateItemInArray(currentRanking.map(c => c.id), oldIndex, newIndex);
+      setCurrentRanking(
+        newRanking.map(id => /** @type {Candidate} */(currentRanking.find(c => c.id === id)))
+      );
+    },
+    [currentRanking]
+  );
 
-  // }, [currentUser.password]);
+  const handleSaveBallot = useCallback(
+    async () => {
+      console.count('handleSaveBallot');
 
-  const endVote = () => {
-    const endDate = Date.now().toString();
+      const electionId = election?.id;
+      if (!electionId) return;
 
-    updateBallot({ ...ballot, endDate }).then(setBallot);
-  };
+      const ballotVotes = currentRanking.map((candidate, i) => {
+        const score = (1 - (i / (currentRanking.length - 1))) || 0;
 
-  const signOut = () => setCurrentUser(null);
+        return ({
+          author: username,
+          candidate: { id: candidate.id },
+          candidateId: candidate.id,
+          election: { id: electionId },
+          electionId,
+          score,
+        });
+      });
 
-  const signUp = async user => {
-    return await addUser({
-      ...user,
-      ballotId: ballot.id,
-      vote: null
-    }).then(user => {
-      setCurrentUser(user);
-      return user;
-    });
-  };
+      console.log({ currentRanking, username, ballotVotes });
 
-  const signIn = async credentials => {
-    const match = users.find(u => u.username === credentials.username);
-
-    const result = await loginUser({ ...match, ...credentials });
-
-    if (result.error) return null;
-    else {
-      setCurrentUser(match);
-      return result;
-    }
-  };
-
-  const updateVote = () => {
-    setCurrentUser({ ...currentUser, vote: currentRanking.map(c => c.id).join(' ') });
-    setUsers(users.map(u => u.id === currentUser.id ? currentUser : u));
-  };
-
-  /** @param {number} oldIndex; @param {number} newIndex */
-  const handleRankingChange = (oldIndex, newIndex) => {
-    const newRanking = relocateItemInArray(currentRanking.map(c => c.id), oldIndex, newIndex);
-    setCurrentRanking(newRanking.map(id => currentRanking.find(c => c.id === id)));
-  };
+      Promise.all(ballotVotes.map(upsertVote)).then(() => setLoading(true));
+    },
+    [currentRanking, election?.id, username]
+  );
 
   return {
-    loading, ballot, currentUser,
-    users, candidates, winners,
-    endVote, signOut, signUp,
-    signIn, currentRanking, updateVote,
-    handleRankingChange
+    candidates,
+    currentRanking,
+    election,
+    endVote,
+    handleRankingChange,
+    handleSaveBallot,
+    loading,
+    setUsername,
+    username,
+    votes: election?.votes || [],
+    winners,
   };
 };
 
