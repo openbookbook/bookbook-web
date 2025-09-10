@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react';
 import { searchBooks } from '../utils/gbooks-api';
+import { debounce } from '../utils/utils';
 
 /** @typedef {import('../utils/gbooks-api').Book} Book */
 
@@ -9,16 +10,18 @@ const useGoogleBooks = () => {
 
   /** @type {React.ChangeEventHandler<HTMLInputElement>} */
   const handleSearch = useCallback(
-    async e => {
-      let query = e.target.value;
+    debounce(
+      (async e => {
+        let query = e.target.value;
 
-      try {
-        query = query.trim();
-        setResults(query ? await searchBooks(query) : []);
-      } catch (err) {
-        console.error(err);
-      }
-    },
+        try {
+          query = query.trim();
+          setResults(query ? await searchBooks(query) : []);
+        } catch (err) {
+          console.error(err);
+        }
+      })
+    ),
     []
   );
 

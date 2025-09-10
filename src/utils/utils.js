@@ -57,6 +57,19 @@ export const base62 = {
 };
 
 /**
+ * @template {(...args: any[]) => any} T; @param {T} callback
+ * @param {number} delay - milliseconds
+ */
+export const debounce = (callback, delay = 500) => {
+  let timeoutId = null;
+
+  return (...args) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, args), delay);
+  };
+};
+
+/**
  * @template {{ [key in KeyT]: string | number | symbol }} ObjT
  * @template {string} KeyT
  * @param {ObjT[]} items
