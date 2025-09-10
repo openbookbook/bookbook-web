@@ -1,9 +1,26 @@
-import request from 'superagent';
+
+/** @typedef {{ id: `${number}`; createdAt: string; deletedAt?: string | null; updatedAt: string; __typename: string; }} Model - fields shared by all models */
+
+// Elections
+/** @typedef {Model & { isCompleted: boolean; name: string; __typename: 'Election'; candidates?: Array<Candidate>; votes?: Array<Vote>; }} Election */
+/** @typedef {Pick<Election, 'name'>} CreateElectionDto */
+/** @typedef {Pick<Election, 'id' | 'isCompleted' | 'name'>} UpdateElectionDto */
+
+// Candidates
+/** @typedef {Model & { author?: string; electionId: string; googleBooksId?: string; kind: string; title: string; __typename: 'Candidate'; votes: Array<Vote>; }} Candidate */
+/** @typedef {Pick<Candidate, 'author' | 'electionId' | 'googleBooksId' | 'kind' | 'title'>} CreateCandidateDto */
+
+// Votes
+/** @typedef {Model & { author: string; candidateId: string; electionId: string; score: number; __typename: 'Vote'; }} Vote */
+/** @typedef {Pick<Vote, 'author' | 'candidateId' | 'electionId' | 'score'>} UpsertVoteDto */
 
 const URL = process.env.NODE_ENV === 'development'
-  ? 'http://localhost:8001' 
-  : 'https://openbookbook.herokuapp.com'
+  ? 'http://localhost:8001/api/v2'
+  : 'https://openbookbook.herokuapp.com' // TODO! dead. Need to replace and move to env
 ;
+
+/** @type {HeadersInit} */
+const HEADERS = { 'Content-Type': 'application/json', 'Accept': 'application/json' };
 
 /**
  * @param {'get' | 'post' | 'put' | 'patch' | 'delete'} method
@@ -12,49 +29,61 @@ const URL = process.env.NODE_ENV === 'development'
  */
 const req = async (method, path, data) => {
   try {
-    return (data
-      ? await request[method](`${URL}/${path}`).send(data)
-      : await request[method](`${URL}/${path}`)
-    ).body;
+    const response = await fetch(
+      `${URL}/${path}`,
+      {
+        method: method.toUpperCase(),
+        headers: HEADERS,
+        ...(data ? { body: JSON.stringify(data) } : {}),
+      },
+    );
+
+    return await response.json();
   } catch (err) {
     console.error(err);
     return { error: err.message };
   }
 };
-/** @param {string} path; @template T @param {T} data */
+/** @template T; @template {Partial<T>} Dto; @param {string} path; @param {Dto} data; @returns {Promise<T>} */
 const postReq = async (path, data) => await req('post', path, data);
+/** @param {string} path; @template T @returns {Promise<T>} */
 const getReq = async (path) => await req('get', path);
+/** @param {string} path; @template T @param {T} data */
 const putReq = async (path, data) => await req('put', path, data);
+/** @param {string} path; @template T @param {T} data */
 const patchReq = async (path, data) => await req('patch', path, data);
+/** @param {string} path; @template {Model} T @returns {Promise<Pick<T, 'id' | '__typename'>>} */
 const deleteReq = async (path) => await req('delete', path);
 
-/* ballots */
-const addBallot = async (ballot) => postReq('api/ballots', ballot);
-const getBallot = async (ballotId) => getReq(`api/ballots/${ballotId}`);
-const updateBallot = async (ballot) => putReq(`api/ballots/${ballot.id}`, ballot);
+/* elections */
+/** @param {CreateElectionDto} ballot; @returns {ReturnType<typeof postReq<Election, CreateElectionDto>>} */
+const addBallot = async (ballot) => postReq('elections', ballot);
+/** @param {string | number} ballotId; @returns {ReturnType<typeof getReq<Election>>} */
+const getBallot = async (ballotId) => getReq(`elections/${ballotId}`);
+/** @param {UpdateElectionDto} ballot */
+const updateBallot = async (ballot) => putReq(`elections/${ballot.id}`, ballot);
+/** @param {Pick<UpdateElectionDto, 'id' | 'isCompleted'>} ballot */ // TODO
+const completeBallot = async (ballot) => patchReq(`elections/${ballot.id}`, ballot);
 
-/* suggestions */
-const addSuggestion = async (suggestion) => postReq('api/suggestions', suggestion);
-const getSuggestions = async (ballotId) => getReq(`api/suggestions?ballot=${ballotId}`);
-const deleteSuggestion = async (id) => deleteReq(`api/suggestions/${id}`);
+/* candidates */
+/** @param {CreateCandidateDto} candidate */
+const addCandidate = async (candidate) => postReq('candidates', candidate);
+/** @param {string} electionId; @returns {ReturnType<typeof getReq<Candidate[]>>} */
+const getCandidatesForElection = async (electionId) => getReq(`candidates?electionId=${electionId}`);
+/** @param {string} id */
+const deleteCandidate = async (id) => deleteReq(`candidates/${id}`);
 
-/* users */
-const addUser = async (user) => postReq('api/users', user);
-const loginUser = async (user) => postReq(`api/users/${user.id}/login`, user);
-const updateUser = async (user) => putReq(`api/users/${user.id}`, user);
-const patchUser = async (user, patch) => patchReq(`api/users/${user.id}`, patch);
-const getUsers = async (ballotId) => getReq(`api/users?ballot=${ballotId}`);
+/* votes */
+/** @param {UpsertVoteDto} vote */
+const upsertVote = async (vote) => postReq('votes', vote);
 
 export {
   addBallot,
-  addSuggestion,
-  addUser,
-  deleteSuggestion,
+  addCandidate,
+  deleteCandidate,
   getBallot,
-  getSuggestions,
-  getUsers,
-  loginUser,
-  patchUser,
+  getCandidatesForElection,
   updateBallot,
-  updateUser,
+  completeBallot,
+  upsertVote,
 };
