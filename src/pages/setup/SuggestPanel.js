@@ -2,7 +2,22 @@ import React, { useState } from 'react';
 import useGoogleBooks from '../../state/useGoogleBooks';
 import './SuggestPanel.css';
 
+/** @typedef {ReturnType<typeof import('../../state/useSetup').useSetup>} UseSetupReturn */
+
+/**
+ * @param {{
+ *   addSuggestion: UseSetupReturn['addSuggestion'];
+ *   deleteSuggestion: UseSetupReturn['deleteSuggestion'];
+ *   suggestions: UseSetupReturn['suggestions'];
+ * }} props
+ */
 const SuggestPanel = props => {
+  const {
+    suggestions,
+    addSuggestion,
+    deleteSuggestion
+  } = props;
+
   const {
     results,
     handleSearch
@@ -10,20 +25,14 @@ const SuggestPanel = props => {
 
   const [showBoxView, setShowBoxView] = useState(false);
 
-  const {
-    suggestions,
-    addSuggestion,
-    deleteSuggestion
-  } = props;
-
+  /** @param {import('../../utils/gbooks-api').Book} info */
   const handleAddSuggestion = info => {
-    const suggestion = {
-      gbooks: info.googleId,
-      type: 'book',
+    addSuggestion({
+      googleBooksId: info.googleId,
+      kind: 'book',
+      title: info.title,
       info
-    };
-
-    addSuggestion(suggestion);
+    });
   };
 
   return (
@@ -32,18 +41,23 @@ const SuggestPanel = props => {
         <div className="panel">
           <div>
             <span>candidate books: </span>
-            <input onClick={() => setShowBoxView(!showBoxView)} className="switch-checkbox" id="switch-checkbox" type="checkbox"/>
+            <input
+              id="switch-checkbox"
+              className="switch-checkbox"
+              onClick={() => setShowBoxView(!showBoxView)}
+              type="checkbox"
+            />
             <label className="switch" htmlFor="switch-checkbox">
               <div></div>
             </label>
           </div>
           <ul className={'book-display ' + (showBoxView ? 'box-view' : 'list-view')}>
             {suggestions.map(book => (
-              <li key={book.gbooks}>
-                <button onClick={() => deleteSuggestion(book.gbooks, 'gbooks')}>-</button>
+              <li key={book.googleBooksId}>
+                <button onClick={() => deleteSuggestion(book.googleBooksId, 'gbooks')}>-</button>
                 <img src={book.info?.image ? book.info.image : '/assets/nocover.jpeg'} alt={book.info.title}/>
                 <div>
-                  <p>{book.info.title}{book.info.subtitle && <span>: {book.info.subtitle}</span>}</p>
+                  <p>{book.title}{book.info.subtitle && <span>: {book.info.subtitle}</span>}</p>
                   <p className="book-author">{book.info?.authors?.join(', ')}</p>
                 </div>
               </li>
@@ -60,7 +74,7 @@ const SuggestPanel = props => {
 
       <ul className="book-display list-view">
         {(results || []).filter(
-          book => !suggestions.some(suggestion => suggestion.gbooks === book.googleId)
+          book => !suggestions.some(suggestion => suggestion.googleBooksId === book.googleId)
         ).map(book => (
           <li className="search-result" key={book.googleId}>
             <button

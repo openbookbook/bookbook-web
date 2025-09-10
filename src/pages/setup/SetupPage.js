@@ -26,7 +26,7 @@ const SetupPage = () => {
 
         <span className="panel-title">setup</span>
         <SetupPanel
-          setAdminCode={setAdminCode}
+          _setAdminCode={setAdminCode}
           setBallotName={setBallotName}
         />
 
@@ -40,7 +40,7 @@ const SetupPage = () => {
         </>}
 
         <span className="panel-title">
-          add books{Boolean(suggestions.length) && <span>({suggestions.length} books added)</span>}:
+          add books{!!suggestions.length && <span>({suggestions.length} books added)</span>}:
         </span>
         <SuggestPanel
           suggestions={suggestions}

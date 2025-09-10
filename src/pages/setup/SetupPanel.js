@@ -1,20 +1,23 @@
 import React, { useState } from 'react';
 import ToggleText from '../../components/ToggleText';
 
+/**
+ * @param {{
+ *   setBallotName: React.Dispatch<React.SetStateAction<string>>;
+ *   _setAdminCode: React.Dispatch<React.SetStateAction<string>>;
+ * }} props
+ */
 const SetupPanel = props => {
   const [showAdvanced, setShowAdvanced] = useState(false);
 
-  const {
-    setBallotName,
-    setAdminCode
-  } = props;
+  const { setBallotName, _setAdminCode } = props;
 
   return (
     <fieldset className="panel SetupPanel">
       <label>
         <span title="the name of the ballot">ballot name:</span>
-        <input 
-          type="text" 
+        <input
+          type="text"
           onChange={e => {
             e.preventDefault();
             setBallotName(e.target.value);
@@ -23,19 +26,19 @@ const SetupPanel = props => {
           required={true}
         />
       </label>
-      <label>
+      {/* <label>
         <span title="don't lose this! you need this in order to get the results of an election">admin code:</span>
-        <input 
-          type="text" 
+        <input
+          type="text"
           onChange={e => {
             e.preventDefault();
             setAdminCode(e.target.value);
           }}
-          name="adminCode" 
+          name="adminCode"
           required={true}
         />
-      </label>
-      {showAdvanced 
+      </label> */}
+      {showAdvanced
         ? <>
           <label>
             <span>voting method:</span>
