@@ -14,9 +14,7 @@
 /** @typedef {Model & { author: string; candidateId: string; electionId: string; score: number; __typename: 'Vote'; }} Vote */
 /** @typedef {Pick<Vote, 'author' | 'candidateId' | 'electionId' | 'score'>} UpsertVoteDto */
 
-const URL = process.env.NODE_ENV === 'development'
-  ? 'http://localhost:8001/api/v2'
-  : 'https://openbookbook.herokuapp.com' // TODO! dead. Need to replace and move to env
+const URL = process.env.API_URL;
 ;
 
 /** @type {HeadersInit} */
